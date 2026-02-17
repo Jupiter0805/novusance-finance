@@ -6,6 +6,9 @@
     <meta name="description" content="Calculadora de Interés Compuesto de Novusance Finance. Planifica tu inversión y descubre el poder del interés compuesto.">
     <meta name="keywords" content="calculadora interés compuesto, inversión, finanzas, ahorro, rentabilidad">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="public/Novusance-Logo.png">
+    
     <!-- Google AdSense - Reemplaza con tu código cuando te aprueben -->
     <!-- PASO 1: Descomenta esta línea y añade tu ID de publisher cuando AdSense te apruebe
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
@@ -799,7 +802,7 @@
                 </p>
                 <div class="cta-buttons">
                     <a href="#calculator" class="cta-button" id="ctaButton">Calcula tu inversión ahora</a>
-                    <a href="comparador.html" class="cta-button-outline" id="ctaComparator">Comparar escenarios</a>
+                    <a href="comparador.html" class="cta-button-outline" id="ctaComparator">⚖️ Comparar escenarios</a>
                 </div>
 
                 <div class="features-grid">
@@ -1648,9 +1651,9 @@
                 investedBar.style.height = investedHeight + 'px';
                 investedBar.title = `${yearLabel} ${item.year} — ${translations[currentLanguage].legendInvested}: ${formatCurrency(item.invested)}`;
 
-                barStack.appendChild(gainsBar);
                 barStack.appendChild(investedBar);
-
+                barStack.appendChild(gainsBar);
+                
                 // Etiqueta del año
                 const label = document.createElement('div');
                 label.className = 'bar-group-label';
