@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Comparador de escenarios de inversión de Novusance Finance. Compara dos estrategias de inversión lado a lado.">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <title>Novusance Finance - Comparador de Escenarios</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5f3 0%, #d4f1f4 50%, #c8e6e8 100%);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(26,188,156,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(22,160,133,0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container { position: relative; z-index: 1; }
+
+        /* ── HEADER ── */
+        header {
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid #1abc9c;
+            box-shadow: 0 4px 20px rgba(26,188,156,0.15);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            color: #2c3e50;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 20px; }
+
+        .logo { width: 50px; height: 50px; object-fit: contain; }
+
+        .header-text h1 { font-size: 2em; color: #2c3e50; text-shadow: 1px 1px 3px rgba(0,0,0,0.15); }
+        .header-text p  { font-size: 0.9em; opacity: 0.75; margin: 0; }
+
+        .header-right { display: flex; align-items: center; gap: 15px; }
+
+        .back-btn {
+            padding: 8px 18px;
+            background: transparent;
+            color: #2c3e50;
+            border: 2px solid rgba(26,188,156,0.4);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover { border-color: #1abc9c; background: rgba(26,188,156,0.1); }
+
+        .language-selector {
+            display: flex; gap: 8px;
+            background: rgba(26,188,156,0.1);
+            padding: 8px; border-radius: 10px;
+        }
+
+        .language-btn {
+            padding: 6px 14px;
+            background: transparent;
+            color: #2c3e50;
+            border: 2px solid rgba(26,188,156,0.4);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .language-btn:hover  { border-color: #1abc9c; background: rgba(26,188,156,0.2); }
+        .language-btn.active { background: #1abc9c; border-color: #1abc9c; color: white; }
+
+        /* ── HERO COMPARADOR ── */
+        .hero-comparator {
+            text-align: center;
+            padding: 50px 40px 30px;
+        }
+
+        .hero-comparator h2 {
+            font-size: 2.2em;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .hero-comparator .highlight-text { color: #1abc9c; font-weight: bold; }
+
+        .hero-comparator p {
+            font-size: 1.1em;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ── CONTENT ── */
+        .content-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 20px 40px;
+        }
+
+        /* ── INPUTS GRID ── */
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-a { border-top: 4px solid #1abc9c; }
+        .card-b { border-top: 4px solid #2c3e50; }
+
+        .scenario-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .badge-a { background: rgba(26,188,156,0.15); color: #16a085; }
+        .badge-b { background: rgba(44,62,80,0.1);    color: #2c3e50; }
+
+        .card h2 { color: #2c3e50; font-size: 1.4em; margin-bottom: 20px; }
+
+        .input-group { margin-bottom: 16px; }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #444;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus { outline: none; border-color: #1abc9c; }
+
+        /* ── ACTION BUTTONS ── */
+        .action-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .compare-btn {
+            flex: 1;
+            padding: 15px;
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .compare-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(26,188,156,0.4); }
+
+        .reset-btn {
+            padding: 15px 30px;
+            background: white;
+            color: #1abc9c;
+            border: 2px solid #1abc9c;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .reset-btn:hover { background: #1abc9c; color: white; transform: translateY(-2px); }
+
+        .download-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #2c3e50 0%, #3d5166 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(44,62,80,0.3); }
+
+        /* ── RESULTADOS ── */
+        .results-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .results-section h3 {
+            color: #1abc9c;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .result-col { display: flex; flex-direction: column; gap: 12px; }
+
+        .result-col-title {
+            font-size: 0.85em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .title-a { color: #1abc9c; }
+        .title-b { color: #2c3e50; }
+
+        .result-item {
+            background: #f8f9fa;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border-left: 4px solid #1abc9c;
+        }
+
+        .result-item-b { border-left-color: #2c3e50; }
+
+        .result-item .label { color: #888; font-size: 0.82em; margin-bottom: 4px; }
+        .result-item .value { color: #2c3e50; font-size: 1.35em; font-weight: 700; }
+
+        .result-item.highlight-a {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            border-left: none;
+        }
+
+        .result-item.highlight-b {
+            background: linear-gradient(135deg, #2c3e50, #3d5166);
+            border-left: none;
+        }
+
+        .result-item.highlight-a .label,
+        .result-item.highlight-b .label { color: rgba(255,255,255,0.85); }
+        .result-item.highlight-a .value,
+        .result-item.highlight-b .value { color: white; }
+
+        /* Columna central — diferencia */
+        .diff-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding-top: 32px;
+        }
+
+        .diff-badge {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 2px solid #f0c040;
+            border-radius: 12px;
+            padding: 10px 14px;
+            text-align: center;
+            min-width: 110px;
+        }
+
+        .diff-badge .diff-label { font-size: 0.72em; color: #888; margin-bottom: 3px; }
+        .diff-badge .diff-value { font-size: 1em; font-weight: 700; color: #2c3e50; }
+        .diff-badge .diff-value.positive { color: #16a085; }
+        .diff-badge .diff-value.negative { color: #e74c3c; }
+
+        /* ── GRÁFICO ── */
+        .chart-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .chart-section h3 { color: #1abc9c; font-size: 1.4em; margin-bottom: 20px; }
+
+        .chart-container {
+            height: 300px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px 20px 40px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 6px;
+        }
+
+        .bar-group {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            position: relative;
+        }
+
+        .bar {
+            width: 45%;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .bar.scenario-a { background: linear-gradient(to top, #1abc9c, #48d1b5); }
+        .bar.scenario-b { background: linear-gradient(to top, #2c3e50, #4a6278); }
+        .bar:hover { opacity: 0.8; }
+
+        .bar-group-label {
+            position: absolute;
+            bottom: -26px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.72em;
+            color: #666;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid #eee;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.9em; color: #555; }
+
+        .legend-dot {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+        }
+
+        .dot-a { background: #1abc9c; }
+        .dot-b { background: #2c3e50; }
+
+        /* ── TABLA ── */
+        .table-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .table-section h3 { color: #1abc9c; font-size: 1.4em; margin-bottom: 20px; }
+
+        .table-wrapper { overflow-x: auto; border-radius: 10px; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+
+        thead tr { background: linear-gradient(135deg, #1abc9c, #16a085); color: white; }
+        thead th { padding: 13px 14px; text-align: right; font-weight: 600; }
+        thead th:first-child { text-align: center; border-radius: 10px 0 0 0; }
+        thead th:last-child  { border-radius: 0 10px 0 0; }
+
+        tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
+        tbody tr:hover { background: rgba(26,188,156,0.05); }
+        tbody tr:last-child { font-weight: 700; background: rgba(26,188,156,0.07); border-bottom: none; }
+
+        tbody td { padding: 11px 14px; text-align: right; color: #333; }
+        tbody td:first-child { text-align: center; font-weight: 700; color: #1abc9c; }
+
+        .col-a { color: #16a085 !important; font-weight: 600 !important; }
+        .col-b { color: #2c3e50 !important; font-weight: 600 !important; }
+
+        .diff-positive { color: #16a085 !important; font-weight: 700 !important; }
+        .diff-negative { color: #e74c3c !important; font-weight: 700 !important; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: rgba(255,255,255,0.95);
+            border-top: 3px solid #1abc9c;
+            padding: 20px 40px;
+            text-align: center;
+            color: #999;
+            font-size: 0.82em;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .scenarios-grid  { grid-template-columns: 1fr; }
+            .results-grid    { grid-template-columns: 1fr; }
+            .diff-col        { padding-top: 0; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .header-content  { flex-direction: column; gap: 15px; padding: 20px; }
+            .hero-comparator { padding: 30px 20px 20px; }
+            .hero-comparator h2 { font-size: 1.6em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <img src="public/Novusance-Logo.png" alt="Novusance Finance" class="logo">
+                <div class="header-text">
+                    <h1>Novusance Finance</h1>
+                    <p id="headerSubtitle">Planifica tu nueva era financiera</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <a href="index.html" class="back-btn" id="backBtn">← Volver a la calculadora</a>
+                <div class="language-selector">
+                    <button class="language-btn active" onclick="changeLanguage('es')" id="btnEs">ES</button>
+                    <button class="language-btn"        onclick="changeLanguage('en')" id="btnEn">EN</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero-comparator">
+        <h2 id="heroTitle">Compara dos <span class="highlight-text">escenarios</span> de inversión</h2>
+        <p id="heroDesc">¿Qué pasa si aporto 100€ más al mes? ¿Vale la pena empezar 5 años antes? Descúbrelo con números reales.</p>
+    </section>
+
+    <div class="content-wrapper">
+
+        <!-- INPUTS -->
+        <div class="scenarios-grid">
+            <!-- ESCENARIO A -->
+            <div class="card card-a">
+                <span class="scenario-badge badge-a" id="badgeA">ESCENARIO A</span>
+                <h2 id="titleA">Inversión Base</h2>
+
+                <div class="input-group">
+                    <label id="labelPrincipalA">Capital Inicial (€)</label>
+                    <input type="number" id="principalA" value="10000" min="0" step="100">
+                </div>
+                <div class="input-group">
+                    <label id="labelContributionA">Aportación Mensual (€)</label>
+                    <input type="number" id="contributionA" value="200" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label id="labelRateA">Tasa de Interés Anual (%)</label>
+                    <input type="number" id="rateA" value="7" min="0" max="100" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label id="labelYearsA">Período (años)</label>
+                    <input type="number" id="yearsA" value="20" min="1" max="50" step="1">
+                </div>
+                <div class="input-group">
+                    <label id="labelFrequencyA">Frecuencia de Capitalización</label>
+                    <select id="frequencyA">
+                        <option value="12" id="optMonthlyA">Mensual</option>
+                        <option value="4"  id="optQuarterlyA">Trimestral</option>
+                        <option value="2"  id="optSemiannualA">Semestral</option>
+                        <option value="1"  id="optAnnualA">Anual</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ESCENARIO B -->
+            <div class="card card-b">
+                <span class="scenario-badge badge-b" id="badgeB">ESCENARIO B</span>
+                <h2 id="titleB">Inversión Alternativa</h2>
+
+                <div class="input-group">
+                    <label id="labelPrincipalB">Capital Inicial (€)</label>
+                    <input type="number" id="principalB" value="10000" min="0" step="100">
+                </div>
+                <div class="input-group">
+                    <label id="labelContributionB">Aportación Mensual (€)</label>
+                    <input type="number" id="contributionB" value="400" min="0" step="50">
+                </div>
+                <div class="input-group">
+                    <label id="labelRateB">Tasa de Interés Anual (%)</label>
+                    <input type="number" id="rateB" value="7" min="0" max="100" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label id="labelYearsB">Período (años)</label>
+                    <input type="number" id="yearsB" value="20" min="1" max="50" step="1">
+                </div>
+                <div class="input-group">
+                    <label id="labelFrequencyB">Frecuencia de Capitalización</label>
+                    <select id="frequencyB">
+                        <option value="12" id="optMonthlyB">Mensual</option>
+                        <option value="4"  id="optQuarterlyB">Trimestral</option>
+                        <option value="2"  id="optSemiannualB">Semestral</option>
+                        <option value="1"  id="optAnnualB">Anual</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTONES -->
+        <div class="action-row">
+            <button class="compare-btn" onclick="compare()" id="btnCompare">⚖️ Comparar Escenarios</button>
+            <button class="reset-btn"   onclick="resetAll()"  id="btnReset">↺ Reiniciar</button>
+            <button class="download-btn" onclick="downloadPDF()" id="btnDownload">⬇ Descargar PDF</button>
+        </div>
+
+        <!-- RESULTADOS -->
+        <div class="results-section">
+            <h3 id="resultsTitle">📊 Resultados</h3>
+            <div class="results-grid">
+                <!-- Col A -->
+                <div class="result-col">
+                    <div class="result-col-title title-a" id="colTitleA">▲ ESCENARIO A</div>
+                    <div class="result-item highlight-a">
+                        <div class="label" id="labelFinalA">Valor Final</div>
+                        <div class="value" id="finalA">€ —</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label" id="labelInvestedA">Total Invertido</div>
+                        <div class="value" id="investedA">€ —</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label" id="labelInterestA">Intereses Generados</div>
+                        <div class="value" id="interestA">€ —</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label" id="labelReturnA">Rentabilidad</div>
+                        <div class="value" id="returnA">— %</div>
+                    </div>
+                </div>
+
+                <!-- Col Diff -->
+                <div class="diff-col" id="diffCol">
+                    <div class="diff-badge">
+                        <div class="diff-label" id="diffLabelFinal">Diferencia final</div>
+                        <div class="diff-value" id="diffFinal">—</div>
+                    </div>
+                    <div class="diff-badge">
+                        <div class="diff-label" id="diffLabelInvested">Diferencia invertido</div>
+                        <div class="diff-value" id="diffInvested">—</div>
+                    </div>
+                    <div class="diff-badge">
+                        <div class="diff-label" id="diffLabelInterest">Diferencia intereses</div>
+                        <div class="diff-value" id="diffInterest">—</div>
+                    </div>
+                    <div class="diff-badge">
+                        <div class="diff-label" id="diffLabelReturn">Diferencia rentab.</div>
+                        <div class="diff-value" id="diffReturn">—</div>
+                    </div>
+                </div>
+
+                <!-- Col B -->
+                <div class="result-col">
+                    <div class="result-col-title title-b" id="colTitleB">▲ ESCENARIO B</div>
+                    <div class="result-item highlight-b">
+                        <div class="label" id="labelFinalB">Valor Final</div>
+                        <div class="value" id="finalB">€ —</div>
+                    </div>
+                    <div class="result-item result-item-b">
+                        <div class="label" id="labelInvestedB">Total Invertido</div>
+                        <div class="value" id="investedB">€ —</div>
+                    </div>
+                    <div class="result-item result-item-b">
+                        <div class="label" id="labelInterestB">Intereses Generados</div>
+                        <div class="value" id="interestB">€ —</div>
+                    </div>
+                    <div class="result-item result-item-b">
+                        <div class="label" id="labelReturnB">Rentabilidad</div>
+                        <div class="value" id="returnB">— %</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRÁFICO -->
+        <div class="chart-section">
+            <h3 id="chartTitle">📈 Crecimiento Comparativo</h3>
+            <div class="chart-container" id="chartContainer"></div>
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <div class="legend-dot dot-a"></div>
+                    <span id="legendA">Escenario A</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot dot-b"></div>
+                    <span id="legendB">Escenario B</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLA -->
+        <div class="table-section">
+            <h3 id="tableTitle">📋 Evolución Año a Año</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th id="thYear">Año</th>
+                            <th id="thBalanceA">Capital A</th>
+                            <th id="thBalanceB">Capital B</th>
+                            <th id="thDiff">Diferencia (B-A)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div><!-- end content-wrapper -->
+
+    <footer>
+        <p id="footerText">⚠️ Los resultados son orientativos y no constituyen asesoramiento financiero. &copy; 2024 Novusance Finance.</p>
+    </footer>
+
+</div><!-- end container -->
+
+<script>
+    // ── TRADUCCIONES ──────────────────────────────────────────────
+    const translations = {
+        es: {
+            headerSubtitle: "Planifica tu nueva era financiera",
+            backBtn: "← Volver a la calculadora",
+            heroTitle: "Compara dos <span class=\"highlight-text\">escenarios</span> de inversión",
+            heroDesc: "¿Qué pasa si aporto 100€ más al mes? ¿Vale la pena empezar 5 años antes? Descúbrelo con números reales.",
+            badgeA: "ESCENARIO A", titleA: "Inversión Base",
+            badgeB: "ESCENARIO B", titleB: "Inversión Alternativa",
+            labelPrincipalA: "Capital Inicial (€)",    labelPrincipalB: "Capital Inicial (€)",
+            labelContributionA: "Aportación Mensual (€)", labelContributionB: "Aportación Mensual (€)",
+            labelRateA: "Tasa de Interés Anual (%)",   labelRateB: "Tasa de Interés Anual (%)",
+            labelYearsA: "Período (años)",              labelYearsB: "Período (años)",
+            labelFrequencyA: "Frecuencia de Capitalización", labelFrequencyB: "Frecuencia de Capitalización",
+            optMonthlyA: "Mensual", optQuarterlyA: "Trimestral", optSemiannualA: "Semestral", optAnnualA: "Anual",
+            optMonthlyB: "Mensual", optQuarterlyB: "Trimestral", optSemiannualB: "Semestral", optAnnualB: "Anual",
+            btnCompare: "⚖️ Comparar Escenarios",
+            btnReset: "↺ Reiniciar",
+            btnDownload: "⬇ Descargar PDF",
+            resultsTitle: "📊 Resultados",
+            colTitleA: "▲ ESCENARIO A", colTitleB: "▲ ESCENARIO B",
+            labelFinalA: "Valor Final",     labelFinalB: "Valor Final",
+            labelInvestedA: "Total Invertido", labelInvestedB: "Total Invertido",
+            labelInterestA: "Intereses Generados", labelInterestB: "Intereses Generados",
+            labelReturnA: "Rentabilidad",   labelReturnB: "Rentabilidad",
+            diffLabelFinal: "Diferencia final",
+            diffLabelInvested: "Diferencia invertido",
+            diffLabelInterest: "Diferencia intereses",
+            diffLabelReturn: "Diferencia rentab.",
+            chartTitle: "📈 Crecimiento Comparativo",
+            legendA: "Escenario A", legendB: "Escenario B",
+            tableTitle: "📋 Evolución Año a Año",
+            thYear: "Año", thBalanceA: "Capital A", thBalanceB: "Capital B", thDiff: "Diferencia (B-A)",
+            totalRow: "TOTAL",
+            footerText: "⚠️ Los resultados son orientativos y no constituyen asesoramiento financiero. © 2024 Novusance Finance.",
+            yearLabel: "Año",
+        },
+        en: {
+            headerSubtitle: "Plan your new financial era",
+            backBtn: "← Back to calculator",
+            heroTitle: "Compare two investment <span class=\"highlight-text\">scenarios</span>",
+            heroDesc: "What if I contribute €100 more per month? Is it worth starting 5 years earlier? Find out with real numbers.",
+            badgeA: "SCENARIO A", titleA: "Base Investment",
+            badgeB: "SCENARIO B", titleB: "Alternative Investment",
+            labelPrincipalA: "Initial Capital (€)",    labelPrincipalB: "Initial Capital (€)",
+            labelContributionA: "Monthly Contribution (€)", labelContributionB: "Monthly Contribution (€)",
+            labelRateA: "Annual Interest Rate (%)",    labelRateB: "Annual Interest Rate (%)",
+            labelYearsA: "Period (years)",             labelYearsB: "Period (years)",
+            labelFrequencyA: "Compounding Frequency",  labelFrequencyB: "Compounding Frequency",
+            optMonthlyA: "Monthly", optQuarterlyA: "Quarterly", optSemiannualA: "Semi-annual", optAnnualA: "Annual",
+            optMonthlyB: "Monthly", optQuarterlyB: "Quarterly", optSemiannualB: "Semi-annual", optAnnualB: "Annual",
+            btnCompare: "⚖️ Compare Scenarios",
+            btnReset: "↺ Reset",
+            btnDownload: "⬇ Download PDF",
+            resultsTitle: "📊 Results",
+            colTitleA: "▲ SCENARIO A", colTitleB: "▲ SCENARIO B",
+            labelFinalA: "Final Value",     labelFinalB: "Final Value",
+            labelInvestedA: "Total Invested", labelInvestedB: "Total Invested",
+            labelInterestA: "Interest Earned", labelInterestB: "Interest Earned",
+            labelReturnA: "Return Rate",    labelReturnB: "Return Rate",
+            diffLabelFinal: "Final diff.",
+            diffLabelInvested: "Invested diff.",
+            diffLabelInterest: "Interest diff.",
+            diffLabelReturn: "Return diff.",
+            chartTitle: "📈 Comparative Growth",
+            legendA: "Scenario A", legendB: "Scenario B",
+            tableTitle: "📋 Year-by-Year Breakdown",
+            thYear: "Year", thBalanceA: "Balance A", thBalanceB: "Balance B", thDiff: "Difference (B-A)",
+            totalRow: "TOTAL",
+            footerText: "⚠️ Results are indicative only and do not constitute financial advice. © 2024 Novusance Finance.",
+            yearLabel: "Year",
+        }
+    };
+
+    let currentLanguage = 'es';
+    let lastDataA = [], lastDataB = [];
+
+    function changeLanguage(lang) {
+        currentLanguage = lang;
+        document.getElementById('btnEs').classList.toggle('active', lang === 'es');
+        document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+        const t = translations[lang];
+        for (let key in t) {
+            const el = document.getElementById(key);
+            if (el) el.innerHTML = t[key];
+        }
+        if (lastDataA.length) compare();
+    }
+
+    // ── CÁLCULO ───────────────────────────────────────────────────
+    function calcScenario(principal, monthly, rate, years, freq) {
+        const rpp  = rate / freq;
+        const cpp  = monthly * (12 / freq);
+        let bal    = principal;
+        let inv    = principal;
+        const data = [];
+
+        for (let y = 1; y <= years; y++) {
+            const startBal = bal;
+            for (let p = 0; p < freq; p++) {
+                bal = bal * (1 + rpp) + cpp;
+                inv += cpp;
+            }
+            data.push({ year: y, balance: bal, invested: inv, interest: bal - inv });
+        }
+        return data;
+    }
+
+    function formatCurrency(v) {
+        return '€' + v.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function diffClass(v) { return v >= 0 ? 'positive' : 'negative'; }
+    function diffSign(v)  { return v >= 0 ? '+' : ''; }
+
+    // ── COMPARAR ──────────────────────────────────────────────────
+    function compare() {
+        const get = id => parseFloat(document.getElementById(id).value) || 0;
+        const getI = id => parseInt(document.getElementById(id).value) || 0;
+
+        const pA = get('principalA'), cA = get('contributionA'), rA = get('rateA') / 100, yA = getI('yearsA'), fA = getI('frequencyA') || 12;
+        const pB = get('principalB'), cB = get('contributionB'), rB = get('rateB') / 100, yB = getI('yearsB'), fB = getI('frequencyB') || 12;
+
+        lastDataA = calcScenario(pA, cA, rA, yA, fA);
+        lastDataB = calcScenario(pB, cB, rB, yB, fB);
+
+        const rA_last = lastDataA[lastDataA.length - 1];
+        const rB_last = lastDataB[lastDataB.length - 1];
+
+        const retA = rA_last.invested > 0 ? ((rA_last.balance - rA_last.invested) / rA_last.invested * 100) : 0;
+        const retB = rB_last.invested > 0 ? ((rB_last.balance - rB_last.invested) / rB_last.invested * 100) : 0;
+
+        // Resultados A
+        document.getElementById('finalA').textContent    = formatCurrency(rA_last.balance);
+        document.getElementById('investedA').textContent = formatCurrency(rA_last.invested);
+        document.getElementById('interestA').textContent = formatCurrency(rA_last.interest);
+        document.getElementById('returnA').textContent   = retA.toFixed(2) + '%';
+
+        // Resultados B
+        document.getElementById('finalB').textContent    = formatCurrency(rB_last.balance);
+        document.getElementById('investedB').textContent = formatCurrency(rB_last.invested);
+        document.getElementById('interestB').textContent = formatCurrency(rB_last.interest);
+        document.getElementById('returnB').textContent   = retB.toFixed(2) + '%';
+
+        // Diferencias
+        const dFinal    = rB_last.balance  - rA_last.balance;
+        const dInvested = rB_last.invested - rA_last.invested;
+        const dInterest = rB_last.interest - rA_last.interest;
+        const dReturn   = retB - retA;
+
+        const setDiff = (id, val, suffix = '') => {
+            const el = document.getElementById(id);
+            el.textContent = diffSign(val) + (suffix ? val.toFixed(2) + suffix : formatCurrency(Math.abs(val)).replace('€', (val >= 0 ? '+€' : '-€')));
+            el.className = 'diff-value ' + diffClass(val);
+        };
+
+        document.getElementById('diffFinal').textContent    = diffSign(dFinal)    + formatCurrency(Math.abs(dFinal)).replace('€','€');
+        document.getElementById('diffFinal').className      = 'diff-value ' + diffClass(dFinal);
+        document.getElementById('diffInvested').textContent = diffSign(dInvested) + formatCurrency(Math.abs(dInvested)).replace('€','€');
+        document.getElementById('diffInvested').className   = 'diff-value ' + diffClass(dInvested);
+        document.getElementById('diffInterest').textContent = diffSign(dInterest) + formatCurrency(Math.abs(dInterest)).replace('€','€');
+        document.getElementById('diffInterest').className   = 'diff-value ' + diffClass(dInterest);
+        document.getElementById('diffReturn').textContent   = (dReturn >= 0 ? '+' : '') + dReturn.toFixed(2) + '%';
+        document.getElementById('diffReturn').className     = 'diff-value ' + diffClass(dReturn);
+
+        renderChart(lastDataA, lastDataB, yA, yB);
+        renderTable(lastDataA, lastDataB, yA, yB);
+    }
+
+    // ── GRÁFICO ───────────────────────────────────────────────────
+    function renderChart(dataA, dataB, yA, yB) {
+        const container = document.getElementById('chartContainer');
+        container.innerHTML = '';
+
+        const maxYears = Math.max(yA, yB);
+        const maxVal   = Math.max(
+            ...dataA.map(d => d.balance),
+            ...dataB.map(d => d.balance)
+        );
+        const maxH = 240;
+        const step = Math.ceil(maxYears / 10);
+        const years = [];
+        for (let y = step; y <= maxYears; y += step) years.push(y);
+        if (!years.includes(maxYears)) years.push(maxYears);
+
+        const t = translations[currentLanguage];
+
+        years.forEach(y => {
+            const rowA = dataA.find(d => d.year === y);
+            const rowB = dataB.find(d => d.year === y);
+            const hA = rowA ? (rowA.balance / maxVal) * maxH : 0;
+            const hB = rowB ? (rowB.balance / maxVal) * maxH : 0;
+
+            const group = document.createElement('div');
+            group.className = 'bar-group';
+
+            const barA = document.createElement('div');
+            barA.className = 'bar scenario-a';
+            barA.style.height = hA + 'px';
+            barA.title = `${t.legendA} - ${t.yearLabel} ${y}: ${rowA ? formatCurrency(rowA.balance) : '—'}`;
+
+            const barB = document.createElement('div');
+            barB.className = 'bar scenario-b';
+            barB.style.height = hB + 'px';
+            barB.title = `${t.legendB} - ${t.yearLabel} ${y}: ${rowB ? formatCurrency(rowB.balance) : '—'}`;
+
+            const label = document.createElement('div');
+            label.className = 'bar-group-label';
+            label.textContent = t.yearLabel + ' ' + y;
+
+            group.appendChild(barA);
+            group.appendChild(barB);
+            group.appendChild(label);
+            container.appendChild(group);
+        });
+    }
+
+    // ── TABLA ─────────────────────────────────────────────────────
+    function renderTable(dataA, dataB, yA, yB) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        const t = translations[currentLanguage];
+        const maxYears = Math.max(yA, yB);
+
+        for (let y = 1; y <= maxYears; y++) {
+            const rowA = dataA.find(d => d.year === y);
+            const rowB = dataB.find(d => d.year === y);
+            const balA = rowA ? rowA.balance : null;
+            const balB = rowB ? rowB.balance : null;
+            const diff = balA !== null && balB !== null ? balB - balA : null;
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${y}</td>
+                <td class="col-a">${balA !== null ? formatCurrency(balA) : '—'}</td>
+                <td class="col-b">${balB !== null ? formatCurrency(balB) : '—'}</td>
+                <td class="${diff !== null ? (diff >= 0 ? 'diff-positive' : 'diff-negative') : ''}">
+                    ${diff !== null ? (diff >= 0 ? '+' : '') + formatCurrency(Math.abs(diff)).replace('€', diff >= 0 ? '+€' : '-€') : '—'}
+                </td>`;
+            tbody.appendChild(tr);
+        }
+
+        // Fila TOTAL
+        const lastA = dataA[dataA.length - 1];
+        const lastB = dataB[dataB.length - 1];
+        const totalDiff = lastB.balance - lastA.balance;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${t.totalRow}</td>
+            <td class="col-a">${formatCurrency(lastA.balance)}</td>
+            <td class="col-b">${formatCurrency(lastB.balance)}</td>
+            <td class="${totalDiff >= 0 ? 'diff-positive' : 'diff-negative'}">
+                ${(totalDiff >= 0 ? '+' : '') + formatCurrency(Math.abs(totalDiff)).replace('€', totalDiff >= 0 ? '+€' : '-€')}
+            </td>`;
+        tbody.appendChild(tr);
+    }
+
+    // ── PDF ───────────────────────────────────────────────────────
+    function downloadPDF() {
+        if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+            alert('Las librerías PDF aún se están cargando. Por favor espera un momento e inténtalo de nuevo.');
+            return;
+        }
+        if (!lastDataA.length) { compare(); }
+        const { jsPDF } = window.jspdf;
+        const doc   = new jsPDF('p', 'mm', 'a4');
+        const isEN  = currentLanguage === 'en';
+        const pageW = 210, margin = 18, contentW = pageW - margin * 2;
+        const teal  = [26, 188, 156], dark = [44, 62, 80], gray = [120, 130, 140], light = [245, 250, 249];
+
+        // Cabecera
+        doc.setFillColor(...teal);
+        doc.rect(0, 0, pageW, 26, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(18); doc.setFont('helvetica', 'bold');
+        doc.text('Novusance Finance', margin, 15);
+        doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+        doc.text(isEN ? 'Investment Scenario Comparison Report' : 'Informe Comparativo de Escenarios', margin, 22);
+        doc.text(new Date().toLocaleDateString(isEN ? 'en-GB' : 'es-ES'), pageW - margin, 22, { align: 'right' });
+
+        let y = 36;
+
+        // Helper sección
+        const section = (title) => {
+            doc.setTextColor(...dark); doc.setFontSize(12); doc.setFont('helvetica', 'bold');
+            doc.text(title, margin, y);
+            doc.setDrawColor(...teal); doc.setLineWidth(0.7);
+            doc.line(margin, y + 2, margin + contentW, y + 2);
+            y += 10;
+        };
+
+        // Parámetros
+        section(isEN ? 'Scenario Parameters' : 'Parámetros de los Escenarios');
+
+        const freqName = (v) => ({ 12: isEN ? 'Monthly' : 'Mensual', 4: isEN ? 'Quarterly' : 'Trimestral', 2: isEN ? 'Semi-annual' : 'Semestral', 1: isEN ? 'Annual' : 'Anual' })[v] || '';
+        const pA = parseFloat(document.getElementById('principalA').value)||0;
+        const cA = parseFloat(document.getElementById('contributionA').value)||0;
+        const rA = parseFloat(document.getElementById('rateA').value)||0;
+        const yA = parseInt(document.getElementById('yearsA').value)||0;
+        const fA = parseInt(document.getElementById('frequencyA').value)||12;
+        const pB = parseFloat(document.getElementById('principalB').value)||0;
+        const cB = parseFloat(document.getElementById('contributionB').value)||0;
+        const rB = parseFloat(document.getElementById('rateB').value)||0;
+        const yB = parseInt(document.getElementById('yearsB').value)||0;
+        const fB = parseInt(document.getElementById('frequencyB').value)||12;
+
+        doc.autoTable({
+            startY: y,
+            head: [[isEN ? 'Parameter' : 'Parámetro', isEN ? 'Scenario A' : 'Escenario A', isEN ? 'Scenario B' : 'Escenario B']],
+            body: [
+                [isEN ? 'Initial Capital'    : 'Capital Inicial',    formatCurrency(pA), formatCurrency(pB)],
+                [isEN ? 'Monthly Contribution' : 'Aportación Mensual', formatCurrency(cA), formatCurrency(cB)],
+                [isEN ? 'Annual Rate'        : 'Tasa Anual',         rA + '%', rB + '%'],
+                [isEN ? 'Period'             : 'Período',            yA + (isEN ? ' yr' : ' a'), yB + (isEN ? ' yr' : ' a')],
+                [isEN ? 'Compounding'        : 'Capitalización',     freqName(fA), freqName(fB)],
+            ],
+            headStyles: { fillColor: teal, textColor: [255,255,255], fontStyle: 'bold' },
+            alternateRowStyles: { fillColor: light },
+            margin: { left: margin, right: margin },
+            theme: 'plain',
+            styles: { fontSize: 9, cellPadding: 4 },
+        });
+
+        y = doc.lastAutoTable.finalY + 12;
+
+        // Resultados
+        section(isEN ? 'Results Summary' : 'Resumen de Resultados');
+
+        const lastA = lastDataA[lastDataA.length - 1];
+        const lastB = lastDataB[lastDataB.length - 1];
+        const retA  = ((lastA.balance - lastA.invested) / lastA.invested * 100).toFixed(2);
+        const retB  = ((lastB.balance - lastB.invested) / lastB.invested * 100).toFixed(2);
+        const dFin  = lastB.balance - lastA.balance;
+        const dInt  = lastB.interest - lastA.interest;
+        const dRet  = parseFloat(retB) - parseFloat(retA);
+
+        doc.autoTable({
+            startY: y,
+            head: [[isEN ? 'Metric' : 'Métrica', isEN ? 'Scenario A' : 'Escenario A', isEN ? 'Scenario B' : 'Escenario B', isEN ? 'Difference' : 'Diferencia']],
+            body: [
+                [isEN ? 'Final Value'    : 'Valor Final',         formatCurrency(lastA.balance),  formatCurrency(lastB.balance),  (dFin >= 0 ? '+' : '') + formatCurrency(Math.abs(dFin))],
+                [isEN ? 'Total Invested' : 'Total Invertido',     formatCurrency(lastA.invested), formatCurrency(lastB.invested), (lastB.invested - lastA.invested >= 0 ? '+' : '') + formatCurrency(Math.abs(lastB.invested - lastA.invested))],
+                [isEN ? 'Interest Earned': 'Intereses Generados', formatCurrency(lastA.interest), formatCurrency(lastB.interest), (dInt >= 0 ? '+' : '') + formatCurrency(Math.abs(dInt))],
+                [isEN ? 'Return Rate'    : 'Rentabilidad',        retA + '%', retB + '%',          (dRet >= 0 ? '+' : '') + dRet.toFixed(2) + '%'],
+            ],
+            headStyles: { fillColor: teal, textColor: [255,255,255], fontStyle: 'bold' },
+            alternateRowStyles: { fillColor: light },
+            margin: { left: margin, right: margin },
+            theme: 'plain',
+            styles: { fontSize: 9, cellPadding: 4 },
+            columnStyles: { 3: { fontStyle: 'bold' } }
+        });
+
+        // Página 2 — Tabla año a año
+        doc.addPage();
+        doc.setFillColor(...teal);
+        doc.rect(0, 0, pageW, 20, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(13); doc.setFont('helvetica', 'bold');
+        doc.text(isEN ? 'Year-by-Year Breakdown' : 'Evolución Año a Año', margin, 13);
+        doc.setFontSize(8); doc.setFont('helvetica', 'normal');
+        doc.text('Novusance Finance', pageW - margin, 13, { align: 'right' });
+
+        const maxYears = Math.max(yA, yB);
+        const tableRows = [];
+        for (let yr = 1; yr <= maxYears; yr++) {
+            const rA2 = lastDataA.find(d => d.year === yr);
+            const rB2 = lastDataB.find(d => d.year === yr);
+            const bA  = rA2 ? formatCurrency(rA2.balance) : '—';
+            const bB  = rB2 ? formatCurrency(rB2.balance) : '—';
+            const df  = rA2 && rB2 ? (rB2.balance - rA2.balance >= 0 ? '+' : '') + formatCurrency(Math.abs(rB2.balance - rA2.balance)) : '—';
+            tableRows.push([yr, bA, bB, df]);
+        }
+
+        const tD = lastB.balance - lastA.balance;
+        tableRows.push([isEN ? 'TOTAL' : 'TOTAL', formatCurrency(lastA.balance), formatCurrency(lastB.balance), (tD >= 0 ? '+' : '') + formatCurrency(Math.abs(tD))]);
+
+        doc.autoTable({
+            startY: 28,
+            head: [[isEN ? 'Year':'Año', isEN ? 'Balance A':'Capital A', isEN ? 'Balance B':'Capital B', isEN ? 'Difference':'Diferencia']],
+            body: tableRows,
+            headStyles: { fillColor: teal, textColor: [255,255,255], fontStyle: 'bold', halign: 'right' },
+            alternateRowStyles: { fillColor: light },
+            margin: { left: margin, right: margin },
+            theme: 'plain',
+            styles: { fontSize: 9, cellPadding: 4, halign: 'right' },
+            columnStyles: { 0: { halign: 'center', fontStyle: 'bold', textColor: teal } },
+        });
+
+        // Pie disclaimer en todas las páginas
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let n = 1; n <= totalPages; n++) {
+            doc.setPage(n);
+            doc.setFillColor(...teal);
+            doc.rect(0, 287, pageW, 10, 'F');
+            doc.setTextColor(255,255,255); doc.setFontSize(7); doc.setFont('helvetica','normal');
+            doc.text(isEN ? 'Results are indicative only and do not constitute financial advice. Novusance Finance.' : 'Resultados orientativos. No constituyen asesoramiento financiero. Novusance Finance.', pageW / 2, 293, { align: 'center' });
+        }
+
+        doc.save(`Novusance_Comparador_${new Date().toISOString().slice(0,10)}.pdf`);
+    }
+
+    // ── RESET ─────────────────────────────────────────────────────
+    function resetAll() {
+        ['principalA','contributionA','rateA','yearsA'].forEach((id, i) => {
+            document.getElementById(id).value = [10000, 200, 7, 20][i];
+        });
+        ['principalB','contributionB','rateB','yearsB'].forEach((id, i) => {
+            document.getElementById(id).value = [10000, 400, 7, 20][i];
+        });
+        document.getElementById('frequencyA').value = 12;
+        document.getElementById('frequencyB').value = 12;
+        compare();
+    }
+
+    // Auto-comparar al cambiar inputs
+    document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', compare));
+
+    // Calcular al cargar
+    window.onload = () => compare();
+</script>
+</body>
+</html>
