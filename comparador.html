@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Comparador de escenarios de inversión de Novusance Finance. Compara dos estrategias de inversión lado a lado.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="public/Novusance-Logo.png">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <title>Novusance Finance - Comparador de Escenarios</title>
@@ -473,6 +477,7 @@
             </div>
             <div class="header-right">
                 <a href="index.html" class="back-btn" id="backBtn">← Volver a la calculadora</a>
+                <a href="blog.html" style="padding: 8px 18px; background: transparent; color: #2c3e50; border: 2px solid rgba(26,188,156,0.4); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9em; text-decoration: none; transition: all 0.3s; margin-right: 15px;" onmouseover="this.style.borderColor='#1abc9c'; this.style.background='rgba(26,188,156,0.1)';" onmouseout="this.style.borderColor='rgba(26,188,156,0.4)'; this.style.background='transparent';" id="navBlog">Blog</a>
                 <div class="language-selector">
                     <button class="language-btn active" onclick="changeLanguage('es')" id="btnEs">ES</button>
                     <button class="language-btn"        onclick="changeLanguage('en')" id="btnEn">EN</button>
@@ -1096,7 +1101,4 @@
     window.onload = () => compare();
 </script>
 </body>
-
 </html>
-
-
