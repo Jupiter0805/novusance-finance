@@ -31,6 +31,18 @@
             justify-content: space-between;
             align-items: center;
         }
+        .header-left { display: flex; align-items: center; }
+        .header-left img { height: 40px; transition: transform 0.3s; cursor: pointer; }
+        .header-left img:hover { transform: scale(1.05); }
+        .header-nav { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .nav-link { color: #2c3e50; text-decoration: none; font-weight: 600; padding: 8px 16px; border-radius: 6px; transition: all 0.3s; font-size: 0.95em; }
+        .nav-link:hover { background: rgba(26, 188, 156, 0.1); color: #1abc9c; }
+        .nav-link.active { background: #1abc9c; color: white; }
+        .language-selector { display: flex; gap: 8px; background: rgba(26, 188, 156, 0.1); padding: 8px; border-radius: 10px; margin-left: 10px; }
+        .language-btn { padding: 6px 14px; background: transparent; color: #2c3e50; border: 2px solid rgba(26, 188, 156, 0.4); border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.3s; font-size: 0.9em; }
+        .language-btn:hover { border-color: #1abc9c; background: rgba(26, 188, 156, 0.2); }
+        .language-btn.active { background: #1abc9c; border-color: #1abc9c; color: white; }
+
 
         .back-link {
             color: #1abc9c;
@@ -188,7 +200,7 @@
     </style>
 </head>
 <body>
-    <header>
+        <header>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4272102738005289"crossorigin="anonymous"></script>
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-38B8KNJW6Y"></script>
@@ -196,7 +208,6 @@
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-        
           gtag('config', 'G-38B8KNJW6Y');
         </script>
         <!-- Google Tag Manager -->
@@ -207,11 +218,25 @@
                 j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WZ57JVT8');
         </script>
         <!-- End Google Tag Manager -->
+        
         <div class="header-content">
-            <a href="../blog.html" class="back-link">← Volver al blog</a>
-            <img src="../public/Novusance-Logo.png" alt="Novusance" style="height: 40px;">
+            <div class="header-left">
+                <a href="../index.html">
+                    <img src="../public/Novusance-Logo.png" alt="Novusance Finance">
+                </a>
+            </div>
+            <nav class="header-nav">
+                <a href="../index.html" class="nav-link" id="navInicio">Inicio</a>
+                <a href="../comparador.html" class="nav-link" id="navComparator">Comparador</a>
+                <a href="../blog.html" class="nav-link active" id="navBlog">Blog</a>
+                <div class="language-selector">
+                    <button class="language-btn active" onclick="changeLanguage('es')" id="btnEs">ES</button>
+                    <button class="language-btn" onclick="changeLanguage('en')" id="btnEn">EN</button>
+                </div>
+            </nav>
         </div>
     </header>
+
 
     <article>
         <div class="article-header">
@@ -400,9 +425,41 @@
             <strong>Quien lo entiende, lo gana. Quien no, lo paga.</strong>
         </p>
 
-        <div style="margin-top: 50px; padding-top: 30px; border-top: 2px solid #f0f0f0; text-align: center;">
-            <a href="../blog.html" class="back-link">← Volver al blog</a>
-        </div>
+        <footer style="background: white; border-top: 3px solid #1abc9c; padding: 30px; text-align: center; margin-top: 60px;">
+            <p style="color: #999; font-size: 0.9em;" id="footerText">&copy; 2026 Novusance Finance. Contenido educativo sobre finanzas personales e inversión.</p>
+        </footer>
     </article>
+
+    <script>
+        const translations = {
+            es: {
+                navInicio: "Inicio",
+                navComparator: "Comparador",
+                navBlog: "Blog",
+                footerText: "&copy; 2026 Novusance Finance. Contenido educativo sobre finanzas personales e inversión."
+            },
+            en: {
+                navInicio: "Home",
+                navComparator: "Comparator",
+                navBlog: "Blog",
+                footerText: "&copy; 2026 Novusance Finance. Educational content on personal finance and investment."
+            }
+        };
+
+        let currentLanguage = 'es';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('btnEs').classList.toggle('active', lang === 'es');
+            document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+            
+            const trans = translations[lang];
+            for (let key in trans) {
+                const el = document.getElementById(key);
+                if (el) el.innerHTML = trans[key];
+            }
+        }
+    </script>
+
 </body>
 </html>
