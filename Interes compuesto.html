@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubre cómo funciona el interés compuesto con ejemplos prácticos y números reales. La guía definitiva para entender su poder.">
+    <link rel="icon" type="image/png" href="../public/Novusance-Logo.png">
+    <title>Cómo funciona el interés compuesto | Novusance Finance</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        header {
+            background: white;
+            border-bottom: 3px solid #1abc9c;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: #1abc9c;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+
+        article {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .article-header {
+            margin-bottom: 40px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 30px;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .article-category {
+            background: rgba(26, 188, 156, 0.1);
+            color: #16a085;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            font-weight: normal;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1abc9c;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin: 30px 0 15px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.05em;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(26, 188, 156, 0.2) 0%, rgba(26, 188, 156, 0.1) 100%);
+            padding: 25px;
+            border-left: 4px solid #1abc9c;
+            border-radius: 5px;
+            margin: 30px 0;
+        }
+
+        .example-box {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .example-box h4 {
+            color: #1abc9c;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .numbers {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #1abc9c;
+        }
+
+        .numbers strong {
+            color: #1abc9c;
+            font-size: 1.3em;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .cta-box h3 {
+            color: white;
+            border: none;
+            margin: 0 0 15px 0;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: white;
+            color: #1abc9c;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: transform 0.3s;
+        }
+
+        .cta-btn:hover { transform: scale(1.05); }
+
+        ul, ol {
+            margin: 20px 0 20px 30px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        strong { color: #2c3e50; }
+
+        @media (max-width: 768px) {
+            article { padding: 30px 20px; margin: 20px; }
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.5em; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4272102738005289"crossorigin="anonymous"></script>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-38B8KNJW6Y"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-38B8KNJW6Y');
+        </script>
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});
+                var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WZ57JVT8');
+        </script>
+        <!-- End Google Tag Manager -->
+        <div class="header-content">
+            <a href="../blog.html" class="back-link">← Volver al blog</a>
+            <img src="../public/Novusance-Logo.png" alt="Novusance" style="height: 40px;">
+        </div>
+    </header>
+
+    <article>
+        <div class="article-header">
+            <div class="article-meta">
+                <span class="article-category">Guía</span>
+                <span>5 minutos de lectura</span>
+            </div>
+            <h1>Cómo funciona el interés compuesto (con ejemplos)</h1>
+            <p class="subtitle">La octava maravilla del mundo explicada con números reales</p>
+        </div>
+
+        <p>
+            Albert Einstein supuestamente lo llamó "la octava maravilla del mundo" y tenía razón. El interés compuesto es 
+            probablemente el concepto más importante que necesitas entender para construir riqueza a largo plazo. Pero, 
+            ¿qué es exactamente y por qué es tan poderoso?
+        </p>
+
+        <h2>¿Qué es el interés compuesto?</h2>
+
+        <p>
+            El interés compuesto es el interés que ganas sobre tu dinero inicial <strong>más</strong> el interés que 
+            has ganado previamente. Es decir, tus ganancias empiezan a generar sus propias ganancias.
+        </p>
+
+        <p>
+            La diferencia con el interés simple (que solo se calcula sobre tu capital inicial) es abismal, especialmente 
+            a largo plazo.
+        </p>
+
+        <div class="highlight">
+            <strong>En resumen:</strong> Con el interés compuesto, no solo ganas dinero sobre lo que pusiste, sino 
+            también sobre las ganancias que ya has obtenido. Es hacer que tu dinero trabaje para ti de forma exponencial.
+        </div>
+
+        <h2>La fórmula (no te asustes, la explicamos)</h2>
+
+        <p>La fórmula matemática del interés compuesto es:</p>
+
+        <div class="example-box">
+            <p style="text-align: center; font-size: 1.2em; font-family: monospace;">
+                <strong>VF = VI × (1 + r)^t</strong>
+            </p>
+            <p style="margin-top: 15px;">Donde:</p>
+            <ul style="margin-left: 20px;">
+                <li><strong>VF</strong> = Valor Final (lo que tendrás)</li>
+                <li><strong>VI</strong> = Valor Inicial (lo que pones ahora)</li>
+                <li><strong>r</strong> = Tasa de interés (en decimal, ej: 7% = 0.07)</li>
+                <li><strong>t</strong> = Tiempo en años</li>
+            </ul>
+        </div>
+
+        <p>
+            Parece complicado, pero con ejemplos lo verás clarísimo. Y no te preocupes, nuestra 
+            <a href="../index.html" style="color: #1abc9c; font-weight: 600;">calculadora</a> hace todos estos cálculos 
+            por ti automáticamente.
+        </p>
+
+        <h2>Ejemplo 1: Sin aportaciones adicionales</h2>
+
+        <p>Imagina que inviertes <strong>10.000€</strong> a una tasa de <strong>7% anual</strong> y lo dejas ahí sin tocar:</p>
+
+        <div class="example-box">
+            <div class="numbers">
+                <p><strong>Año 1:</strong> 10.000€ × 1.07 = 10.700€ (ganaste 700€)</p>
+            </div>
+            <div class="numbers">
+                <p><strong>Año 2:</strong> 10.700€ × 1.07 = 11.449€ (ganaste 749€ — más que el año 1)</p>
+            </div>
+            <div class="numbers">
+                <p><strong>Año 5:</strong> 14.026€</p>
+            </div>
+            <div class="numbers">
+                <p><strong>Año 10:</strong> 19.672€</p>
+            </div>
+            <div class="numbers">
+                <p><strong>Año 20:</strong> 38.697€</p>
+            </div>
+            <div class="numbers">
+                <p><strong>Año 30:</strong> <strong style="font-size: 1.4em;">76.123€</strong></p>
+                <p style="margin-top: 10px; color: #666;">¡Multiplicaste tu dinero por 7.6 veces sin hacer nada más!</p>
+            </div>
+        </div>
+
+        <h2>Ejemplo 2: Con aportaciones mensuales</h2>
+
+        <p>
+            Ahora imagina que además de los 10.000€ iniciales, aportas <strong>200€ cada mes</strong> durante 20 años 
+            al mismo 7% anual:
+        </p>
+
+        <div class="example-box">
+            <h4>Resultados después de 20 años:</h4>
+            <div class="numbers">
+                <p>Total que pusiste de tu bolsillo: <strong>58.000€</strong></p>
+                <p style="margin-top: 5px; color: #666;">(10.000€ inicial + 200€/mes × 240 meses)</p>
+            </div>
+            <div class="numbers">
+                <p>Valor final de tu inversión: <strong style="color: #1abc9c; font-size: 1.5em;">143.287€</strong></p>
+            </div>
+            <div class="numbers">
+                <p>Intereses generados: <strong>85.287€</strong></p>
+                <p style="margin-top: 5px; color: #666;">¡Ganaste más dinero del que invertiste!</p>
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>La lección clave:</strong> La combinación de tiempo + aportaciones constantes + reinversión de 
+            ganancias es devastadoramente poderosa. En este ejemplo, más de la mitad de tu dinero final vino del 
+            interés compuesto, no de tu bolsillo.
+        </div>
+
+        <h2>¿Por qué funciona tan bien?</h2>
+
+        <p>El interés compuesto funciona especialmente bien porque:</p>
+
+        <ol>
+            <li><strong>Efecto bola de nieve:</strong> Cuanto más dinero acumulas, más intereses generas. Es exponencial, no lineal.</li>
+            <li><strong>El tiempo es tu aliado:</strong> Cuanto antes empieces, más aprovechas este efecto multiplicador.</li>
+            <li><strong>No requiere esfuerzo:</strong> Una vez configurado, el interés compuesto trabaja 24/7 sin que hagas nada.</li>
+        </ol>
+
+        <h2>Comparación: Interés simple vs Compuesto</h2>
+
+        <p>Para que veas la diferencia brutal, comparemos 10.000€ durante 30 años al 7% anual:</p>
+
+        <div class="example-box">
+            <h4>Con interés SIMPLE:</h4>
+            <div class="numbers">
+                <p>Valor final: <strong>31.000€</strong></p>
+                <p style="color: #666;">Ganaste 700€ cada año × 30 años = 21.000€</p>
+            </div>
+            
+            <h4 style="margin-top: 25px;">Con interés COMPUESTO:</h4>
+            <div class="numbers">
+                <p>Valor final: <strong style="color: #1abc9c; font-size: 1.4em;">76.123€</strong></p>
+                <p style="color: #666;">Ganaste 66.123€ en total</p>
+            </div>
+
+            <p style="margin-top: 20px; text-align: center; font-weight: bold; color: #2c3e50;">
+                ¡Diferencia de 45.123€! Más del doble solo por reinvertir las ganancias.
+            </p>
+        </div>
+
+        <h2>Los 3 factores que maximizan el interés compuesto</h2>
+
+        <h3>1. Tiempo</h3>
+        <p>
+            Cuanto antes empieces, mejor. Un inversor que empieza a los 25 años puede acumular más riqueza que 
+            uno que empieza a los 35, <strong>incluso si el segundo invierte el doble de dinero</strong>.
+        </p>
+
+        <h3>2. Tasa de retorno</h3>
+        <p>
+            La diferencia entre un 5% y un 8% anual puede significar <strong>cientos de miles de euros</strong> a 
+            largo plazo. Por eso es importante elegir bien dónde inviertes.
+        </p>
+
+        <h3>3. Aportaciones regulares</h3>
+        <p>
+            Aportar constantemente, aunque sean pequeñas cantidades, acelera dramáticamente el crecimiento. 100€ al mes 
+            durante 30 años puede convertirse fácilmente en más de 100.000€.
+        </p>
+
+        <div class="cta-box">
+            <h3>¿Quieres ver cómo crecería TU dinero?</h3>
+            <p>Usa nuestra calculadora gratuita para simular tu inversión con interés compuesto en segundos.</p>
+            <a href="../index.html" class="cta-btn">Ir a la Calculadora →</a>
+        </div>
+
+        <h2>Conclusión</h2>
+
+        <p>
+            El interés compuesto no es magia, es matemáticas. Pero sus resultados pueden parecer mágicos si le das 
+            suficiente tiempo. La clave está en:
+        </p>
+
+        <ul>
+            <li>Empezar lo antes posible (aunque sea con poco dinero)</li>
+            <li>Ser constante con tus aportaciones</li>
+            <li>Reinvertir siempre las ganancias</li>
+            <li>Tener paciencia y no tocar el dinero</li>
+        </ul>
+
+        <p style="margin-top: 30px;">
+            Como dijo Einstein (o quien fuera), el interés compuesto es realmente la octava maravilla del mundo. 
+            <strong>Quien lo entiende, lo gana. Quien no, lo paga.</strong>
+        </p>
+
+        <div style="margin-top: 50px; padding-top: 30px; border-top: 2px solid #f0f0f0; text-align: center;">
+            <a href="../blog.html" class="back-link">← Volver al blog</a>
+        </div>
+    </article>
+</body>
+</html>

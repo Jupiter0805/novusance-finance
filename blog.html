@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog de finanzas personales e inversión de Novusance Finance. Aprende sobre interés compuesto, inversión a largo plazo y más.">
+    <meta name="keywords" content="blog finanzas, inversión, interés compuesto, ahorro, guía inversión">
+    <link rel="icon" type="image/png" href="public/Novusance-Logo.png">
+    <title>Blog - Novusance Finance</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5f3 0%, #d4f1f4 50%, #c8e6e8 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(26, 188, 156, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(22, 160, 133, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container { position: relative; z-index: 1; }
+
+        /* Header */
+        header {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid #1abc9c;
+            box-shadow: 0 4px 20px rgba(26, 188, 156, 0.15);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .logo { width: 50px; height: 50px; object-fit: contain; }
+
+        .header-text h1 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+        }
+
+        .header-text p { font-size: 0.9em; color: #666; }
+
+        .header-nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover { background: rgba(26, 188, 156, 0.1); color: #1abc9c; }
+        .nav-link.active { background: #1abc9c; color: white; }
+
+        .language-selector {
+            display: flex;
+            gap: 8px;
+            background: rgba(26, 188, 156, 0.1);
+            padding: 8px;
+            border-radius: 10px;
+        }
+
+        .language-btn {
+            padding: 6px 14px;
+            background: transparent;
+            color: #2c3e50;
+            border: 2px solid rgba(26, 188, 156, 0.4);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .language-btn:hover { border-color: #1abc9c; background: rgba(26, 188, 156, 0.2); }
+        .language-btn.active { background: #1abc9c; border-color: #1abc9c; color: white; }
+
+        /* Hero Blog */
+        .blog-hero {
+            text-align: center;
+            padding: 80px 40px 60px;
+            background: linear-gradient(135deg, rgba(26, 188, 156, 0.05) 0%, rgba(22, 160, 133, 0.05) 100%);
+        }
+
+        .blog-hero h2 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .blog-hero .highlight-text { color: #1abc9c; font-weight: bold; }
+
+        .blog-hero p {
+            font-size: 1.2em;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Blog Grid */
+        .blog-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(26, 188, 156, 0.2);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+        }
+
+        .article-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .article-category {
+            background: rgba(26, 188, 156, 0.1);
+            color: #16a085;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .article-card h3 {
+            color: #2c3e50;
+            font-size: 1.4em;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .article-excerpt {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: #1abc9c;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid #1abc9c;
+            border-radius: 8px;
+            transition: all 0.3s;
+            align-self: flex-start;
+        }
+
+        .read-more:hover {
+            background: #1abc9c;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            border-top: 3px solid #1abc9c;
+            padding: 30px 40px;
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 15px; padding: 20px; }
+            .header-nav { flex-wrap: wrap; justify-content: center; }
+            .blog-hero h2 { font-size: 1.8em; }
+            .articles-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4272102738005289"crossorigin="anonymous"></script>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-38B8KNJW6Y"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-38B8KNJW6Y');
+        </script>
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});
+                var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+                j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WZ57JVT8');
+        </script>
+        <!-- End Google Tag Manager -->
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="public/Novusance-Logo.png" alt="Novusance Finance" class="logo">
+                    <div class="header-text">
+                        <h1>Novusance Finance</h1>
+                        <p id="headerSubtitle">Planifica tu nueva era financiera</p>
+                    </div>
+                </div>
+                <div class="header-nav">
+                    <a href="index.html" class="nav-link" id="navCalculator">Calculadora</a>
+                    <a href="comparador.html" class="nav-link" id="navComparator">Comparador</a>
+                    <a href="blog.html" class="nav-link active" id="navBlog">Blog</a>
+                    <div class="language-selector">
+                        <button class="language-btn active" onclick="changeLanguage('es')" id="btnEs">ES</button>
+                        <button class="language-btn" onclick="changeLanguage('en')" id="btnEn">EN</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="blog-hero">
+            <h2 id="heroTitle">Blog de <span class="highlight-text">Finanzas</span> e Inversión</h2>
+            <p id="heroDesc">Aprende a invertir, gestionar tu dinero y alcanzar tus metas financieras con guías prácticas y consejos útiles.</p>
+        </section>
+
+        <div class="blog-wrapper">
+            <div class="articles-grid">
+                
+                <!-- Artículo 1 -->
+                <article class="article-card">
+                    <div class="article-image">📊</div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-category" id="cat1">Guía</span>
+                            <span id="date1">5 min lectura</span>
+                        </div>
+                        <h3 id="title1">Cómo funciona el interés compuesto (con ejemplos)</h3>
+                        <p class="article-excerpt" id="excerpt1">
+                            Descubre el poder del interés compuesto con ejemplos reales. Entiende por qué Einstein lo llamó "la octava maravilla del mundo" y cómo aprovecharlo para tu futuro financiero.
+                        </p>
+                        <a href="blog/interes-compuesto.html" class="read-more" id="read1">Leer más →</a>
+                    </div>
+                </article>
+
+                <!-- Artículo 2 -->
+                <article class="article-card">
+                    <div class="article-image">📈</div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-category" id="cat2">Análisis</span>
+                            <span id="date2">6 min lectura</span>
+                        </div>
+                        <h3 id="title2">Inversión a largo plazo: 10 vs 20 años</h3>
+                        <p class="article-excerpt" id="excerpt2">
+                            ¿Cuánto cambia tu patrimonio si inviertes 10 años más? Comparamos dos escenarios reales con números concretos para que veas el impacto del tiempo en tus inversiones.
+                        </p>
+                        <a href="blog/10-vs-20-anos.html" class="read-more" id="read2">Leer más →</a>
+                    </div>
+                </article>
+
+                <!-- Artículo 3 -->
+                <article class="article-card">
+                    <div class="article-image">🎯</div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-category" id="cat3">Principiantes</span>
+                            <span id="date3">8 min lectura</span>
+                        </div>
+                        <h3 id="title3">Guía para principiantes: empezar a invertir</h3>
+                        <p class="article-excerpt" id="excerpt3">
+                            Tu primera guía completa para dar el paso a la inversión. Desde los conceptos básicos hasta tu primera inversión, todo lo que necesitas saber para empezar con el pie derecho.
+                        </p>
+                        <a href="blog/guia-principiantes.html" class="read-more" id="read3">Leer más →</a>
+                    </div>
+                </article>
+
+                <!-- Artículo 4 -->
+                <article class="article-card">
+                    <div class="article-image">⚠️</div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-category" id="cat4">Consejos</span>
+                            <span id="date4">7 min lectura</span>
+                        </div>
+                        <h3 id="title4">Los 5 errores más comunes al invertir</h3>
+                        <p class="article-excerpt" id="excerpt4">
+                            Evita los errores que comete el 90% de inversores principiantes. Aprende de los fallos más comunes y cómo prevenirlos para proteger tu dinero y maximizar tus retornos.
+                        </p>
+                        <a href="blog/errores-comunes.html" class="read-more" id="read4">Leer más →</a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+
+        <footer>
+            <p id="footerText">&copy; 2024 Novusance Finance. Contenido educativo sobre finanzas personales e inversión.</p>
+        </footer>
+    </div>
+
+    <script>
+        const translations = {
+            es: {
+                headerSubtitle: "Planifica tu nueva era financiera",
+                navCalculator: "Calculadora",
+                navComparator: "Comparador",
+                navBlog: "Blog",
+                heroTitle: "Blog de <span class=\"highlight-text\">Finanzas</span> e Inversión",
+                heroDesc: "Aprende a invertir, gestionar tu dinero y alcanzar tus metas financieras con guías prácticas y consejos útiles.",
+                cat1: "Guía", date1: "5 min lectura",
+                title1: "Cómo funciona el interés compuesto (con ejemplos)",
+                excerpt1: "Descubre el poder del interés compuesto con ejemplos reales. Entiende por qué Einstein lo llamó \"la octava maravilla del mundo\" y cómo aprovecharlo para tu futuro financiero.",
+                read1: "Leer más →",
+                cat2: "Análisis", date2: "6 min lectura",
+                title2: "Inversión a largo plazo: 10 vs 20 años",
+                excerpt2: "¿Cuánto cambia tu patrimonio si inviertes 10 años más? Comparamos dos escenarios reales con números concretos para que veas el impacto del tiempo en tus inversiones.",
+                read2: "Leer más →",
+                cat3: "Principiantes", date3: "8 min lectura",
+                title3: "Guía para principiantes: empezar a invertir",
+                excerpt3: "Tu primera guía completa para dar el paso a la inversión. Desde los conceptos básicos hasta tu primera inversión, todo lo que necesitas saber para empezar con el pie derecho.",
+                read3: "Leer más →",
+                cat4: "Consejos", date4: "7 min lectura",
+                title4: "Los 5 errores más comunes al invertir",
+                excerpt4: "Evita los errores que comete el 90% de inversores principiantes. Aprende de los fallos más comunes y cómo prevenirlos para proteger tu dinero y maximizar tus retornos.",
+                read4: "Leer más →",
+                footerText: "&copy; 2024 Novusance Finance. Contenido educativo sobre finanzas personales e inversión."
+            },
+            en: {
+                headerSubtitle: "Plan your new financial era",
+                navCalculator: "Calculator",
+                navComparator: "Comparator",
+                navBlog: "Blog",
+                heroTitle: "Finance & Investment <span class=\"highlight-text\">Blog</span>",
+                heroDesc: "Learn to invest, manage your money and achieve your financial goals with practical guides and useful advice.",
+                cat1: "Guide", date1: "5 min read",
+                title1: "How compound interest works (with examples)",
+                excerpt1: "Discover the power of compound interest with real examples. Understand why Einstein called it \"the eighth wonder of the world\" and how to leverage it for your financial future.",
+                read1: "Read more →",
+                cat2: "Analysis", date2: "6 min read",
+                title2: "Long-term investment: 10 vs 20 years",
+                excerpt2: "How much does your wealth change if you invest 10 more years? We compare two real scenarios with concrete numbers so you can see the impact of time on your investments.",
+                read2: "Read more →",
+                cat3: "Beginners", date3: "8 min read",
+                title3: "Beginner's guide: getting started with investing",
+                excerpt3: "Your first complete guide to taking the investment leap. From basic concepts to your first investment, everything you need to know to start on the right foot.",
+                read3: "Read more →",
+                cat4: "Tips", date4: "7 min read",
+                title4: "The 5 most common investing mistakes",
+                excerpt4: "Avoid the mistakes 90% of beginner investors make. Learn from the most common pitfalls and how to prevent them to protect your money and maximize your returns.",
+                read4: "Read more →",
+                footerText: "&copy; 2024 Novusance Finance. Educational content on personal finance and investment."
+            }
+        };
+
+        let currentLanguage = 'es';
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            document.getElementById('btnEs').classList.toggle('active', lang === 'es');
+            document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+            
+            const trans = translations[lang];
+            for (let key in trans) {
+                const el = document.getElementById(key);
+                if (el) el.innerHTML = trans[key];
+            }
+        }
+    </script>
+</body>
+</html>
