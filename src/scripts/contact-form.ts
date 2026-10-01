@@ -214,8 +214,10 @@ if (form && success && failure && failureText && submit && submitLabel && widget
 
   const params = new URLSearchParams(location.search);
   if (params.has('enviado') || params.has('error')) {
-    if (params.get('enviado') === '1') showSuccess();
-    else showFailure();
+    const show = () => (params.get('enviado') === '1' ? showSuccess() : showFailure());
+    // Al volver de un envío sin JS, el foco se mueve cuando la página ha terminado de cargar.
+    if (document.readyState === 'complete') show();
+    else window.addEventListener('load', show, { once: true });
     history.replaceState(null, '', `${location.pathname}#contacto`);
   }
 }
