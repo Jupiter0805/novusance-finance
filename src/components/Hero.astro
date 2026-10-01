@@ -7,10 +7,9 @@ const first = NV_SCEN[0];
 ---
 
 <section id="inicio" class="wrap hero">
-  <h1 class="display hero-title">Tu clínica atiende 24/7. <span class="muted">Tú, a tus pacientes.</span></h1>
-
   <div class="hero-grid">
     <div class="hero-copy">
+      <h1 class="display hero-title">Tu clínica atiende 24/7. <span class="muted">Tú, a tus pacientes.</span></h1>
       <p class="lead">
         Un asistente para tu web que responde dudas, reserva citas y te avisa de las urgencias mientras pasas consulta.
       </p>
@@ -92,36 +91,32 @@ const first = NV_SCEN[0];
 
 <style>
   .hero {
-    padding-top: 48px;
+    padding-top: 32px;
     padding-bottom: 72px;
   }
 
   .hero-title {
-    margin: 0 0 44px;
-    max-width: 1180px;
-    font-size: clamp(42px, 6.4vw, 92px);
+    font-size: clamp(42px, 4.6vw, 70px);
     line-height: 1;
-    animation: nv-in 0.7s var(--ease-out);
   }
 
   .hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
     gap: 48px;
-    align-items: start;
+    align-items: center;
   }
 
   .hero-copy {
     display: flex;
     flex-direction: column;
     gap: 28px;
-    padding-top: 8px;
-    max-width: 460px;
     animation: nv-in 0.9s var(--ease-out);
   }
 
   .lead {
     margin: 0;
+    max-width: 500px;
     font-size: 19px;
     line-height: 1.55;
     color: var(--muted);
@@ -187,8 +182,7 @@ const first = NV_SCEN[0];
   .stage {
     position: relative;
     width: 100%;
-    min-height: 664px;
-    padding: 40px 56px 40px 24px;
+    padding: 24px 40px 18px 24px;
     border-radius: var(--r-big);
     background: var(--accent-soft);
     display: flex;
@@ -198,7 +192,7 @@ const first = NV_SCEN[0];
 
   .feed-card {
     position: absolute;
-    top: 32px;
+    top: 24px;
     left: 24px;
     z-index: 2;
     width: 232px;
@@ -247,7 +241,11 @@ const first = NV_SCEN[0];
   }
 
   .screen {
-    height: 572px;
+    /*
+      El móvil completo (con el aviso de demo) cabe en la primera pantalla:
+      en pantallas bajas se acorta la ventana del chat en vez de cortarse el móvil.
+    */
+    height: clamp(440px, calc(100svh - 250px), 572px);
     border-radius: 35px;
     background: var(--surface);
     overflow: hidden;
@@ -303,6 +301,9 @@ const first = NV_SCEN[0];
     gap: 8px;
     padding: 14px;
     background: var(--chat);
+    /* Lo que sube por arriba se desvanece, como en un chat real, en vez de cortarse en seco. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 28px);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 28px);
   }
 
   .when {
@@ -480,6 +481,33 @@ const first = NV_SCEN[0];
     margin: 0;
     font-size: 14px;
     color: var(--muted);
+  }
+
+  /* Con la columna estrecha, la tarjeta "Mientras dormías" taparía el chat. */
+  @media (max-width: 1180px) {
+    .feed-card {
+      display: none;
+    }
+  }
+
+  /*
+    Anchos medios: no cabe la tarjeta al lado del móvil, así que la notificación
+    aparece arriba y centrada sobre él, como un aviso push.
+  */
+  @media (min-width: 861px) and (max-width: 1180px) {
+    .stage {
+      justify-content: center;
+      padding-right: 24px;
+    }
+
+    .lead-card {
+      top: 12px;
+      bottom: auto;
+      left: 0;
+      right: 0;
+      width: 268px;
+      margin-inline: auto;
+    }
   }
 
   @media (max-width: 860px) {
