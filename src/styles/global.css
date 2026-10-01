@@ -5,6 +5,8 @@
   --ink: #111413;
   --muted: #525854;
   --line: #dfe2dd;
+  /* Borde de campos de formulario: contraste 3:1 con el fondo (AA para controles). */
+  --field: #858b87;
   --soft: #eaece8;
   --chat: #eef0ec;
   --accent: #0e7a68;
@@ -38,6 +40,7 @@
     --ink: #edefed;
     --muted: #a2a9a5;
     --line: #262c29;
+    --field: #6b736f;
     --soft: #1c211f;
     --chat: #111514;
     --acc-pct: 55%;

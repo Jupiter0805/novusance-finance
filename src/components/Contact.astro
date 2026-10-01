@@ -137,11 +137,13 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
       </div>
 
       <p class="rgpd">
-        <strong>Responsable:</strong> [NOMBRE COMPLETO DEL TITULAR]. <strong>Finalidad:</strong> responder a tu solicitud y
-        preparar tu demo. <strong>Legitimación:</strong> tu consentimiento. <strong>Destinatarios:</strong> no se ceden datos
-        a terceros, salvo obligación legal; los proveedores técnicos tratan los datos por cuenta del responsable.
-        <strong>Derechos:</strong> acceso, rectificación, supresión y otros, escribiendo a hola@novusance.com. Más información
-        en la <a href="/privacidad">política de privacidad</a>.
+        <strong>Responsable:</strong> [NOMBRE COMPLETO DEL TITULAR].{' '}
+        <strong>Finalidad:</strong> responder a tu solicitud y preparar tu demo.{' '}
+        <strong>Legitimación:</strong> tu consentimiento.{' '}
+        <strong>Destinatarios:</strong> no se ceden datos a terceros, salvo obligación legal; los proveedores técnicos
+        tratan los datos por cuenta del responsable.{' '}
+        <strong>Derechos:</strong> acceso, rectificación, supresión y otros, escribiendo a hola@novusance.com.{' '}
+        Más información en la <a href="/privacidad">política de privacidad</a>.
       </p>
     </form>
   </div>
@@ -269,7 +271,7 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
     width: 100%;
     min-height: 50px;
     padding: 0 20px;
-    border: 1px solid var(--line);
+    border: 1px solid var(--field);
     border-radius: var(--r-pill);
     background: var(--surface);
     font-size: 16px;
@@ -286,7 +288,7 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
 
   input:hover,
   textarea:hover {
-    border-color: color-mix(in srgb, var(--ink) 30%, var(--line));
+    border-color: var(--ink);
   }
 
   input:focus-visible,
