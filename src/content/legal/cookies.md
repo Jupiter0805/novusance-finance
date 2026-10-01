@@ -16,9 +16,8 @@ Por eso, de acuerdo con el artículo 22.2 de la LSSI, estas cookies no requieren
 
 | Cookie o almacenamiento | Proveedor | Finalidad | Duración |
 | --- | --- | --- | --- |
-| [COMPLETAR TRAS LA AUDITORÍA] | [Cloudflare / propio] | [Por ejemplo: seguridad y protección antispam del formulario] | [Sesión / X días] |
+| `cf.turnstile.u` (almacenamiento local del navegador, no es una cookie) | Cloudflare (challenges.cloudflare.com) | Seguridad: protección antispam del formulario de contacto (Cloudflare Turnstile). Solo se crea cuando llegas al formulario. | Persistente, hasta que borres los datos del navegador |
 
-Si en la auditoría no aparece ninguna cookie, sustituye la tabla por esta frase: "Actualmente esta web no instala cookies en tu navegador."
 
 ## 3. Analítica
 
