@@ -11,192 +11,207 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
 
 <section id="contacto" class="wrap contact">
   <div class="box">
-    <Logo size={240} gradient class="big-logo" />
-
-    <h2 class="display title">¿Te enseño cómo quedaría en tu clínica?</h2>
-    <p class="intro">
-      Dime el nombre de tu clínica y te preparo una demo con tus servicios y horarios. Sin compromiso.
-    </p>
-
-    <div class="messages" aria-live="polite">
-      <div class="msg msg-ok" tabindex="-1" data-success hidden>
-        <Icon name="ph:check-circle" size={24} />
-        <p>¡Gracias! Te escribo en menos de 24 horas laborables.</p>
-      </div>
-      <div class="msg msg-error" tabindex="-1" data-failure hidden>
-        <Icon name="ph:warning-circle" size={24} />
-        <p>
-          <span data-failure-text>No se ha podido enviar el formulario.</span>
-          Inténtalo de nuevo en unos minutos o escríbeme a <a href="mailto:hola@novusance.com">hola@novusance.com</a>.
-        </p>
-      </div>
+    <div class="side">
+      <h2 class="display title">¿Te enseño cómo quedaría en tu clínica?</h2>
+      <p class="intro">
+        Dime el nombre de tu clínica y te preparo una demo con tus servicios y horarios. Sin compromiso.
+      </p>
+      <p class="direct">
+        ¿Prefieres escribirme directamente?<br />
+        <a href="mailto:hola@novusance.com">hola@novusance.com</a>
+      </p>
+      <Logo size={150} gradient class="big-logo" />
     </div>
 
-    <form
-      class="form"
-      action="/api/contact"
-      method="post"
-      data-contact-form
-      data-sitekey={siteKey}
-      aria-label="Solicitud de demo"
-    >
-      <div class="grid">
-        <div class="field">
-          <label for="f-nombre">Nombre</label>
-          <input
-            id="f-nombre"
-            name="nombre"
-            type="text"
-            autocomplete="name"
-            required
-            maxlength={LIMITS.nombre}
-            aria-describedby="e-nombre"
-          />
-          <p class="error" id="e-nombre" data-error-for="nombre"></p>
+    <div class="main">
+      <div class="messages" aria-live="polite">
+        <div class="msg msg-ok" tabindex="-1" data-success hidden>
+          <Icon name="ph:check-circle" size={24} />
+          <p>¡Gracias! Te escribo en menos de 24 horas laborables.</p>
         </div>
-
-        <div class="field">
-          <label for="f-clinica">Nombre de la clínica</label>
-          <input
-            id="f-clinica"
-            name="clinica"
-            type="text"
-            autocomplete="organization"
-            required
-            maxlength={LIMITS.clinica}
-            aria-describedby="e-clinica"
-          />
-          <p class="error" id="e-clinica" data-error-for="clinica"></p>
+        <div class="msg msg-error" tabindex="-1" data-failure hidden>
+          <Icon name="ph:warning-circle" size={24} />
+          <p>
+            <span data-failure-text>No se ha podido enviar el formulario.</span>
+            Inténtalo de nuevo en unos minutos o escríbeme a <a href="mailto:hola@novusance.com">hola@novusance.com</a>.
+          </p>
         </div>
+      </div>
 
-        <div class="field">
-          <label for="f-email">Email</label>
-          <input
-            id="f-email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            inputmode="email"
-            required
-            maxlength={LIMITS.email}
-            aria-describedby="e-email"
-          />
-          <p class="error" id="e-email" data-error-for="email"></p>
-        </div>
-
-        <div class="field">
-          <label for="f-telefono">Teléfono <span class="optional">(opcional)</span></label>
-          <input
-            id="f-telefono"
-            name="telefono"
-            type="tel"
-            autocomplete="tel"
-            maxlength={LIMITS.telefono}
-            aria-describedby="e-telefono"
-          />
-          <p class="error" id="e-telefono" data-error-for="telefono"></p>
-        </div>
-
-        <div class="field full">
-          <label for="f-mensaje">¿En qué te puedo ayudar? <span class="optional">(opcional)</span></label>
-          <textarea id="f-mensaje" name="mensaje" rows="4" maxlength={LIMITS.mensaje} aria-describedby="e-mensaje"
-          ></textarea>
-          <p class="error" id="e-mensaje" data-error-for="mensaje"></p>
-        </div>
-
-        <!-- Campo trampa: invisible para personas; si llega relleno, es un bot. -->
-        <div class="hp" aria-hidden="true">
-          <label for="f-website">No rellenes este campo</label>
-          <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
-        </div>
-
-        <div class="field full">
-          <div class="check">
-            <input id="f-privacidad" name="privacidad" type="checkbox" required aria-describedby="e-privacidad" />
-            <label for="f-privacidad">He leído y acepto la <a href="/privacidad">política de privacidad</a>.</label>
+      <form
+        class="form"
+        action="/api/contact"
+        method="post"
+        data-contact-form
+        data-sitekey={siteKey}
+        aria-label="Solicitud de demo"
+      >
+        <div class="grid">
+          <div class="field">
+            <label for="f-nombre">Nombre</label>
+            <input
+              id="f-nombre"
+              name="nombre"
+              type="text"
+              autocomplete="name"
+              required
+              maxlength={LIMITS.nombre}
+              aria-describedby="e-nombre"
+            />
+            <p class="error" id="e-nombre" data-error-for="nombre"></p>
           </div>
-          <p class="error" id="e-privacidad" data-error-for="privacidad"></p>
+
+          <div class="field">
+            <label for="f-clinica">Nombre de la clínica</label>
+            <input
+              id="f-clinica"
+              name="clinica"
+              type="text"
+              autocomplete="organization"
+              required
+              maxlength={LIMITS.clinica}
+              aria-describedby="e-clinica"
+            />
+            <p class="error" id="e-clinica" data-error-for="clinica"></p>
+          </div>
+
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input
+              id="f-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              inputmode="email"
+              required
+              maxlength={LIMITS.email}
+              aria-describedby="e-email"
+            />
+            <p class="error" id="e-email" data-error-for="email"></p>
+          </div>
+
+          <div class="field">
+            <label for="f-telefono">Teléfono <span class="optional">(opcional)</span></label>
+            <input
+              id="f-telefono"
+              name="telefono"
+              type="tel"
+              autocomplete="tel"
+              maxlength={LIMITS.telefono}
+              aria-describedby="e-telefono"
+            />
+            <p class="error" id="e-telefono" data-error-for="telefono"></p>
+          </div>
+
+          <div class="field full">
+            <label for="f-mensaje">¿En qué te puedo ayudar? <span class="optional">(opcional)</span></label>
+            <textarea id="f-mensaje" name="mensaje" rows="3" maxlength={LIMITS.mensaje} aria-describedby="e-mensaje"
+            ></textarea>
+            <p class="error" id="e-mensaje" data-error-for="mensaje"></p>
+          </div>
+
+          <!-- Campo trampa: invisible para personas; si llega relleno, es un bot. -->
+          <div class="hp" aria-hidden="true">
+            <label for="f-website">No rellenes este campo</label>
+            <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
         </div>
-      </div>
 
-      <div class="turnstile" data-turnstile></div>
+        <div class="turnstile" data-turnstile></div>
 
-      <noscript>
-        <p class="noscript">
-          Para enviar el formulario hace falta JavaScript (lo uso para la protección antispam). Si lo prefieres,
-          escríbeme a <a href="mailto:hola@novusance.com">hola@novusance.com</a>.
+        <noscript>
+          <p class="noscript">
+            Para enviar el formulario hace falta JavaScript (lo uso para la protección antispam). Si lo prefieres,
+            escríbeme a <a href="mailto:hola@novusance.com">hola@novusance.com</a>.
+          </p>
+        </noscript>
+
+        <div class="submit-row">
+          <div class="consent">
+            <div class="check">
+              <input id="f-privacidad" name="privacidad" type="checkbox" required aria-describedby="e-privacidad" />
+              <label for="f-privacidad">He leído y acepto la <a href="/privacidad">política de privacidad</a>.</label>
+            </div>
+            <p class="error" id="e-privacidad" data-error-for="privacidad"></p>
+          </div>
+          <button type="submit" class="btn btn-accent submit" data-submit>
+            <span data-submit-label>Pide tu demo</span>
+            <Icon name="ph:arrow-right" size={18} />
+          </button>
+        </div>
+
+        <p class="rgpd">
+          <strong>Responsable:</strong> [NOMBRE COMPLETO DEL TITULAR].{' '}
+          <strong>Finalidad:</strong> responder a tu solicitud y preparar tu demo.{' '}
+          <strong>Legitimación:</strong> tu consentimiento.{' '}
+          <strong>Destinatarios:</strong> no se ceden datos a terceros, salvo obligación legal; los proveedores técnicos
+          tratan los datos por cuenta del responsable.{' '}
+          <strong>Derechos:</strong> acceso, rectificación, supresión y otros, escribiendo a hola@novusance.com.{' '}
+          Más información en la <a href="/privacidad">política de privacidad</a>.
         </p>
-      </noscript>
-
-      <div class="submit-row">
-        <button type="submit" class="btn btn-accent submit" data-submit>
-          <span data-submit-label>Pide tu demo</span>
-          <Icon name="ph:arrow-right" size={18} />
-        </button>
-        <a href="mailto:hola@novusance.com" class="mail">hola@novusance.com</a>
-      </div>
-
-      <p class="rgpd">
-        <strong>Responsable:</strong> [NOMBRE COMPLETO DEL TITULAR].{' '}
-        <strong>Finalidad:</strong> responder a tu solicitud y preparar tu demo.{' '}
-        <strong>Legitimación:</strong> tu consentimiento.{' '}
-        <strong>Destinatarios:</strong> no se ceden datos a terceros, salvo obligación legal; los proveedores técnicos
-        tratan los datos por cuenta del responsable.{' '}
-        <strong>Derechos:</strong> acceso, rectificación, supresión y otros, escribiendo a hola@novusance.com.{' '}
-        Más información en la <a href="/privacidad">política de privacidad</a>.
-      </p>
-    </form>
+      </form>
+    </div>
   </div>
 </section>
 
 <style>
   .contact {
-    padding-block: 120px;
+    padding-block: 104px;
   }
 
   .box {
-    position: relative;
-    overflow: hidden;
-    padding: 64px 48px;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 56px;
+    padding: 56px;
     border-radius: var(--r-big);
     background: var(--accent-soft);
+  }
+
+  /* ── Columna izquierda: mensaje y logo ─────────────────────────── */
+  .side {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 26px;
-  }
-
-  .box :global(.big-logo) {
-    position: absolute;
-    right: 56px;
-    bottom: 40px;
+    gap: 22px;
   }
 
   .title {
-    max-width: 760px;
-    font-size: clamp(38px, 5.2vw, 70px);
+    font-size: clamp(36px, 3.8vw, 54px);
     line-height: 1.02;
     letter-spacing: -0.04em;
   }
 
   .intro {
     margin: 0;
-    max-width: 540px;
     font-size: 18px;
     line-height: 1.6;
     color: var(--muted);
   }
 
-  .messages,
-  .form {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 680px;
+  .direct {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--muted);
   }
 
-  .messages:empty {
-    display: none;
+  .direct a {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .side :global(.big-logo) {
+    margin-top: auto;
+    padding-top: 16px;
+  }
+
+  /* ── Columna derecha: formulario ───────────────────────────────── */
+  .main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .msg {
@@ -235,19 +250,19 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
   .form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 4px 16px;
+    gap: 14px 16px;
   }
 
   .field {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .full {
@@ -255,7 +270,7 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
   }
 
   label {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
   }
 
@@ -269,8 +284,8 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
   input[type='tel'],
   textarea {
     width: 100%;
-    min-height: 50px;
-    padding: 0 20px;
+    min-height: 46px;
+    padding: 0 18px;
     border: 1px solid var(--field);
     border-radius: var(--r-pill);
     background: var(--surface);
@@ -279,9 +294,9 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
   }
 
   textarea {
-    min-height: 120px;
-    padding: 14px 20px;
-    border-radius: 20px;
+    min-height: 92px;
+    padding: 12px 18px;
+    border-radius: 18px;
     resize: vertical;
     line-height: 1.5;
   }
@@ -301,32 +316,52 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
     border-color: var(--danger) !important;
   }
 
+  /* Los errores solo ocupan espacio cuando hay mensaje. */
   .error {
-    min-height: 20px;
-    margin: 0 0 6px;
+    margin: 0;
     padding-left: 4px;
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.4;
     color: var(--danger);
   }
 
+  .error:empty {
+    display: none;
+  }
+
+  .submit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+  }
+
+  .consent {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 260px;
+  }
+
   .check {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     align-items: flex-start;
   }
 
   .check input {
     flex-shrink: 0;
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     margin: 1px 0 0;
     accent-color: var(--accent);
   }
 
   .check label {
+    font-size: 15px;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 1.45;
   }
 
   .hp {
@@ -347,15 +382,8 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
     color: var(--muted);
   }
 
-  .submit-row {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
   .submit {
-    min-height: 54px;
+    min-height: 52px;
     padding: 0 28px;
     font-size: 16px;
   }
@@ -365,13 +393,11 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
     opacity: 0.75;
   }
 
-  .mail {
-    font-size: 16px;
-  }
-
   .rgpd {
     margin: 0;
-    font-size: 13px;
+    padding-top: 16px;
+    border-top: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+    font-size: 12.5px;
     line-height: 1.6;
     color: var(--muted);
   }
@@ -384,8 +410,14 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
     color: var(--muted);
   }
 
-  @media (max-width: 1100px) {
-    .box :global(.big-logo) {
+  @media (max-width: 960px) {
+    .box {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 48px 40px;
+    }
+
+    .side :global(.big-logo) {
       display: none;
     }
   }
@@ -396,12 +428,16 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
     }
 
     .box {
-      padding: 40px 20px;
+      padding: 36px 20px;
       border-radius: var(--r-card);
     }
 
     .grid {
       grid-template-columns: 1fr;
+    }
+
+    .submit {
+      width: 100%;
     }
   }
 </style>
