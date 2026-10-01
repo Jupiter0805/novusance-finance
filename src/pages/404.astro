@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Logo from '../components/Logo.astro';
+---
+
+<BaseLayout
+  title="Página no encontrada · Novusance"
+  description="La página que buscas no existe o se ha movido."
+  noindex
+>
+  <section class="wrap notfound">
+    <div class="box">
+      <Logo size={64} gradient />
+      <p class="display code" aria-hidden="true">404</p>
+      <h1 class="display title">Esta página no existe.</h1>
+      <p class="text">Puede que el enlace esté mal escrito o que la página se haya movido.</p>
+      <a href="/" class="btn btn-lg btn-accent">Volver a la portada</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding-block: 72px 120px;
+  }
+
+  .box {
+    padding: 64px 48px;
+    border-radius: var(--r-big);
+    background: var(--accent-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .code {
+    font-size: clamp(96px, 13vw, 184px);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    color: var(--accent-text);
+  }
+
+  .title {
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.06;
+  }
+
+  .text {
+    margin: 0 0 8px;
+    max-width: 520px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  @media (max-width: 640px) {
+    .box {
+      padding: 40px 20px;
+      border-radius: var(--r-card);
+    }
+  }
+</style>
