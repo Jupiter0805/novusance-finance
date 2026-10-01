@@ -6,27 +6,24 @@ import { optionalImage } from '../lib/optional-image';
 const works = [
   {
     href: 'https://www.mcprimehome.com',
+    domain: 'mcprimehome.com',
     name: 'MC Prime Home',
     text: 'Web para una agencia inmobiliaria con operaciones en Madrid y Florida.',
     img: optionalImage('mcprimehome_landing'),
-    placeholder: '[Captura de mcprimehome.com]',
-    main: true,
   },
   {
     href: 'https://www.sirrux.net',
+    domain: 'sirrux.net',
     name: 'SIRRUX',
     text: 'Espacio de análisis para inversores donde cada dato muestra su fuente.',
     img: optionalImage('sirrux_landing'),
-    placeholder: '[Captura de sirrux.net]',
-    main: false,
   },
   {
     href: 'https://ova.vercel.app',
+    domain: 'ova.vercel.app',
     name: 'OVA',
     text: 'Plataforma educativa interactiva sobre periodontitis para una universidad.',
     img: optionalImage('Ova_landing'),
-    placeholder: '[Captura de ova.vercel.app]',
-    main: false,
   },
 ];
 ---
@@ -36,24 +33,34 @@ const works = [
     <h2 class="display h2">Webs que ya están funcionando.</h2>
     <div class="grid">
       {
-        works.map((w) => (
-          <a href={w.href} class:list={['work', { 'work-main': w.main }]} target="_blank" rel="noopener">
-            <div class="shot">
-              {w.img ? (
-                <Image
-                  src={w.img}
-                  alt={`Portada de la web de ${w.name}`}
-                  widths={w.main ? [640, 960, 1280, 1904] : [480, 800, 1200]}
-                  sizes={w.main ? '(max-width: 1240px) 100vw, 1192px' : '(max-width: 860px) 100vw, 590px'}
-                />
-              ) : (
-                <span>{w.placeholder}</span>
-              )}
+        works.map((w, i) => (
+          <a href={w.href} class:list={['card', { featured: i === 0 }]} target="_blank" rel="noopener">
+            <div class="browser" aria-hidden="true">
+              <div class="bar">
+                <span class="dots">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+                <span class="url">{w.domain}</span>
+              </div>
+              <div class="shot">
+                {w.img ? (
+                  <Image
+                    src={w.img}
+                    alt=""
+                    widths={i === 0 ? [640, 960, 1400] : [480, 800, 1100]}
+                    sizes={i === 0 ? '(max-width: 860px) 100vw, 720px' : '(max-width: 860px) 100vw, 580px'}
+                  />
+                ) : (
+                  <span class="placeholder">[Captura de {w.domain}]</span>
+                )}
+              </div>
             </div>
             <div class="meta">
               <div class="meta-text">
-                <div class="name">{w.name}</div>
-                <div class="muted">{w.text}</div>
+                <h3 class="name">{w.name}</h3>
+                <p class="muted">{w.text}</p>
               </div>
               <span class="cta">
                 Ver web <Icon name="ph:arrow-up-right" size={16} />
@@ -78,53 +85,94 @@ const works = [
   .grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 40px 24px;
+    gap: 20px;
   }
 
-  .work {
+  /* ── Tarjeta ───────────────────────────────────────────────────── */
+  .card {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    text-decoration: none;
-    color: var(--ink);
-  }
-
-  .work-main {
-    grid-column: 1 / -1;
-    gap: 18px;
-  }
-
-  .work:hover {
-    opacity: 1;
-  }
-
-  .work:hover .shot {
-    border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
-  }
-
-  .shot {
-    aspect-ratio: 16 / 9;
+    gap: 8px;
+    padding: 12px;
     border-radius: var(--r-card);
-    background: var(--soft);
+    background: var(--bg);
     border: 1px solid var(--line);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    font-size: 14px;
-    color: var(--muted);
-    text-align: center;
+    color: var(--ink);
+    text-decoration: none;
     transition: border-color 0.2s;
   }
 
-  /* La principal va a todo el ancho y en la proporción de la captura (unos 2:1), sin recortes. */
-  .work-main .shot {
-    aspect-ratio: 1904 / 916;
+  .card:hover {
+    opacity: 1;
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
   }
 
-  .shot:has(img) {
-    padding: 0;
+  /* ── Marco de navegador ────────────────────────────────────────── */
+  .browser {
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 40px -30px rgb(0 0 0 / 0.35);
+    transition:
+      transform 0.35s var(--ease-out),
+      box-shadow 0.35s var(--ease-out);
+  }
+
+  .card:hover .browser {
+    transform: translateY(-4px);
+    box-shadow: 0 28px 50px -30px var(--accent-shadow);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 34px;
+    padding: 0 12px;
+    background: var(--soft);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--muted) 40%, transparent);
+  }
+
+  .url {
+    flex: 1;
+    max-width: 260px;
+    margin-inline: auto;
+    padding: 3px 12px;
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* El hueco de la derecha equilibra los puntos para centrar la URL. */
+  .bar::after {
+    content: '';
+    width: 39px;
+  }
+
+  .shot {
+    aspect-ratio: 16 / 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--soft);
   }
 
   .shot img {
@@ -134,12 +182,20 @@ const works = [
     object-position: center top;
   }
 
+  .placeholder {
+    padding: 16px;
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* ── Texto ─────────────────────────────────────────────────────── */
   .meta {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: flex-start;
     gap: 16px;
-    font-size: 15px;
+    padding: 10px 8px 6px;
   }
 
   .meta-text {
@@ -149,18 +205,23 @@ const works = [
   }
 
   .name {
+    margin: 0;
     font-size: 19px;
     font-weight: 600;
   }
 
-  .work-main .name {
-    font-size: 22px;
+  .meta p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
   }
 
   .cta {
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    padding-top: 2px;
+    font-size: 15px;
     font-weight: 500;
     white-space: nowrap;
   }
@@ -169,17 +230,72 @@ const works = [
     transition: transform 0.2s;
   }
 
-  .work:hover .cta :global(svg) {
+  .card:hover .cta :global(svg) {
     transform: translate(2px, -2px);
   }
 
+  /* ── Destacada: horizontal, captura a la izquierda y texto a la derecha ── */
+  .featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: center;
+    gap: 16px;
+  }
+
+  .featured .shot {
+    aspect-ratio: 1904 / 916;
+  }
+
+  .featured .meta {
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    padding: 24px 28px 24px 24px;
+  }
+
+  .featured .meta-text {
+    gap: 10px;
+  }
+
+  .featured .name {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: clamp(26px, 2.6vw, 34px);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .featured .meta p {
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .featured .cta {
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: var(--r-pill);
+    background: var(--ink);
+    color: var(--bg);
+  }
+
   @media (max-width: 860px) {
-    .grid {
+    .grid,
+    .featured {
       grid-template-columns: 1fr;
     }
 
-    .work-main .shot {
-      aspect-ratio: 16 / 9;
+
+    .featured .meta {
+      gap: 18px;
+      padding: 10px 8px 6px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover .browser {
+      transform: none;
     }
   }
 </style>
