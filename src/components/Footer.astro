@@ -1,0 +1,73 @@
+---
+import Logo from './Logo.astro';
+
+const year = new Date().getFullYear();
+const links = [
+  { href: '/aviso-legal', label: 'Aviso legal' },
+  { href: '/privacidad', label: 'Privacidad' },
+  { href: '/cookies', label: 'Cookies' },
+  { href: '/condiciones', label: 'Condiciones' },
+];
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span class="copy"><Logo size={18} />© {year} Novusance</span>
+    <nav aria-label="Legal">
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href}>{l.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+  }
+
+  .footer-inner {
+    padding-block: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .copy {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--ink);
+    opacity: 1;
+  }
+</style>

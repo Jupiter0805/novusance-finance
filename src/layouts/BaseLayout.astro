@@ -1,0 +1,95 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/host-grotesk/400.css';
+import '@fontsource/host-grotesk/500.css';
+import '@fontsource/host-grotesk/600.css';
+import '../styles/global.css';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import hostLatin from '@fontsource/host-grotesk/files/host-grotesk-latin-400-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Portada: anclas directas en la cabecera y datos estructurados. */
+  home?: boolean;
+  noindex?: boolean;
+}
+
+const { title, description, home = false, noindex = false } = Astro.props;
+const site = Astro.site ?? new URL('https://www.novusance.com');
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), site).href;
+const ogImage = new URL('/og.png', site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Novusance',
+  url: site.href,
+  email: 'hola@novusance.com',
+  logo: new URL('/Novusance-Logo.png', site).href,
+  image: ogImage,
+  description,
+  areaServed: { '@type': 'City', name: 'Madrid' },
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={hostLatin} as="font" type="font/woff2" crossorigin />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#F4F5F2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0E1110" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Novusance" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Novusance: Tu clínica atiende 24/7. Tú, a tus pacientes." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {home && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+    <!--
+      Analítica (desactivada). Cloudflare Web Analytics no usa cookies.
+      Para activarla: descomenta el script y pon el token de Cloudflare > Analytics > Web Analytics,
+      o actívala desde el panel de Pages (inyecta el mismo script sin tocar el código).
+      <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "TU_TOKEN"}'></script>
+    -->
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <Header home={home} />
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+</style>

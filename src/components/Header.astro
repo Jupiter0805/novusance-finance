@@ -1,0 +1,252 @@
+---
+import { Icon } from 'astro-icon/components';
+import Logo from './Logo.astro';
+
+interface Props {
+  /** En la portada los enlaces son anclas; en el resto de páginas apuntan a /#ancla. */
+  home?: boolean;
+}
+
+const { home = false } = Astro.props;
+const base = home ? '' : '/';
+const links = [
+  { href: `${base}#como-funciona`, label: 'Cómo funciona' },
+  { href: `${base}#trabajos`, label: 'Trabajos' },
+  { href: `${base}#precios`, label: 'Precios' },
+  { href: `${base}#preguntas`, label: 'Preguntas' },
+];
+---
+
+<header class="site-header" data-header>
+  <div class="wrap header-inner">
+    <a href={home ? '#inicio' : '/'} class="brand" aria-label="Novusance, inicio">
+      <Logo size={30} />
+      <span class="wordmark" aria-hidden="true">novusance</span>
+    </a>
+
+    <nav aria-label="Principal" class="nav" id="menu-principal" data-nav>
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href}>{l.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a href={`${base}#contacto`} class="btn btn-ink">Pide tu demo</a>
+      <button
+        type="button"
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="menu-principal"
+        data-menu-toggle
+      >
+        <span class="sr-only" data-menu-label>Abrir menú</span>
+        <Icon name="ph:list" size={22} class="icon-open" />
+        <Icon name="ph:x" size={22} class="icon-close" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .header-inner {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: 21px;
+    letter-spacing: -0.03em;
+  }
+
+  .nav ul {
+    display: flex;
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 15px;
+  }
+
+  .nav a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .nav a:hover {
+    color: var(--ink);
+    opacity: 1;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    cursor: pointer;
+  }
+
+  .menu-toggle .icon-close,
+  .menu-toggle[aria-expanded='true'] .icon-open {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] .icon-close {
+    display: block;
+  }
+
+  @media (max-width: 860px) {
+    :global(.js) .menu-toggle {
+      display: inline-flex;
+    }
+
+    /* Con JS: menú desplegable bajo la cabecera. */
+    :global(.js) .nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      display: none;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 24px 40px -32px rgb(0 0 0 / 0.4);
+    }
+
+    :global(.js) .nav.is-open {
+      display: block;
+    }
+
+    :global(.js) .nav ul {
+      flex-direction: column;
+      gap: 0;
+      max-width: var(--maxw);
+      margin-inline: auto;
+      padding: 8px var(--gutter) 16px;
+      font-size: 17px;
+    }
+
+    :global(.js) .nav a {
+      display: flex;
+      align-items: center;
+      min-height: 52px;
+      color: var(--ink);
+      border-bottom: 1px solid var(--line);
+    }
+
+    :global(.js) .nav li:last-child a {
+      border-bottom: 0;
+    }
+
+    /* Sin JS: los enlaces se muestran en una fila bajo la cabecera. */
+    :global(html:not(.js)) .header-inner {
+      height: auto;
+      min-height: 68px;
+      flex-wrap: wrap;
+      padding-block: 12px;
+    }
+
+    :global(html:not(.js)) .nav {
+      order: 3;
+      width: 100%;
+    }
+
+    :global(html:not(.js)) .nav ul {
+      flex-wrap: wrap;
+      gap: 8px 20px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .header-inner {
+      gap: 12px;
+    }
+
+    .wordmark {
+      font-size: 19px;
+    }
+
+    .actions .btn {
+      padding: 0 14px;
+      font-size: 14px;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+
+  if (toggle && nav && label) {
+    const setOpen = (open: boolean, returnFocus = false) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Cerrar menú' : 'Abrir menú';
+      nav.classList.toggle('is-open', open);
+      if (returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      setOpen(open);
+      if (open) nav.querySelector('a')?.focus();
+    });
+
+    nav.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') setOpen(false, true);
+    });
+
+    document.addEventListener('click', (e) => {
+      const t = e.target as Node;
+      if (toggle.getAttribute('aria-expanded') === 'true' && !nav.contains(t) && !toggle.contains(t)) {
+        setOpen(false);
+      }
+    });
+
+    window.matchMedia('(min-width: 861px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>
