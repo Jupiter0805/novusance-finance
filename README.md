@@ -93,12 +93,12 @@ Ver `.env.example`.
 
 ## Capturas de trabajos y foto
 
-Están en  y se optimizan solas al compilar (WebP en varios tamaños). Para cambiarlas, sustituye el archivo
+Están en `public/` y se optimizan solas al compilar (WebP en varios tamaños). Para cambiarlas, sustituye el archivo
 manteniendo el nombre (vale .png, .jpg o .webp). Si falta alguna, se muestra un marcador de texto.
 
-- : va a todo el ancho; mejor en panorámica (unos 2:1).
--  y : se recortan a 16:9 desde arriba.
-- : foto de "Sobre mí", cuadrada.
+- `public/mcprimehome_landing.png`: va a todo el ancho; mejor en panorámica (unos 2:1).
+- `public/sirrux_landing.png` y `public/Ova_landing.png`: se recortan a 16:9 desde arriba.
+- `public/Juanignacio.png`: foto de "Sobre mí", cuadrada.
 
 ## Analítica
 
