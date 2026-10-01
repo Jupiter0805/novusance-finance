@@ -2,14 +2,14 @@
 import { Image } from 'astro:assets';
 import { optionalImage } from '../lib/optional-image';
 
-const photo = optionalImage('jupiter.webp');
+const photo = optionalImage('Juanignacio');
 ---
 
 <section class="about">
   <div class="inner">
     <div class="person">
       <div class="photo">
-        {photo ? <Image src={photo} alt="Jupiter Moreno" width={152} height={152} /> : <span>[Tu foto]</span>}
+        {photo ? <Image src={photo} alt="Jupiter Moreno" width={76} height={76} densities={[1, 2, 3]} /> : <span>[Tu foto]</span>}
       </div>
       <div class="who">
         <div class="name">Jupiter Moreno</div>

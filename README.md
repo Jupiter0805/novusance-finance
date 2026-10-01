@@ -12,7 +12,7 @@ functions/api/contact.ts     Pages Function: valida, verifica Turnstile y envía
 public/                      Archivos servidos tal cual
   Novusance-Logo.png         Logo original (no renombrar)
   favicon.svg / .ico, apple-touch-icon.png, og.png   Generados con `npm run assets`
-  trabajos/                  Capturas de trabajos (ver más abajo)
+  *_landing.png, Juanignacio.png   Capturas de trabajos y foto (ver más abajo)
   _headers, _redirects, robots.txt                   Configuración de Cloudflare Pages
 scripts/generate-assets.mjs  Genera favicons y la imagen Open Graph a partir del logo
 src/
@@ -93,13 +93,12 @@ Ver `.env.example`.
 
 ## Capturas de trabajos y foto
 
-Deja estos archivos y vuelve a compilar; se optimizan solos (WebP en varios tamaños). Mientras no existan, se muestra
-el marcador de texto.
+Están en  y se optimizan solas al compilar (WebP en varios tamaños). Para cambiarlas, sustituye el archivo
+manteniendo el nombre (vale .png, .jpg o .webp). Si falta alguna, se muestra un marcador de texto.
 
-- `public/trabajos/mcprimehome.webp` (1600×1360)
-- `public/trabajos/sirrux.webp` (1600×900)
-- `public/trabajos/ova.webp` (1600×900)
-- `public/jupiter.webp` (cuadrada, mínimo 152×152)
+- : va a todo el ancho; mejor en panorámica (unos 2:1).
+-  y : se recortan a 16:9 desde arriba.
+- : foto de "Sobre mí", cuadrada.
 
 ## Analítica
 
