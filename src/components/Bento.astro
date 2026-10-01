@@ -1,0 +1,121 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<section class="wrap bento-section">
+  <h2 class="display h2 title">Lo que tu recepción hace cien veces al día.</h2>
+  <div class="bento">
+    <article class="card big">
+      <Icon name="ph:warning-circle" size={44} />
+      <div class="stack">
+        <h3 class="display">Urgencias que no esperan a mañana</h3>
+        <p>
+          Si alguien describe un síntoma o una intoxicación, el asistente no da consejos: le pide que llame ya y te avisa al
+          móvil al instante.
+        </p>
+      </div>
+    </article>
+    <article class="card soft">
+      <h3 class="display">Vacunas y revisiones</h3>
+      <p>Reserva la cita y, en el plan Pro, avisa al dueño cuando toca la siguiente.</p>
+    </article>
+    <article class="card plain">
+      <h3 class="display">Precios, horarios y dudas</h3>
+      <p>Las mismas preguntas de siempre, contestadas con tus datos y sin que nadie descuelgue.</p>
+    </article>
+  </div>
+</section>
+
+<style>
+  .bento-section {
+    padding-block: 104px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+  }
+
+  .title {
+    max-width: 760px;
+  }
+
+  .bento {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-rows: auto auto;
+    gap: 20px;
+  }
+
+  .card {
+    padding: 32px;
+    border-radius: var(--r-card);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card h3 {
+    font-size: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .soft {
+    background: var(--soft);
+  }
+
+  .plain {
+    background: var(--surface);
+  }
+
+  .big {
+    grid-row: span 2;
+    padding: 40px;
+    border: 0;
+    background: var(--accent);
+    color: #fff;
+    justify-content: space-between;
+    gap: 40px;
+    min-height: 360px;
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .big h3 {
+    font-size: 36px;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .big p {
+    max-width: 460px;
+    font-size: 17px;
+    color: rgb(255 255 255 / 0.92);
+  }
+
+  @media (max-width: 860px) {
+    .bento {
+      grid-template-columns: 1fr;
+    }
+
+    .big {
+      grid-row: auto;
+      min-height: 0;
+      padding: 32px;
+    }
+
+    .big h3 {
+      font-size: 30px;
+    }
+  }
+</style>

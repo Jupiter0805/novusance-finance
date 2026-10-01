@@ -1,0 +1,99 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const faqs = [
+  {
+    q: '¿El asistente da consejos médicos?',
+    a: 'No. Informa de servicios, precios y horarios. Ante cualquier síntoma o posible urgencia, pide al dueño que llame a la clínica y te avisa al momento.',
+  },
+  {
+    q: '¿Se inventa respuestas?',
+    a: 'No. Solo responde con la información que tú me das. Si no sabe algo, pasa la conversación a tu WhatsApp.',
+  },
+  {
+    q: 'Ya uso un programa de gestión para la clínica. ¿Es compatible?',
+    a: 'Sí. No sustituye a tu programa: si ya tienes reservas online, el asistente lleva a tus clientes a ellas; si no, las citas te llegan al panel y al correo.',
+  },
+  {
+    q: '¿Cuánto tardas en tenerlo listo?',
+    a: 'Siete días laborables desde que me envías la información de tu clínica.',
+  },
+  {
+    q: '¿Qué pasa con los datos de mis clientes?',
+    a: 'Se guardan en servidores de la Unión Europea, solo lo necesario para contactar, y firmamos un contrato de protección de datos.',
+  },
+  {
+    q: '¿Y si quiero darme de baja?',
+    a: 'Sin permanencia: avisas con 30 días de antelación y te llevas tu dominio y tus datos.',
+  },
+];
+---
+
+<section id="preguntas" class="band">
+  <div class="inner">
+    <h2 class="display h2">Preguntas frecuentes</h2>
+    <div class="list">
+      {
+        faqs.map((f) => (
+          <details>
+            <summary>
+              <span>{f.q}</span>
+              <Icon name="ph:plus" size={20} class="toggle" />
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .inner {
+    max-width: 860px;
+    margin-inline: auto;
+    padding: 104px var(--gutter);
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  details {
+    border-bottom: 1px solid var(--line);
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  summary :global(.toggle) {
+    flex-shrink: 0;
+    color: var(--muted);
+    transition: transform 0.25s;
+  }
+
+  details[open] summary :global(.toggle) {
+    transform: rotate(45deg);
+  }
+
+  p {
+    margin: -8px 0 0;
+    padding-bottom: 22px;
+    max-width: 720px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+</style>

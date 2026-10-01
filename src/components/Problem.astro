@@ -1,0 +1,96 @@
+<section class="problem">
+  <div class="wrap inner">
+    <h2 class="display title">Cada llamada sin contestar es un cliente que llama a otra clínica.</h2>
+    <div class="grid">
+      <div class="big">
+        <div class="display clock" aria-hidden="true">23:47</div>
+        <p>
+          <span class="sr-only">A las 23:47. </span>Un dueño preocupado escribe y la clínica ya ha cerrado. Con Novusance,
+          a esa hora ya tiene respuesta.
+        </p>
+      </div>
+      <dl class="moments">
+        <div class="moment">
+          <dt class="display">11:30</dt>
+          <dd>Estás en quirófano. Suena el teléfono y nadie puede cogerlo.</dd>
+        </div>
+        <div class="moment">
+          <dt class="display">17:10</dt>
+          <dd>Sala de espera llena. Tres mensajes sin leer, todos preguntando lo mismo.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem {
+    border-top: 1px solid var(--line);
+  }
+
+  .inner {
+    padding-block: 104px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .title {
+    max-width: 820px;
+    font-size: clamp(34px, 4.4vw, 58px);
+    line-height: 1.04;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: 48px;
+    align-items: end;
+  }
+
+  .big {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .clock {
+    font-size: clamp(96px, 13vw, 184px);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    color: var(--accent-text);
+  }
+
+  .big p {
+    margin: 0;
+    max-width: 440px;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  .moments {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .moment {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 16px;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  dt {
+    font-size: 26px;
+    letter-spacing: -0.02em;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+</style>

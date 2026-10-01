@@ -1,0 +1,74 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const items = [
+  { icon: 'ph:clock', title: 'Lista en 7 días', text: 'Desde que me envías tu información' },
+  { icon: 'ph:lock-simple-open', title: 'Sin permanencia', text: 'Te das de baja cuando quieras' },
+  { icon: 'ph:shield', title: 'Nunca diagnostica', text: 'Ante un síntoma, te pasa el caso' },
+  { icon: 'ph:user', title: 'Trato directo', text: 'Te contesto yo, no una centralita' },
+];
+---
+
+<section aria-label="Garantías" class="guarantees">
+  <ul class="wrap grid">
+    {
+      items.map((it) => (
+        <li class="item">
+          <div class="icon">
+            <Icon name={it.icon} size={20} />
+          </div>
+          <div class="text">
+            <span class="title">{it.title}</span>
+            <span class="muted">{it.text}</span>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .guarantees {
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .grid {
+    margin-block: 0;
+    padding-block: 32px;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+  }
+
+  .item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-text);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 14px;
+  }
+
+  .title {
+    font-size: 15px;
+    font-weight: 600;
+  }
+</style>

@@ -1,0 +1,92 @@
+---
+import { Image } from 'astro:assets';
+import { optionalImage } from '../lib/optional-image';
+
+const photo = optionalImage('jupiter.webp');
+---
+
+<section class="about">
+  <div class="inner">
+    <div class="person">
+      <div class="photo">
+        {photo ? <Image src={photo} alt="Jupiter Moreno" width={152} height={152} /> : <span>[Tu foto]</span>}
+      </div>
+      <div class="who">
+        <div class="name">Jupiter Moreno</div>
+        <div class="muted">Desarrollador en Madrid</div>
+      </div>
+    </div>
+    <h2 class="display title">Cuando escribes, te contesto yo.</h2>
+    <p class="text">
+      No hay centralita ni tickets. Conozco tu web porque la he hecho yo, y tu dominio y tus datos son tuyos: si un día te
+      vas, te los llevas.
+    </p>
+  </div>
+</section>
+
+<style>
+  .about {
+    border-top: 1px solid var(--line);
+  }
+
+  .inner {
+    max-width: 760px;
+    margin-inline: auto;
+    padding: 104px var(--gutter);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .person {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .photo {
+    flex-shrink: 0;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--soft);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .who {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 15px;
+  }
+
+  .name {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .title {
+    font-size: clamp(32px, 4.2vw, 54px);
+    line-height: 1.06;
+  }
+
+  .text {
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+</style>

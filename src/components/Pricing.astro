@@ -1,0 +1,204 @@
+---
+const plans = [
+  {
+    name: 'Base',
+    price: '25 €',
+    tagline: 'Para no perder más citas.',
+    features: [
+      'Web con tu dominio',
+      'Asistente con tus servicios y precios',
+      'Reserva de citas',
+      'Aviso de urgencias',
+      'Panel con tus contactos',
+      'Hosting y 1 cambio al mes',
+    ],
+    featured: false,
+  },
+  {
+    name: 'Pro',
+    price: '49 €',
+    tagline: 'Para que nadie se olvide de volver.',
+    features: [
+      'Todo lo de Base',
+      'Recordatorios de citas y vacunas',
+      'Informe mensual de resultados',
+      'Respuestas a tus reseñas de Google',
+      '3 cambios al mes',
+    ],
+    featured: true,
+  },
+  {
+    name: 'Plus',
+    price: '89 €',
+    tagline: 'Para estar en todos los canales.',
+    features: ['Todo lo de Pro', 'Asistente también en WhatsApp', '4 publicaciones al mes para redes'],
+    featured: false,
+  },
+];
+---
+
+<section id="precios" class="wrap pricing">
+  <div class="intro">
+    <div class="eyebrow">Precios</div>
+    <h2 class="display h2">Un alta de 300 €. Después, una cuota sin permanencia.</h2>
+  </div>
+  <div class="grid">
+    {
+      plans.map((p) => (
+        <article class:list={['plan', { featured: p.featured }]} aria-labelledby={`plan-${p.name}`}>
+          <div class="top">
+            <div class="name-row">
+              <h3 class="name" id={`plan-${p.name}`}>
+                {p.name}
+              </h3>
+              {p.featured && <span class="badge">Recomendado</span>}
+            </div>
+            <div class="price">
+              <span class="display amount">{p.price}</span>
+              <span class="per">al mes</span>
+            </div>
+            <p class="tagline">{p.tagline}</p>
+          </div>
+          <ul class="features">
+            {p.features.map((f) => (
+              <li>{f}</li>
+            ))}
+          </ul>
+          <a href="#contacto" class:list={['btn', 'plan-btn', p.featured ? 'btn-accent' : 'btn-plain']}>
+            Pide tu demo<span class="sr-only"> (plan {p.name})</span>
+          </a>
+        </article>
+      ))
+    }
+  </div>
+  <p class="note">
+    Precios sin IVA. ¿Prefieres pagar una sola vez? Web en propiedad por 900 €, sin asistente ni soporte incluidos.
+  </p>
+</section>
+
+<style>
+  .pricing {
+    padding-block: 104px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 700px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .plan {
+    padding: 32px;
+    border-radius: var(--r-card);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .featured {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+
+  .top {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .name {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--r-pill);
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .amount {
+    font-size: 52px;
+    letter-spacing: -0.03em;
+  }
+
+  .per,
+  .tagline {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .tagline {
+    margin: 0;
+  }
+
+  .featured .per {
+    color: color-mix(in srgb, var(--bg) 70%, var(--ink));
+  }
+
+  .featured .tagline {
+    color: color-mix(in srgb, var(--bg) 80%, var(--ink));
+  }
+
+  .features {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 15px;
+    flex-grow: 1;
+  }
+
+  .plan-btn {
+    min-height: 48px;
+  }
+
+  .btn-plain {
+    border-color: var(--line);
+    color: var(--ink);
+  }
+
+  .featured :focus-visible {
+    outline-color: var(--bg);
+  }
+
+  .note {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+</style>
