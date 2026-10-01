@@ -14,6 +14,8 @@ interface Env {
   CONTACT_TO: string;
   CONTACT_FROM: string;
   TURNSTILE_SECRET_KEY: string;
+  /** Solo para pruebas en local: "1" valida todo pero no envía el email. Nunca en producción. */
+  CONTACT_DRY_RUN?: string;
 }
 
 type ErrorCode = 'validation' | 'turnstile' | 'bad_request' | 'too_large' | 'config' | 'send';
@@ -55,6 +57,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   const human = await verifyTurnstile(token, env.TURNSTILE_SECRET_KEY, request.headers.get('CF-Connecting-IP'));
   if (!human) return fail(403, 'turnstile');
+
+  if (env.CONTACT_DRY_RUN === '1') {
+    console.log('[contact] Modo prueba: email no enviado');
+    return done();
+  }
 
   const sent = await sendEmail(env, input);
   if (!sent) return fail(502, 'send');
