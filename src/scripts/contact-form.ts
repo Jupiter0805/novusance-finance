@@ -1,34 +1,19 @@
 import { readContact, validateContact, type Field, type FieldErrors } from '../lib/contact-validation';
 
-interface TurnstileApi {
-  render(el: HTMLElement, opts: Record<string, unknown>): string;
-  reset(id?: string): void;
-  getResponse(id?: string): string | undefined;
-}
-
-declare global {
-  interface Window {
-    turnstile?: TurnstileApi;
-    nvTurnstileReady?: () => void;
-  }
-}
-
-const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=nvTurnstileReady';
-const TOKEN_TIMEOUT = 20000;
-
 const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
 const success = document.querySelector<HTMLElement>('[data-success]');
 const failure = document.querySelector<HTMLElement>('[data-failure]');
 const failureText = document.querySelector<HTMLElement>('[data-failure-text]');
 const submit = document.querySelector<HTMLButtonElement>('[data-submit]');
 const submitLabel = document.querySelector<HTMLElement>('[data-submit-label]');
-const widgetBox = document.querySelector<HTMLElement>('[data-turnstile]');
+const startedAt = document.querySelector<HTMLInputElement>('[data-started-at]');
 
-if (form && success && failure && failureText && submit && submitLabel && widgetBox) {
+if (form && success && failure && failureText && submit && submitLabel) {
   // Con JS validamos nosotros para mostrar mensajes claros en español bajo cada campo.
   form.noValidate = true;
 
-  const siteKey = form.dataset.sitekey ?? '';
+  // Antispam sin servicios externos: el servidor descarta envíos hechos demasiado rápido tras abrir la página.
+  if (startedAt) startedAt.value = String(Date.now());
   const fields: Field[] = ['nombre', 'clinica', 'email', 'telefono', 'mensaje', 'privacidad'];
   const input = (f: Field) => form.elements.namedItem(f) as HTMLInputElement | HTMLTextAreaElement;
   const errorEl = (f: Field) => form.querySelector<HTMLElement>(`[data-error-for="${f}"]`);
@@ -60,75 +45,6 @@ if (form && success && failure && failureText && submit && submitLabel && widget
       if (touched.has(f)) showErrors(validate(), touched);
     });
   }
-
-  /* ── Turnstile (se carga al acercarse al formulario) ───────────── */
-
-  let widgetId: string | undefined;
-  let scriptPromise: Promise<void> | undefined;
-  let tokenWaiters: Array<(token: string | null) => void> = [];
-
-  const settle = (token: string | null) => {
-    tokenWaiters.forEach((resolve) => resolve(token));
-    tokenWaiters = [];
-  };
-
-  const loadTurnstile = () => {
-    if (scriptPromise) return scriptPromise;
-    scriptPromise = new Promise<void>((resolve, reject) => {
-      window.nvTurnstileReady = () => resolve();
-      const s = document.createElement('script');
-      s.src = TURNSTILE_SRC;
-      s.async = true;
-      s.onerror = () => reject(new Error('turnstile-load'));
-      document.head.append(s);
-    }).then(() => {
-      widgetId = window.turnstile?.render(widgetBox, {
-        sitekey: siteKey,
-        appearance: 'interaction-only',
-        theme: 'auto',
-        language: 'es',
-        action: 'contacto',
-        'refresh-expired': 'auto',
-        callback: (token: string) => settle(token),
-        'error-callback': () => {
-          settle(null);
-        },
-        'expired-callback': () => undefined,
-      });
-    });
-    scriptPromise.catch(() => {
-      scriptPromise = undefined;
-    });
-    return scriptPromise;
-  };
-
-  const getToken = async (): Promise<string | null> => {
-    try {
-      await loadTurnstile();
-    } catch {
-      return null;
-    }
-    const current = window.turnstile?.getResponse(widgetId);
-    if (current) return current;
-    return new Promise((resolve) => {
-      tokenWaiters.push(resolve);
-      window.setTimeout(() => resolve(null), TOKEN_TIMEOUT);
-    });
-  };
-
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          io.disconnect();
-          loadTurnstile().catch(() => undefined);
-        }
-      },
-      { rootMargin: '600px 0px' },
-    );
-    io.observe(form);
-  }
-  form.addEventListener('focusin', () => loadTurnstile().catch(() => undefined), { once: true });
 
   /* ── Estados ───────────────────────────────────────────────────── */
 
@@ -168,15 +84,7 @@ if (form && success && failure && failureText && submit && submitLabel && widget
 
     setSending(true);
     try {
-      const token = await getToken();
-      if (!token) {
-        showFailure('No he podido completar la verificación antispam.');
-        return;
-      }
-
       const data = new FormData(form);
-      data.set('cf-turnstile-response', token);
-
       const res = await fetch(form.action, {
         method: 'POST',
         body: data,
@@ -196,17 +104,11 @@ if (form && success && failure && failureText && submit && submitLabel && widget
         return;
       }
 
-      showFailure(
-        body.error === 'turnstile'
-          ? 'No he podido completar la verificación antispam.'
-          : 'No se ha podido enviar el formulario.',
-      );
+      showFailure();
     } catch {
       showFailure();
     } finally {
       setSending(false);
-      // Cada token de Turnstile sirve para un solo envío.
-      if (widgetId !== undefined && !form.hidden) window.turnstile?.reset(widgetId);
     }
   });
 

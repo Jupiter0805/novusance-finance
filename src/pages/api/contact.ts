@@ -7,18 +7,14 @@ import {
   CONTACT_TO_CO,
   RESEND_API_KEY,
   SUPABASE_SECRET_KEY,
-  TURNSTILE_SECRET_KEY,
 } from 'astro:env/server';
 import { PUBLIC_SUPABASE_URL } from 'astro:env/client';
 import { handleContact } from '../../lib/contact-handler';
 
 export const prerender = false;
 
-export const POST: APIRoute = ({ request, clientAddress }) =>
-  handleContact(
-    request,
-    {
-      TURNSTILE_SECRET_KEY: TURNSTILE_SECRET_KEY ?? '',
+export const POST: APIRoute = ({ request }) =>
+  handleContact(request, {
       SUPABASE_URL: PUBLIC_SUPABASE_URL,
       SUPABASE_SECRET_KEY,
       RESEND_API_KEY,
@@ -26,6 +22,4 @@ export const POST: APIRoute = ({ request, clientAddress }) =>
       CONTACT_TO_CO,
       CONTACT_FROM,
       CONTACT_DRY_RUN,
-    },
-    clientAddress ?? null,
-  );
+  });

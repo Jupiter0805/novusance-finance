@@ -6,11 +6,7 @@ updated: "16 de octubre de 2026"
 
 ## 1. Qué cookies usa esta web
 
-Esta web solo usa tecnologías técnicas, necesarias para que funcione y para protegerla frente a abusos. No usa cookies de publicidad, de redes sociales ni de seguimiento.
-
-| Cookie o almacenamiento | Proveedor | Finalidad | Duración |
-| --- | --- | --- | --- |
-| `cf.turnstile.u` (almacenamiento local del navegador, no es una cookie) | Cloudflare | Protección antispam del formulario de contacto. Solo se crea al llegar al formulario. | Hasta que borres los datos del navegador |
+Esta web no usa cookies ni guarda nada en tu navegador mientras la visitas: ni de publicidad, ni de redes sociales, ni de seguimiento. Por eso no ves ningún aviso para aceptarlas.
 
 ## 2. Analítica
 

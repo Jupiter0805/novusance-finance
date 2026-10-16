@@ -10,14 +10,9 @@ Las cookies son pequeños archivos que un sitio web guarda en tu navegador para 
 
 ## 2. Qué cookies usa esta web
 
-Esta web **solo utiliza cookies técnicas**, estrictamente necesarias para que funcione y para protegerla frente a abusos. No usamos cookies de publicidad, de redes sociales ni de seguimiento, y no compartimos información de tu navegación con terceros con fines comerciales.
+Esta web **no usa cookies ni guarda nada en tu navegador** mientras la visitas: ni de publicidad, ni de redes sociales, ni de seguimiento, ni técnicas. Por eso no ves ningún aviso para aceptarlas.
 
-Por eso, de acuerdo con el artículo 22.2 de la LSSI, estas cookies no requieren tu consentimiento y no mostramos un aviso para aceptarlas.
-
-| Cookie o almacenamiento | Proveedor | Finalidad | Duración |
-| --- | --- | --- | --- |
-| `cf.turnstile.u` (almacenamiento local del navegador, no es una cookie) | Cloudflare (challenges.cloudflare.com) | Seguridad: protección antispam del formulario de contacto (Cloudflare Turnstile). Solo se crea cuando llegas al formulario. | Persistente, hasta que borres los datos del navegador |
-
+La única excepción es el panel privado de administración (`/admin`), que solo usan los titulares de Novusance: guarda en el navegador la sesión iniciada, una tecnología estrictamente necesaria que no requiere consentimiento.
 
 ## 3. Analítica
 

@@ -9,11 +9,6 @@ const email = country.email;
 const privacy = `${country.legalBase}/privacidad`;
 // Responsable del tratamiento de los datos del formulario: la persona que lleva Novusance en ese país.
 const controller = country.code === 'es' ? 'Juan Ignacio Moreno Cordido' : country.person.name;
-
-// Clave pública de Turnstile. En desarrollo, si no está definida, se usa la clave de pruebas que siempre pasa.
-const TEST_SITE_KEY = '1x00000000000000000000AA';
-const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || (import.meta.env.DEV ? TEST_SITE_KEY : '');
-if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formulario no pasará la verificación antispam.');
 ---
 
 <section id="contacto" class="wrap contact">
@@ -49,7 +44,6 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
         action="/api/contact"
         method="post"
         data-contact-form
-        data-sitekey={siteKey}
         aria-label="Solicitud de propuesta"
       >
         <div class="grid">
@@ -124,15 +118,8 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
         </div>
 
         <input type="hidden" name="pais" value={country.code} />
-
-        <div class="turnstile" data-turnstile></div>
-
-        <noscript>
-          <p class="noscript">
-            Para enviar el formulario hace falta JavaScript (lo uso para la protección antispam). Si lo prefieres,
-            escríbeme a <a href={`mailto:${email}`}>{email}</a>.
-          </p>
-        </noscript>
+        <!-- Antispam: el script pone aquí la hora de apertura; el servidor descarta envíos de menos de 3 segundos. -->
+        <input type="hidden" name="t" value="" data-started-at />
 
         <div class="submit-row">
           <div class="consent">
@@ -401,16 +388,6 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
     width: 1px;
     height: 1px;
     overflow: hidden;
-  }
-
-  .turnstile:empty {
-    display: none;
-  }
-
-  .noscript {
-    margin: 0;
-    font-size: 15px;
-    color: var(--muted);
   }
 
   .submit {

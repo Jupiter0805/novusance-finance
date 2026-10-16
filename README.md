@@ -25,7 +25,7 @@ src/
   data/consent.ts            Herramientas con cookies no esenciales (hoy, ninguna)
   data/logo.ts               Logo en vectorial (trazado de Novusance-Logo.png)
   admin/                     Panel /admin (Preact): vistas, acceso a Supabase y cálculos con sus pruebas
-  lib/contact-handler.ts     Lógica del formulario: valida, verifica Turnstile y envía el email con Resend
+  lib/contact-handler.ts     Lógica del formulario: valida, filtra bots, guarda en Supabase y avisa por email
   lib/contact-validation.ts  Reglas del formulario, compartidas por navegador y servidor
   pages/                     [country] (/es, /co), [legal] (España), co/[legal] (Colombia), admin, api/contact, 404
   scripts/contact-form.ts    Lógica del formulario en el navegador
@@ -42,8 +42,7 @@ a `DRAFT_PATHS` en `astro.config.mjs`) y sin enlace en el selector de país.
 
 ## Cookies
 
-La web solo usa almacenamiento técnico (Turnstile, en el formulario), que no requiere consentimiento, así que no muestra
-banner. El gestor de consentimiento ya está montado y se activa solo:
+La web pública no usa cookies ni almacenamiento del navegador, así que no muestra banner. El gestor de consentimiento ya está montado y se activa solo:
 
 1. Añade la herramienta a `CONSENT_TOOLS` en `src/data/consent.ts`: su script (`src` y/o `inline`), su categoría
    (analítica o publicidad) y los nombres de sus cookies.
@@ -111,20 +110,8 @@ npm run check        # comprobación de tipos
 npm test             # pruebas de los cálculos del panel y del formulario
 ```
 
-Para probar el formulario en local, crea `.env` (está en `.gitignore`) a partir de `.env.example` con las claves de
-prueba de Turnstile y `CONTACT_DRY_RUN=1`, que valida todo y verifica Turnstile pero no envía el email:
-
-```
-PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
-TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
-RESEND_API_KEY=re_xxx
-CONTACT_TO=hola@novusance.com
-CONTACT_FROM=Novusance <web@novusance.com>
-CONTACT_DRY_RUN=1
-```
-
-Claves de prueba de Turnstile: la pública `1x00000000000000000000AA` siempre pasa; `2x00000000000000000000AB` siempre
-falla; `3x00000000000000000000FF` fuerza el desafío interactivo.
+Para probar el formulario en local, crea `.env` (está en `.gitignore`) a partir de `.env.example`. Con
+`CONTACT_DRY_RUN=1` valida todo pero ni guarda ni envía nada.
 
 ## Variables de entorno
 
@@ -132,8 +119,6 @@ En Vercel > Project > Settings > Environment Variables (Production y Preview).
 
 | Variable | Para qué |
 | --- | --- |
-| `PUBLIC_TURNSTILE_SITE_KEY` | Clave pública del widget de Turnstile. Se incrusta en el build: tras cambiarla, vuelve a desplegar |
-| `TURNSTILE_SECRET_KEY` | Verificar el token de Turnstile en el servidor |
 | `RESEND_API_KEY` | Enviar el email con la API de Resend |
 | `CONTACT_TO` | Destinatario(s) de las solicitudes, separados por comas |
 | `CONTACT_TO_CO` | Destinatario(s) de las solicitudes enviadas desde `/co`. Si falta, van a `CONTACT_TO` |
@@ -143,17 +128,16 @@ En Vercel > Project > Settings > Environment Variables (Production y Preview).
 | `PUBLIC_SUPABASE_ANON_KEY` | Clave publicable (`sb_publishable_…`) de Supabase, para el panel |
 | `SUPABASE_SECRET_KEY` | Clave secreta (`sb_secret_…`), **solo servidor y como Secret**: guarda los mensajes del formulario |
 
-En Cloudflare > Turnstile, el widget debe incluir `novusance.com` y `www.novusance.com` como hostnames (Turnstile es
-solo el antispam; la web está en Vercel).
 
 ## Formulario de contacto
 
 - Validación en el navegador (mensajes en español bajo cada campo) y la misma validación en el servidor.
-- Antispam: Turnstile (modo gestionado, invisible salvo que haga falta comprobar algo) y un campo trampa oculto. El
-  script de Turnstile solo se carga cuando el visitante se acerca al formulario.
+- Antispam sin servicios externos: un campo trampa oculto y un tiempo mínimo de 3 segundos entre abrir la página y
+  enviar. Si parece un bot, el servidor responde como si todo fuera bien y no guarda nada. Si algún día entra spam,
+  la opción es añadir Cloudflare Turnstile.
 - Envío con `fetch` sin recargar; el endpoint responde `{ ok: true }` o `{ ok: false, error }`.
 - Sin JavaScript, el formulario hace un POST normal y el endpoint redirige a `/<país>?enviado=1#contacto`
-  (o `/<país>?error=<código>#contacto`). Turnstile necesita JavaScript, así que sin JS se muestra el email como alternativa.
+  (o `/<país>?error=<código>#contacto`). Funciona también sin JavaScript.
 - El campo oculto `pais` decide el destinatario (`CONTACT_TO` o `CONTACT_TO_CO`).
 - Cada solicitud se guarda en la tabla `messages` de Supabase (si hay `SUPABASE_SECRET_KEY`) y aparece en el panel,
   pestaña Mensajes. Si además están `RESEND_API_KEY`, `CONTACT_TO` y `CONTACT_FROM`, llega un aviso por email. Basta con

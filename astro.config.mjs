@@ -24,11 +24,9 @@ export default defineConfig({
   // Variables del formulario (src/pages/api/contact.ts). En local van en .env; en producción, en Vercel.
   env: {
     schema: {
-      PUBLIC_TURNSTILE_SITE_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
       // Panel /admin. La clave anon es pública por diseño: la seguridad está en las políticas RLS de Supabase.
       PUBLIC_SUPABASE_URL: envField.string({ context: 'client', access: 'public', optional: true }),
       PUBLIC_SUPABASE_ANON_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
-      TURNSTILE_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       CONTACT_TO: envField.string({ context: 'server', access: 'secret', optional: true }),
       CONTACT_TO_CO: envField.string({ context: 'server', access: 'secret', optional: true }),

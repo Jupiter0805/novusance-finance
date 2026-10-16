@@ -2,7 +2,9 @@
  * Lógica del formulario de contacto, independiente de la plataforma.
  * La usa el endpoint src/pages/api/contact.ts, que en Vercel corre como función.
  *
- * Recibe el formulario de contacto, lo valida y verifica Turnstile. Después:
+ * Recibe el formulario de contacto y lo valida. Antispam sin servicios externos: campo trampa oculto y tiempo mínimo
+ * entre abrir la página y enviar (los bots rellenan y envían al instante). Si parece un bot, responde "ok" sin guardar.
+ * Después:
  *   - lo guarda en la tabla `messages` de Supabase (si hay SUPABASE_SECRET_KEY), para verlo en el panel /admin;
  *   - y envía un aviso por email con Resend (si hay RESEND_API_KEY, CONTACT_TO y CONTACT_FROM).
  * Basta con que funcione uno de los dos. No escribe datos personales en los logs.
@@ -14,7 +16,6 @@
 import { readContact, validateContact, type ContactInput } from './contact-validation';
 
 export interface ContactEnv {
-  TURNSTILE_SECRET_KEY: string;
   /** Supabase: URL del proyecto y clave secreta (solo servidor) para guardar el mensaje. */
   SUPABASE_URL?: string;
   SUPABASE_SECRET_KEY?: string;
@@ -30,11 +31,14 @@ export interface ContactEnv {
 
 type Country = 'es' | 'co';
 
-type ErrorCode = 'validation' | 'turnstile' | 'bad_request' | 'too_large' | 'config' | 'send';
+type ErrorCode = 'validation' | 'bad_request' | 'too_large' | 'config' | 'send';
+
+/** Tiempo mínimo entre abrir la página y enviar el formulario. */
+const MIN_FILL_MS = 3000;
 
 const MAX_BODY_BYTES = 32 * 1024;
 
-export async function handleContact(request: Request, env: ContactEnv, ip: string | null): Promise<Response> {
+export async function handleContact(request: Request, env: ContactEnv): Promise<Response> {
   const wantsJson = (request.headers.get('Accept') ?? '').includes('application/json');
 
   // Hasta leer el formulario no se sabe el país; mientras, las respuestas sin JS vuelven a España.
@@ -45,7 +49,7 @@ export async function handleContact(request: Request, env: ContactEnv, ip: strin
 
   const canStore = Boolean(env.SUPABASE_URL && env.SUPABASE_SECRET_KEY);
   const canEmail = Boolean(env.RESEND_API_KEY && env.CONTACT_TO && env.CONTACT_FROM);
-  if (!env.TURNSTILE_SECRET_KEY || (!canStore && !canEmail)) {
+  if (!canStore && !canEmail) {
     console.error('[contact] Faltan variables de entorno');
     return fail(500, 'config');
   }
@@ -66,15 +70,13 @@ export async function handleContact(request: Request, env: ContactEnv, ip: strin
   const honeypot = data.get('website');
   if (typeof honeypot === 'string' && honeypot.trim() !== '') return done();
 
+  // Demasiado rápido para una persona: bot. Sin JS el campo llega vacío y no se aplica.
+  const started = Number(data.get('t'));
+  if (started > 0 && Date.now() - started < MIN_FILL_MS) return done();
+
   const input = readContact(data);
   const fields = validateContact(input);
   if (Object.keys(fields).length > 0) return fail(400, 'validation', { fields });
-
-  const token = data.get('cf-turnstile-response');
-  if (typeof token !== 'string' || token === '' || token.length > 2048) return fail(403, 'turnstile');
-
-  const human = await verifyTurnstile(token, env.TURNSTILE_SECRET_KEY, ip);
-  if (!human) return fail(403, 'turnstile');
 
   if (env.CONTACT_DRY_RUN === '1') {
     console.log('[contact] Modo prueba: ni se guarda ni se envía');
@@ -115,23 +117,6 @@ async function storeMessage(env: ContactEnv, c: ContactInput, country: Country):
     return true;
   } catch {
     console.error('[contact] Error de red al llamar a Supabase');
-    return false;
-  }
-}
-
-async function verifyTurnstile(token: string, secret: string, ip: string | null): Promise<boolean> {
-  const body = new FormData();
-  body.append('secret', secret);
-  body.append('response', token);
-  if (ip) body.append('remoteip', ip);
-
-  try {
-    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
-    const result = (await res.json()) as { success?: boolean; 'error-codes'?: string[] };
-    if (!result.success) console.warn('[contact] Turnstile rechazado', result['error-codes'] ?? []);
-    return result.success === true;
-  } catch {
-    console.error('[contact] Error al verificar Turnstile');
     return false;
   }
 }

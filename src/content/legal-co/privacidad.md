@@ -41,7 +41,6 @@ Para prestar el servicio se usan proveedores que tratan datos por cuenta del res
 | Proveedor | Servicio |
 | --- | --- |
 | Vercel Inc. | Alojamiento de este sitio, de las propuestas y de las webs de clientes |
-| Cloudflare, Inc. | Protección antispam del formulario de contacto (Turnstile) |
 | Resend | Envío de los correos del formulario de contacto |
 | Supabase | Base de datos donde se guardan las solicitudes del formulario (servidores en Irlanda, UE) |
 
