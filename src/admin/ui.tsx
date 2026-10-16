@@ -105,3 +105,14 @@ export const saveFile = (content: Blob | string, name: string, type = 'text/csv;
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 2000);
 };
+
+/**
+ * Clic en cualquier punto de una fila de tabla para abrirla, salvo en sus enlaces o botones propios.
+ * Con teclado se sigue usando el botón del nombre de la fila.
+ */
+export const rowClick = (open: () => void) => (e: MouseEvent) => {
+  const t = e.target as HTMLElement;
+  if (t.closest('a, button, input, select, textarea')) return;
+  if (window.getSelection()?.toString()) return; // no abrir al seleccionar texto
+  open();
+};

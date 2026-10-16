@@ -4,7 +4,7 @@ import { quarterOf, totals, yearOf } from './calc';
 import { documentUrl, errorText, type AllData } from './data';
 import { MovementForm } from './MovementForm';
 import { CURRENCY, EXPENSE_CATEGORIES, INCOME_CATEGORIES, categoryLabel, scopeCountries, type Movement } from './model';
-import { Empty, Money, Notice, dateText, today } from './ui';
+import { dateText, Empty, Money, Notice, rowClick, today } from './ui';
 
 export function Movements({ data, scope, reload }: { data: AllData; scope: Scope; reload: () => Promise<void> }) {
   const countries = scopeCountries(scope);
@@ -140,7 +140,7 @@ export function Movements({ data, scope, reload }: { data: AllData; scope: Scope
             </thead>
             <tbody>
               {list.map((m) => (
-                <tr class={m.kind}>
+                <tr class={`clickable ${m.kind}`} onClick={rowClick(() => setEditing(m))}>
                   <td class="nowrap">{dateText(m.date)}</td>
                   <td>
                     <button type="button" class="row-link" onClick={() => setEditing(m)}>

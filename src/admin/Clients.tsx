@@ -4,7 +4,7 @@ import type { Scope } from './App';
 import { commitmentEnd, feeStatus, mrr, round2, totals, type FeeStatus } from './calc';
 import { deleteClient, errorText, saveClient, type AllData } from './data';
 import { COUNTRY_NAME, CURRENCY, scopeCountries, type Client, type Country } from './model';
-import { Empty, Field, Modal, Money, Notice, dateText, today } from './ui';
+import { dateText, Empty, Field, Modal, Money, Notice, rowClick, today } from './ui';
 
 const STATUS: Record<FeeStatus, string> = {
   activa: 'Cuota activa',
@@ -58,7 +58,7 @@ export function Clients({ data, scope, reload }: { data: AllData; scope: Scope; 
                 const end = commitmentEnd(c);
                 const billed = totals(data.movements.filter((m) => m.client_id === c.id)).income;
                 return (
-                  <tr>
+                  <tr class="clickable" onClick={rowClick(() => setEditing(c))}>
                     <td>
                       <button type="button" class="row-link" onClick={() => setEditing(c)}>
                         {c.name}

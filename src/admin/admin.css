@@ -842,3 +842,12 @@ body.admin {
 .link-notice span {
   color: var(--muted);
 }
+
+/* Filas que se abren al pulsarlas */
+.table tr.clickable {
+  cursor: pointer;
+}
+
+.table tbody tr.clickable:hover td {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}

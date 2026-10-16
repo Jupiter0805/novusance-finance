@@ -3,7 +3,7 @@ import type { Scope } from './App';
 import { ClientForm } from './Clients';
 import { deleteMessage, errorText, updateMessage, type AllData } from './data';
 import { COUNTRY_NAME, MESSAGE_STATUS, scopeCountries, type Message, type MessageStatus } from './model';
-import { Empty, Field, Modal, Notice } from './ui';
+import { Empty, Field, Modal, Notice, rowClick } from './ui';
 
 const when = (iso: string) =>
   new Date(iso).toLocaleString('es-ES', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -85,7 +85,7 @@ export function Messages({
             </thead>
             <tbody>
               {list.map((m) => (
-                <tr class={m.status === 'nuevo' ? 'unread' : ''}>
+                <tr class={`clickable${m.status === 'nuevo' ? ' unread' : ''}`} onClick={rowClick(() => setOpen(m))}>
                   <td class="nowrap">{when(m.created_at)}</td>
                   <td>
                     <button type="button" class="row-link" onClick={() => setOpen(m)}>
