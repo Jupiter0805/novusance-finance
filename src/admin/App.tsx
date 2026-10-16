@@ -4,6 +4,7 @@ import { Clients } from './Clients';
 import { arrivedToSetPassword, configured, errorText, loadAll, supabase, type AllData } from './data';
 import { Dashboard } from './Dashboard';
 import { Login, SetPassword } from './Login';
+import { Messages } from './Messages';
 import type { Country } from './model';
 import { Movements } from './Movements';
 import { Sirrux } from './Sirrux';
@@ -14,6 +15,7 @@ export type Scope = 'all' | Country;
 
 const VIEWS = {
   resumen: 'Resumen',
+  mensajes: 'Mensajes',
   movimientos: 'Movimientos',
   clientes: 'Clientes',
   sirrux: 'Fondo Sirrux',
@@ -110,6 +112,7 @@ export default function App() {
   if (!session) return <Login />;
 
   const logout = () => supabase!.auth.signOut();
+  const unread = data ? data.messages.filter((m) => m.status === 'nuevo').length : 0;
 
   if (data && !data.me) {
     return (
@@ -138,6 +141,11 @@ export default function App() {
           {(Object.keys(VIEWS) as View[]).map((v) => (
             <a href={`#/${v}`} aria-current={v === view ? 'page' : undefined}>
               {VIEWS[v]}
+              {v === 'mensajes' && unread > 0 && (
+                <span class="badge" aria-label={`${unread} nuevos`}>
+                  {unread}
+                </span>
+              )}
             </a>
           ))}
         </nav>
@@ -170,6 +178,7 @@ export default function App() {
         )}
         {!data && !error && <div class="loading">Cargando datos…</div>}
         {data && view === 'resumen' && <Dashboard data={data} scope={scope} />}
+        {data && view === 'mensajes' && <Messages data={data} scope={scope} reload={reload} userId={session.user.id} />}
         {data && view === 'movimientos' && <Movements data={data} scope={scope} reload={reload} />}
         {data && view === 'clientes' && <Clients data={data} scope={scope} reload={reload} />}
         {data && view === 'sirrux' && <Sirrux data={data} scope={scope} reload={reload} userId={session.user.id} />}

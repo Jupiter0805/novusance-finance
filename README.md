@@ -66,7 +66,7 @@ Supabase desde el navegador. La clave `anon` es pública por diseño: lo que pro
 ### Puesta en marcha (una vez)
 
 1. **Crear el proyecto** en Supabase, región `eu-west` (Irlanda o Fráncfort).
-2. **Base de datos:** SQL Editor → pega `supabase/migrations/0001_admin.sql` entero → Run. Crea las tablas, las políticas y
+2. **Base de datos:** SQL Editor → pega `supabase/migrations/0001_admin.sql` y después `0002_messages.sql` → Run. Crea las tablas, las políticas y
    el bucket privado `documentos`. Se puede volver a ejecutar sin problema.
 3. **Cerrar el registro:** Authentication → Sign In / Providers → desactiva «Allow new users to sign up». Solo entra quien
    invitéis.
@@ -87,7 +87,7 @@ Supabase desde el navegador. La clave `anon` es pública por diseño: lo que pro
 
 ### Cómo se calcula
 
-Todo está en `src/admin/calc.ts`, con pruebas en `calc.test.ts` (`npm run test:admin`).
+Todo está en `src/admin/calc.ts`, con pruebas en `calc.test.ts` (`npm test`).
 
 - **Fondo Sirrux:** cada mes y país, el porcentaje de Ajustes (30 % por defecto) del beneficio = ingresos − gastos
   marcados como «gasto directo de un cliente». Los meses con pérdidas no aportan. Los gastos marcados como «Pagado con el
@@ -108,7 +108,7 @@ npm install
 npm run dev          # http://localhost:4321, formulario incluido
 npm run build
 npm run check        # comprobación de tipos
-npm run test:admin   # pruebas de los cálculos del panel
+npm test             # pruebas de los cálculos del panel y del formulario
 ```
 
 Para probar el formulario en local, crea `.env` (está en `.gitignore`) a partir de `.env.example` con las claves de
@@ -140,7 +140,8 @@ En Vercel > Project > Settings > Environment Variables (Production y Preview).
 | `CONTACT_FROM` | Remitente, p. ej. `Novusance <web@novusance.com>` (dominio verificado en Resend) |
 | `CONTACT_DRY_RUN` | Solo en local: `1` = no envía el email. **Nunca en producción** |
 | `PUBLIC_SUPABASE_URL` | URL del proyecto de Supabase del panel `/admin` |
-| `PUBLIC_SUPABASE_ANON_KEY` | Clave `anon` (pública) de Supabase. Nunca la `service_role` |
+| `PUBLIC_SUPABASE_ANON_KEY` | Clave publicable (`sb_publishable_…`) de Supabase, para el panel |
+| `SUPABASE_SECRET_KEY` | Clave secreta (`sb_secret_…`), **solo servidor y como Secret**: guarda los mensajes del formulario |
 
 En Cloudflare > Turnstile, el widget debe incluir `novusance.com` y `www.novusance.com` como hostnames (Turnstile es
 solo el antispam; la web está en Vercel).
@@ -154,7 +155,9 @@ solo el antispam; la web está en Vercel).
 - Sin JavaScript, el formulario hace un POST normal y el endpoint redirige a `/<país>?enviado=1#contacto`
   (o `/<país>?error=<código>#contacto`). Turnstile necesita JavaScript, así que sin JS se muestra el email como alternativa.
 - El campo oculto `pais` decide el destinatario (`CONTACT_TO` o `CONTACT_TO_CO`).
-- No se guardan los datos en ninguna base de datos. Los logs no incluyen datos personales.
+- Cada solicitud se guarda en la tabla `messages` de Supabase (si hay `SUPABASE_SECRET_KEY`) y aparece en el panel,
+  pestaña Mensajes. Si además están `RESEND_API_KEY`, `CONTACT_TO` y `CONTACT_FROM`, llega un aviso por email. Basta con
+  que funcione uno de los dos para que el visitante vea el envío como correcto. Los logs no incluyen datos personales.
 
 ## Capturas de trabajos y fotos
 

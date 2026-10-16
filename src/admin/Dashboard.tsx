@@ -18,10 +18,20 @@ export function Dashboard({ data, scope }: { data: AllData; scope: Scope }) {
   const sq = spainQuarter(data.movements, pending.y, pending.q);
 
   const recent = data.movements.filter((m) => countries.includes(m.country)).slice(0, 6);
+  const fresh = data.messages.filter((m) => m.status === 'nuevo' && countries.includes(m.country));
 
   return (
     <div class="stack">
       <h1 class="page-title">Resumen</h1>
+
+      {fresh.length > 0 && (
+        <a class="notice warn link-notice" href="#/mensajes">
+          <strong>
+            {fresh.length === 1 ? '1 mensaje nuevo' : `${fresh.length} mensajes nuevos`} desde la web
+          </strong>
+          <span>{fresh.slice(0, 3).map((m) => m.clinic).join(', ')}</span>
+        </a>
+      )}
 
       <div class="cards">
         {countries.map((c) => (

@@ -97,3 +97,27 @@ export const SPAIN_DEADLINES: Record<number, (year: number) => string> = {
   3: (y) => `${y}-10-20`,
   4: (y) => `${y + 1}-01-30`,
 };
+
+export type MessageStatus = 'nuevo' | 'en_curso' | 'cerrado';
+
+export const MESSAGE_STATUS: Record<MessageStatus, string> = {
+  nuevo: 'Nuevo',
+  en_curso: 'En curso',
+  cerrado: 'Cerrado',
+};
+
+/** Mensaje del formulario de la web. Lo inserta el servidor; desde el panel solo se lee, se actualiza o se borra. */
+export interface Message {
+  id: string;
+  country: Country;
+  name: string;
+  clinic: string;
+  email: string;
+  phone: string | null;
+  message: string | null;
+  status: MessageStatus;
+  notes: string | null;
+  client_id: string | null;
+  handled_by: string | null;
+  created_at: string;
+}

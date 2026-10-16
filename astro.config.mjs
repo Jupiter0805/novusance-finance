@@ -34,6 +34,8 @@ export default defineConfig({
       CONTACT_TO_CO: envField.string({ context: 'server', access: 'secret', optional: true }),
       CONTACT_FROM: envField.string({ context: 'server', access: 'secret', optional: true }),
       CONTACT_DRY_RUN: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // Clave secreta de Supabase (sb_secret_...): solo en el servidor, para guardar los mensajes del formulario.
+      SUPABASE_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
   integrations: [icon(), preact(), sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/admin') && !isDraft(page) })],

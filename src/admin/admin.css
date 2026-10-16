@@ -793,3 +793,52 @@ body.admin {
     padding: 16px;
   }
 }
+
+/* ── Mensajes ──────────────────────────────────────────────────────── */
+.badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.table tr.unread .row-link {
+  font-weight: 700;
+}
+
+.clamp {
+  max-width: 420px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.quote {
+  margin: 0;
+  padding: 14px 16px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  background: var(--soft);
+  white-space: pre-wrap;
+  line-height: 1.55;
+}
+
+.link-notice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.link-notice span {
+  color: var(--muted);
+}

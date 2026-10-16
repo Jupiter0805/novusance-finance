@@ -2,8 +2,10 @@
  * Lógica del formulario de contacto, independiente de la plataforma.
  * La usa el endpoint src/pages/api/contact.ts, que en Vercel corre como función.
  *
- * Recibe el formulario de contacto, lo valida, verifica Turnstile y envía un email con Resend.
- * No guarda los datos en ninguna base de datos y no escribe datos personales en los logs.
+ * Recibe el formulario de contacto, lo valida y verifica Turnstile. Después:
+ *   - lo guarda en la tabla `messages` de Supabase (si hay SUPABASE_SECRET_KEY), para verlo en el panel /admin;
+ *   - y envía un aviso por email con Resend (si hay RESEND_API_KEY, CONTACT_TO y CONTACT_FROM).
+ * Basta con que funcione uno de los dos. No escribe datos personales en los logs.
  *
  * - Con `Accept: application/json` (envío con fetch) responde { ok: true } o { ok: false, error }.
  * - Sin JS (envío normal del formulario) redirige a /<país>?enviado=1#contacto o /<país>?error=<código>#contacto.
@@ -12,12 +14,16 @@
 import { readContact, validateContact, type ContactInput } from './contact-validation';
 
 export interface ContactEnv {
-  RESEND_API_KEY: string;
-  CONTACT_TO: string;
+  TURNSTILE_SECRET_KEY: string;
+  /** Supabase: URL del proyecto y clave secreta (solo servidor) para guardar el mensaje. */
+  SUPABASE_URL?: string;
+  SUPABASE_SECRET_KEY?: string;
+  /** Email de aviso (opcional si se guardan en Supabase). */
+  RESEND_API_KEY?: string;
+  CONTACT_TO?: string;
   /** Destinatario(s) de las solicitudes de Colombia. Si no está, van a CONTACT_TO. */
   CONTACT_TO_CO?: string;
-  CONTACT_FROM: string;
-  TURNSTILE_SECRET_KEY: string;
+  CONTACT_FROM?: string;
   /** Solo para pruebas en local: "1" valida todo pero no envía el email. Nunca en producción. */
   CONTACT_DRY_RUN?: string;
 }
@@ -37,7 +43,9 @@ export async function handleContact(request: Request, env: ContactEnv, ip: strin
     wantsJson ? json(status, { ok: false, error, ...extra }) : redirect(request, `/${country}?error=${error}#contacto`);
   const done = () => (wantsJson ? json(200, { ok: true }) : redirect(request, `/${country}?enviado=1#contacto`));
 
-  if (!env.RESEND_API_KEY || !env.CONTACT_TO || !env.CONTACT_FROM || !env.TURNSTILE_SECRET_KEY) {
+  const canStore = Boolean(env.SUPABASE_URL && env.SUPABASE_SECRET_KEY);
+  const canEmail = Boolean(env.RESEND_API_KEY && env.CONTACT_TO && env.CONTACT_FROM);
+  if (!env.TURNSTILE_SECRET_KEY || (!canStore && !canEmail)) {
     console.error('[contact] Faltan variables de entorno');
     return fail(500, 'config');
   }
@@ -69,14 +77,46 @@ export async function handleContact(request: Request, env: ContactEnv, ip: strin
   if (!human) return fail(403, 'turnstile');
 
   if (env.CONTACT_DRY_RUN === '1') {
-    console.log('[contact] Modo prueba: email no enviado');
+    console.log('[contact] Modo prueba: ni se guarda ni se envía');
     return done();
   }
 
-  const sent = await sendEmail(env, input, country);
-  if (!sent) return fail(502, 'send');
+  const stored = canStore ? await storeMessage(env, input, country) : false;
+  const emailed = canEmail ? await sendEmail(env, input, country, stored) : false;
+  if (!stored && !emailed) return fail(502, 'send');
 
   return done();
+}
+
+/** Guarda el mensaje en Supabase con la clave secreta (solo servidor; se salta RLS). */
+async function storeMessage(env: ContactEnv, c: ContactInput, country: Country): Promise<boolean> {
+  try {
+    const res = await fetch(`${env.SUPABASE_URL!.replace(/\/$/, '')}/rest/v1/messages`, {
+      method: 'POST',
+      headers: {
+        apikey: env.SUPABASE_SECRET_KEY!,
+        Authorization: `Bearer ${env.SUPABASE_SECRET_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal',
+      },
+      body: JSON.stringify({
+        country,
+        name: c.nombre,
+        clinic: c.clinica,
+        email: c.email,
+        phone: c.telefono || null,
+        message: c.mensaje || null,
+      }),
+    });
+    if (!res.ok) {
+      console.error('[contact] Supabase respondió', res.status);
+      return false;
+    }
+    return true;
+  } catch {
+    console.error('[contact] Error de red al llamar a Supabase');
+    return false;
+  }
 }
 
 async function verifyTurnstile(token: string, secret: string, ip: string | null): Promise<boolean> {
@@ -96,7 +136,7 @@ async function verifyTurnstile(token: string, secret: string, ip: string | null)
   }
 }
 
-async function sendEmail(env: ContactEnv, c: ContactInput, country: Country): Promise<boolean> {
+async function sendEmail(env: ContactEnv, c: ContactInput, country: Country, stored: boolean): Promise<boolean> {
   const to = country === 'co' && env.CONTACT_TO_CO ? env.CONTACT_TO_CO : env.CONTACT_TO;
   const rows: Array<[string, string]> = [
     ['País', country === 'co' ? 'Colombia' : 'España'],
@@ -116,7 +156,9 @@ async function sendEmail(env: ContactEnv, c: ContactInput, country: Country): Pr
         `<tr><td style="padding:6px 16px 6px 0;vertical-align:top;color:#525854;white-space:nowrap">${k}</td><td style="padding:6px 0;white-space:pre-wrap">${escapeHtml(v)}</td></tr>`,
     )
     .join('')}</table>
-<p style="margin:20px 0 0;font-size:13px;color:#525854">Enviado desde el formulario de novusance.com. Responde a este email para contestar directamente.</p>
+<p style="margin:20px 0 0;font-size:13px;color:#525854">Enviado desde el formulario de novusance.com. Responde a este email para contestar directamente.${
+    stored ? ' También está en el panel: <a href="https://www.novusance.com/admin#/mensajes">novusance.com/admin</a>.' : ''
+  }</p>
 </div>`;
 
   try {
@@ -128,7 +170,7 @@ async function sendEmail(env: ContactEnv, c: ContactInput, country: Country): Pr
       },
       body: JSON.stringify({
         from: env.CONTACT_FROM,
-        to: to.split(',').map((s) => s.trim()).filter(Boolean),
+        to: to!.split(',').map((s) => s.trim()).filter(Boolean),
         reply_to: c.email,
         subject: `Solicitud de propuesta (${country.toUpperCase()}): ${oneLine(c.clinica)}`,
         text,

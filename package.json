@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "assets": "node scripts/generate-assets.mjs",
-    "test:admin": "tsx --test src/admin/calc.test.ts"
+    "test": "tsx --test src/admin/calc.test.ts src/lib/contact-handler.test.ts"
   },
   "dependencies": {
     "@astrojs/preact": "^6.1.0",

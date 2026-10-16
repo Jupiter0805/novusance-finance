@@ -36,13 +36,14 @@ Las solicitudes se envían al correo indicado en el apartado 1. Las consultas se
 
 ## 6. Encargados y transferencias
 
-Para prestar el servicio se usan proveedores que tratan datos por cuenta del responsable y los alojan fuera de Colombia, en Estados Unidos:
+Para prestar el servicio se usan proveedores que tratan datos por cuenta del responsable y los alojan fuera de Colombia, en Estados Unidos o en la Unión Europea:
 
 | Proveedor | Servicio |
 | --- | --- |
 | Vercel Inc. | Alojamiento de este sitio, de las propuestas y de las webs de clientes |
 | Cloudflare, Inc. | Protección antispam del formulario de contacto (Turnstile) |
 | Resend | Envío de los correos del formulario de contacto |
+| Supabase | Base de datos donde se guardan las solicitudes del formulario (servidores en Irlanda, UE) |
 
 Al aceptar esta política, el titular autoriza la transmisión de sus datos a estos proveedores para las finalidades descritas, que se limitan a lo necesario para prestar el servicio.
 

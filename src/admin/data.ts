@@ -1,7 +1,7 @@
 // Acceso a Supabase. La clave anon es pública; lo que protege los datos son las políticas RLS de la migración.
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from 'astro:env/client';
-import type { Admin, Client, Movement, Settings } from './model';
+import type { Admin, Client, Message, MessageStatus, Movement, Settings } from './model';
 
 export const configured = Boolean(PUBLIC_SUPABASE_URL && PUBLIC_SUPABASE_ANON_KEY);
 
@@ -61,15 +61,17 @@ export interface AllData {
   settings: Settings;
   clients: Client[];
   movements: Movement[];
+  messages: Message[];
 }
 
 export const loadAll = async (userId: string): Promise<AllData> => {
   const s = db();
-  const [admins, settings, clients, movements] = await Promise.all([
+  const [admins, settings, clients, movements, messages] = await Promise.all([
     s.from('admins').select('user_id, name, country'),
     s.from('settings').select('sirrux_pct').maybeSingle(),
     s.from('clients').select('*').order('name'),
     s.from('movements').select('*').order('date', { ascending: false }).order('created_at', { ascending: false }),
+    s.from('messages').select('*').order('created_at', { ascending: false }).limit(500),
   ]);
   const a = check(admins) as Admin[];
   const st = check(settings) as Settings | null;
@@ -79,6 +81,8 @@ export const loadAll = async (userId: string): Promise<AllData> => {
     settings: { sirrux_pct: Number(st?.sirrux_pct ?? 30) },
     clients: (check(clients) as Client[]).map(normClient),
     movements: (check(movements) as Movement[]).map(normMovement),
+    // Si aún no se ha aplicado la migración 0002, el panel sigue funcionando sin mensajes.
+    messages: messages.error ? [] : (messages.data as Message[]),
   };
 };
 
@@ -101,6 +105,18 @@ export const saveClient = async (c: Editable<Client>, id?: string) => {
 
 export const deleteClient = async (id: string) => {
   check(await db().from('clients').delete().eq('id', id));
+};
+
+export const updateMessage = async (
+  id: string,
+  patch: { status?: MessageStatus; notes?: string | null; client_id?: string | null },
+  userId: string,
+) => {
+  check(await db().from('messages').update({ ...patch, handled_by: userId }).eq('id', id));
+};
+
+export const deleteMessage = async (id: string) => {
+  check(await db().from('messages').delete().eq('id', id));
 };
 
 export const saveSettings = async (s: Settings, userId: string) => {

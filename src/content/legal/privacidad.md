@@ -52,6 +52,7 @@ Para prestar el servicio usamos proveedores que tratan datos por cuenta de Novus
 | Vercel Inc. | Alojamiento de esta web, de las propuestas y de las webs de clientes | EE. UU. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
 | Cloudflare, Inc. | Protección antispam del formulario de contacto (Turnstile) | EE. UU. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
 | Resend | Envío de los emails del formulario de contacto | EE. UU. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
+| Supabase | Base de datos donde se guardan las solicitudes del formulario y la gestión interna de clientes | Servidores en la UE (Irlanda). |
 | [PROVEEDOR DE CORREO] | Correo electrónico profesional (hola@novusance.com) | [UBICACIÓN Y GARANTÍAS] |
 | Gestoría o asesoría fiscal, cuando se contrate | Gestión fiscal y contable | España |
 

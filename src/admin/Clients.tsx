@@ -108,26 +108,30 @@ export function Clients({ data, scope, reload }: { data: AllData; scope: Scope; 
   );
 }
 
-function ClientForm({
+export function ClientForm({
   client,
+  prefill,
   defaultCountry,
   hasMovements,
   onClose,
   onSaved,
 }: {
   client: Client | null;
+  /** Datos de partida para un cliente nuevo (p. ej. desde un mensaje de la web). */
+  prefill?: Partial<Client>;
   defaultCountry: Country;
   hasMovements: boolean;
   onClose: () => void;
   onSaved: () => void;
 }) {
   const c = client;
-  const [country, setCountry] = useState<Country>(c?.country ?? defaultCountry);
-  const [name, setName] = useState(c?.name ?? '');
-  const [city, setCity] = useState(c?.city ?? '');
-  const [contact, setContact] = useState(c?.contact_name ?? '');
-  const [email, setEmail] = useState(c?.email ?? '');
-  const [phone, setPhone] = useState(c?.phone ?? '');
+  const p = prefill ?? {};
+  const [country, setCountry] = useState<Country>(c?.country ?? p.country ?? defaultCountry);
+  const [name, setName] = useState(c?.name ?? p.name ?? '');
+  const [city, setCity] = useState(c?.city ?? p.city ?? '');
+  const [contact, setContact] = useState(c?.contact_name ?? p.contact_name ?? '');
+  const [email, setEmail] = useState(c?.email ?? p.email ?? '');
+  const [phone, setPhone] = useState(c?.phone ?? p.phone ?? '');
   const [taxId, setTaxId] = useState(c?.tax_id ?? '');
   const [fee, setFee] = useState(c?.fee_amount != null ? String(c.fee_amount) : '');
   const [feeStart, setFeeStart] = useState(c?.fee_start ?? '');
