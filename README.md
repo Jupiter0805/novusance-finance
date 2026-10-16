@@ -8,7 +8,10 @@ Web de Novusance: diseño, renovación y mantenimiento de webs para clínicas ve
   enlace en el selector de país. Para publicar Colombia: completa sus datos y textos legales (`src/content/legal-co/`),
   pon `published: true` y quita `'/co'` de `DRAFT_PATHS` en `astro.config.mjs`.
 
-- **Astro** (salida estática) + una **Cloudflare Pages Function** para el formulario (`functions/api/contact.ts`).
+- **Astro** (salida estática) desplegado en **Vercel** con `@astrojs/vercel`. Todo se pre-renderiza salvo el formulario,
+  `src/pages/api/contact.ts`, que corre como función. La lógica del formulario está en `src/lib/contact-handler.ts`.
+- `vercel.json`: redirección de `/` a `/es` y cabeceras de seguridad.
+- Se conserva `functions/api/contact.ts` (Cloudflare Pages Function) por si algún día se vuelve a Cloudflare; usa la misma lógica.
 - Sin frameworks de UI. Fuentes autoalojadas (Fontsource), iconos Phosphor (`astro-icon`), sin cookies propias.
 
 ## Estructura
@@ -114,7 +117,13 @@ manteniendo el nombre (vale .png, .jpg o .webp). Si falta alguna, se muestra un 
 Desactivada. Si se quiere, se usa Cloudflare Web Analytics (no usa cookies): actívala desde el panel de Pages
 (Metrics > Web Analytics) o descomenta el script en `src/layouts/BaseLayout.astro` con tu token.
 
-## Despliegue en Cloudflare Pages
+## Despliegue en Vercel (actual)
+
+Vercel despliega cada push a `main`. Las variables de entorno de la tabla anterior van en Vercel > Project > Settings >
+Environment Variables (Production y Preview). `PUBLIC_TURNSTILE_SITE_KEY` se incrusta en el build: tras cambiarla, vuelve a
+desplegar. En Cloudflare > Turnstile, añade `novusance.com`, `www.novusance.com` y `vercel.app` a los hostnames del widget.
+
+## Despliegue en Cloudflare Pages (alternativa)
 
 1. **Crear el proyecto:** Cloudflare > Workers & Pages > Create > Pages > Connect to Git y elige este repositorio.
    - Rama de producción: `main`.
