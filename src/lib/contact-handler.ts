@@ -1,6 +1,6 @@
 /**
  * Lógica del formulario de contacto, independiente de la plataforma.
- * La usan el endpoint de Astro en Vercel (src/pages/api/contact.ts) y la Function de Cloudflare (functions/api/contact.ts).
+ * La usa el endpoint src/pages/api/contact.ts, que en Vercel corre como función.
  *
  * Recibe el formulario de contacto, lo valida, verifica Turnstile y envía un email con Resend.
  * No guarda los datos en ninguna base de datos y no escribe datos personales en los logs.

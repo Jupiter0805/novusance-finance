@@ -49,9 +49,9 @@ Para prestar el servicio usamos proveedores que tratan datos por cuenta de Novus
 
 | Proveedor | Servicio | Ubicación y garantías |
 | --- | --- | --- |
-| Cloudflare, Inc. | Alojamiento de esta web, seguridad y protección antispam (Turnstile) | EE. UU., con red de servidores en la UE. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
+| Vercel Inc. | Alojamiento de esta web, de las propuestas y de las webs de clientes | EE. UU. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
+| Cloudflare, Inc. | Protección antispam del formulario de contacto (Turnstile) | EE. UU. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
 | Resend | Envío de los emails del formulario de contacto | EE. UU. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
-| Vercel Inc. | Alojamiento de las propuestas y de las webs de clientes | EE. UU. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
 | [PROVEEDOR DE CORREO] | Correo electrónico profesional (hola@novusance.com) | [UBICACIÓN Y GARANTÍAS] |
 | Gestoría o asesoría fiscal, cuando se contrate | Gestión fiscal y contable | España |
 

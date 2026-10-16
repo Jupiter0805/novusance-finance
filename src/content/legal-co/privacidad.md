@@ -1,19 +1,16 @@
 ---
 title: "Política de tratamiento de datos personales"
 description: "Cómo trata Novusance en Colombia los datos personales, conforme a la Ley 1581 de 2012."
-updated: "[FECHA DE PUBLICACIÓN]"
+updated: "16 de octubre de 2026"
 ---
-
-> **Borrador pendiente de revisión** por un abogado o contador en Colombia antes de publicar.
 
 Esta política se adopta en cumplimiento de la Ley Estatutaria 1581 de 2012 y su reglamentación (Decreto 1377 de 2013, compilado en el Decreto 1074 de 2015).
 
 ## 1. Responsable del tratamiento
 
-- Responsable: Carlos Alberto Leamus [CONFIRMAR NOMBRE COMPLETO], que opera con el nombre comercial Novusance en Colombia.
-- Documento de identificación o NIT: [NÚMERO]
-- Dirección: [CIUDAD Y DIRECCIÓN]
-- Correo para consultas y reclamos: colombia@novusance.com [CONFIRMAR]
+- Responsable: Carlos Alberto Leamus, que opera con el nombre comercial Novusance en Colombia.
+- País: Colombia
+- Correo para consultas y reclamos: hola@novusance.com
 
 ## 2. Datos que se tratan y finalidades
 
@@ -39,7 +36,15 @@ Las solicitudes se envían al correo indicado en el apartado 1. Las consultas se
 
 ## 6. Encargados y transferencias
 
-Para prestar el servicio se usan proveedores que alojan o procesan datos fuera de Colombia, entre ellos Cloudflare (alojamiento del sitio y antispam), Resend (envío de los correos del formulario) y Vercel (alojamiento de propuestas y webs de clientes). [REVISAR con el asesor: requisitos de transferencia internacional.]
+Para prestar el servicio se usan proveedores que tratan datos por cuenta del responsable y los alojan fuera de Colombia, en Estados Unidos:
+
+| Proveedor | Servicio |
+| --- | --- |
+| Vercel Inc. | Alojamiento de este sitio, de las propuestas y de las webs de clientes |
+| Cloudflare, Inc. | Protección antispam del formulario de contacto (Turnstile) |
+| Resend | Envío de los correos del formulario de contacto |
+
+Al aceptar esta política, el titular autoriza la transmisión de sus datos a estos proveedores para las finalidades descritas, que se limitan a lo necesario para prestar el servicio.
 
 ## 7. Vigencia
 

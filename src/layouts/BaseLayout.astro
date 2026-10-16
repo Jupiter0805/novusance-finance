@@ -8,6 +8,7 @@ import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-
 import hostLatin from '@fontsource/host-grotesk/files/host-grotesk-latin-400-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 import { COUNTRIES, PUBLISHED, type Country } from '../data/countries';
 
 interface Props {
@@ -81,12 +82,7 @@ const alternates = home && country.published ? PUBLISHED.map((c) => ({ lang: c.l
 
     {home && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 
-    <!--
-      Analítica (desactivada). Cloudflare Web Analytics no usa cookies.
-      Para activarla: descomenta el script y pon el token de Cloudflare > Analytics > Web Analytics,
-      o actívala desde el panel de Pages (inyecta el mismo script sin tocar el código).
-      <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "TU_TOKEN"}'></script>
-    -->
+    <!-- Analítica: desactivada. Si se activa, usar Vercel Web Analytics (sin cookies); ver README. -->
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -102,6 +98,7 @@ const alternates = home && country.published ? PUBLISHED.map((c) => ({ lang: c.l
       <slot />
     </main>
     <Footer country={country} />
+    <CookieConsent country={country} />
   </body>
 </html>
 

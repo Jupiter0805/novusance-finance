@@ -99,16 +99,16 @@ export const COUNTRIES: Record<CountryCode, Country> = {
     name: 'Colombia',
     lang: 'es-CO',
     ogLocale: 'es_CO',
-    published: false,
+    published: true,
     path: '/co',
     legalBase: '/co',
-    // PENDIENTE (Carlos): email de contacto en Colombia.
-    email: 'colombia@novusance.com',
-    // PENDIENTE (Carlos): ciudad y foto (public/Carlos.png, cuadrada).
+    // Buzón común hasta que Carlos tenga uno propio. Las solicitudes del formulario van a CONTACT_TO_CO (Vercel).
+    email: 'hola@novusance.com',
+    // PENDIENTE (Carlos): ciudad en el rol y foto en public/Carlos.png (cuadrada). Sin foto se ven sus iniciales.
     person: { name: 'Carlos Alberto Leamus', role: 'Diseño y desarrollo web · Colombia', photo: 'Carlos', initials: 'CL' },
     areaServed: 'CO',
     mobile: 'celular',
-    // PENDIENTE (Carlos y su contador): si factura con IVA o no.
+    // PENDIENTE (Carlos y su contador): confirmar si factura con IVA.
     taxNote: 'Precios antes de impuestos.',
     plans: [
       {

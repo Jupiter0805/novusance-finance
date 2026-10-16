@@ -1,17 +1,13 @@
 ---
 title: "Aviso legal"
 description: "Datos del responsable y condiciones de uso de la versión colombiana del sitio web de Novusance."
-updated: "[FECHA DE PUBLICACIÓN]"
+updated: "16 de octubre de 2026"
 ---
-
-> **Borrador pendiente de revisión** por un abogado o contador en Colombia antes de publicar.
 
 ## 1. Datos del responsable
 
-- Responsable: Carlos Alberto Leamus [CONFIRMAR NOMBRE COMPLETO], que opera con el nombre comercial Novusance en Colombia.
-- Documento de identificación o NIT: [NÚMERO]
-- Ciudad y dirección: [CIUDAD Y DIRECCIÓN]
-- Correo: colombia@novusance.com [CONFIRMAR]
+- Responsable: Carlos Alberto Leamus, que opera con el nombre comercial Novusance en Colombia.
+- Correo: hola@novusance.com
 - Sitio web: https://www.novusance.com/co
 
 La versión de España de este sitio (www.novusance.com/es) tiene su propio titular y sus propios textos legales. Cada uno responde únicamente de los servicios que presta en su país.

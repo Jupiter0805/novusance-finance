@@ -37,6 +37,18 @@ const links = [
             </li>
           ))
         }
+        {
+          switcher.length > 1 && (
+            <li class="nav-countries">
+              <span class="nav-countries-label">País</span>
+              {switcher.map((c) => (
+                <a href={c.path} hreflang={c.lang} aria-current={c.code === country.code ? 'page' : undefined}>
+                  {c.name}
+                </a>
+              ))}
+            </li>
+          )
+        }
       </ul>
     </nav>
 
@@ -153,6 +165,10 @@ const links = [
     text-decoration: none;
   }
 
+  .nav-countries {
+    display: none;
+  }
+
   .countries a[aria-current='page'] {
     background: var(--soft);
     color: var(--ink);
@@ -237,6 +253,37 @@ const links = [
     :global(html:not(.js)) .nav ul {
       flex-wrap: wrap;
       gap: 8px 20px;
+    }
+  }
+
+  /* En pantallas estrechas el selector de país pasa al menú, para no desbordar la cabecera. */
+  @media (max-width: 600px) {
+    .countries {
+      display: none;
+    }
+
+    .nav .nav-countries {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 52px;
+      font-size: 15px;
+    }
+
+    .nav .nav-countries a {
+      display: inline-flex;
+      min-height: 44px;
+      border-bottom: 0;
+      color: var(--muted);
+    }
+
+    .nav .nav-countries a[aria-current='page'] {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .nav-countries-label {
+      color: var(--muted);
     }
   }
 

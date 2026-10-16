@@ -1,12 +1,12 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 import vercel from '@astrojs/vercel';
 
-// Países en borrador (published: false en src/data/countries.ts): fuera del sitemap.
-// Al publicar Colombia, quita '/co' de aquí.
-const DRAFT_PATHS = ['/co'];
+// Países en borrador (published: false en src/data/countries.ts): añade aquí su ruta para dejarlos fuera del sitemap.
+/** @type {string[]} */
+const DRAFT_PATHS = [];
 /** @param {string} page */
 const isDraft = (page) => {
   const path = new URL(page).pathname.replace(/\/$/, '');
@@ -18,8 +18,19 @@ export default defineConfig({
   // Todo se pre-renderiza salvo /api/contact, que corre como función de Vercel.
   output: 'static',
   adapter: vercel(),
-  // Cloudflare Pages sirve /aviso-legal desde aviso-legal.html sin barra final.
+  // URLs sin barra final: /es, /aviso-legal.
   trailingSlash: 'never',
-  build: { format: 'file' },
+  // Variables del formulario (src/pages/api/contact.ts). En local van en .env; en producción, en Vercel.
+  env: {
+    schema: {
+      PUBLIC_TURNSTILE_SITE_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
+      TURNSTILE_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      CONTACT_TO: envField.string({ context: 'server', access: 'secret', optional: true }),
+      CONTACT_TO_CO: envField.string({ context: 'server', access: 'secret', optional: true }),
+      CONTACT_FROM: envField.string({ context: 'server', access: 'secret', optional: true }),
+      CONTACT_DRY_RUN: envField.string({ context: 'server', access: 'secret', optional: true }),
+    },
+  },
   integrations: [icon(), sitemap({ filter: (page) => !page.includes('/404') && !isDraft(page) })],
 });

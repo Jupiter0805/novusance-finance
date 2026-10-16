@@ -1,14 +1,12 @@
 ---
 title: "Condiciones del servicio"
 description: "Condiciones de contratación de los servicios de Novusance para clínicas veterinarias en Colombia."
-updated: "[FECHA DE PUBLICACIÓN]"
+updated: "16 de octubre de 2026"
 ---
-
-> **Borrador pendiente de revisión** por un abogado o contador en Colombia antes de publicar. Sigue el mismo modelo que en España; Carlos ajusta precios y plazos.
 
 ## 1. Quién presta el servicio
 
-Carlos Alberto Leamus [CONFIRMAR NOMBRE COMPLETO], con documento o NIT [NÚMERO] y dirección en [CIUDAD Y DIRECCIÓN], que opera con el nombre comercial Novusance en Colombia. Contacto: colombia@novusance.com [CONFIRMAR].
+Carlos Alberto Leamus, que opera con el nombre comercial Novusance en Colombia. Contacto: hola@novusance.com.
 
 ## 2. Servicios
 
@@ -24,10 +22,10 @@ Orientativos desde que se recibe todo el material: renovación de 2 a 3 semanas;
 
 ## 5. Precios y pago
 
-- [CONFIRMAR: si los precios incluyen o no IVA según el régimen tributario].
+- Los precios publicados no incluyen los impuestos que correspondan, que se indican en el presupuesto.
 - Puesta en marcha: 50 % al aceptar el presupuesto y 50 % al publicar.
 - Cuota mensual de mantenimiento por adelantado desde la publicación.
-- Sin cuota: la puesta en marcha sube un 40 % y los cambios se cobran a [PRECIO] por hora.
+- Sin cuota: la puesta en marcha sube un 40 % y los cambios se cobran por hora, según la tarifa indicada en el presupuesto.
 - El dominio está siempre a nombre del cliente.
 
 ## 6. Permanencia y retiro

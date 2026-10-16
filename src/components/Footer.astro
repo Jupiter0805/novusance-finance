@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import type { Country } from '../data/countries';
+import { CONSENT_TOOLS } from '../data/consent';
 
 const { country } = Astro.props as { country: Country };
 const year = new Date().getFullYear();
@@ -26,6 +27,15 @@ const links = [
               <a href={l.href}>{l.label}</a>
             </li>
           ))
+        }
+        {
+          CONSENT_TOOLS.length > 0 && (
+            <li>
+              <button type="button" class="cc-open" data-cc-open>
+                Configurar cookies
+              </button>
+            </li>
+          )
         }
       </ul>
     </nav>
@@ -75,6 +85,19 @@ const links = [
     text-decoration: none;
   }
 
+  .cc-open {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: inherit;
+    cursor: pointer;
+  }
+
+  .cc-open:hover,
   a:hover {
     color: var(--ink);
     opacity: 1;

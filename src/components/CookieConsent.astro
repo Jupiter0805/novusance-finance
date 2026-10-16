@@ -1,0 +1,367 @@
+---
+// Banner y preferencias de cookies. No pinta nada mientras CONSENT_TOOLS esté vacío (ver src/data/consent.ts).
+import {
+  CATEGORIES,
+  CONSENT_MAX_AGE_DAYS,
+  CONSENT_STORAGE_KEY,
+  CONSENT_TOOLS,
+  CONSENT_VERSION,
+  usedCategories,
+} from '../data/consent';
+import type { Country } from '../data/countries';
+
+const { country } = Astro.props as { country: Country };
+const categories = usedCategories();
+const policy = `${country.legalBase}/cookies`;
+const config = {
+  key: CONSENT_STORAGE_KEY,
+  version: CONSENT_VERSION,
+  maxAgeDays: CONSENT_MAX_AGE_DAYS,
+  categories,
+  tools: CONSENT_TOOLS,
+};
+const names = (c: string) =>
+  CONSENT_TOOLS.filter((t) => t.category === c)
+    .map((t) => t.name)
+    .join(', ');
+---
+
+{
+  CONSENT_TOOLS.length > 0 && (
+    <>
+      <script type="application/json" id="nv-consent-config" set:html={JSON.stringify(config)} />
+
+      <section class="cc-banner" aria-labelledby="cc-title" data-cc-banner hidden>
+        <div class="cc-text">
+          <h2 id="cc-title" class="cc-title">Cookies</h2>
+          <p>
+            Además de las técnicas, que la web necesita para funcionar, me gustaría usar cookies de{' '}
+            {categories.map((c) => CATEGORIES[c].label.toLowerCase()).join(' y ')}. Solo se activan si las aceptas, y
+            puedes cambiar de opinión en cualquier momento desde «Configurar cookies», al pie de la página.{' '}
+            <a href={policy}>Política de cookies</a>.
+          </p>
+        </div>
+        <div class="cc-actions">
+          <button type="button" class="cc-btn" data-cc-reject>
+            Rechazar
+          </button>
+          <button type="button" class="cc-btn" data-cc-accept>
+            Aceptar
+          </button>
+          <button type="button" class="cc-link" data-cc-settings>
+            Elegir cuáles
+          </button>
+        </div>
+      </section>
+
+      <dialog class="cc-dialog" aria-labelledby="cc-dialog-title" data-cc-dialog>
+        <form method="dialog" class="cc-form" data-cc-form>
+          <h2 id="cc-dialog-title" class="cc-dialog-title">
+            Configurar cookies
+          </h2>
+          <div class="cc-row">
+            <div>
+              <div class="cc-row-title">Técnicas</div>
+              <p>Necesarias para que la web funcione y para proteger el formulario frente a abusos. Siempre activas.</p>
+            </div>
+            <input type="checkbox" checked disabled aria-label="Cookies técnicas, siempre activas" />
+          </div>
+          {categories.map((c) => (
+            <label class="cc-row">
+              <div>
+                <div class="cc-row-title">{CATEGORIES[c].label}</div>
+                <p>
+                  {CATEGORIES[c].text} Herramientas: {names(c)}.
+                </p>
+              </div>
+              <input type="checkbox" name={c} data-cc-category={c} />
+            </label>
+          ))}
+          <div class="cc-dialog-actions">
+            <button type="button" class="cc-btn" data-cc-reject>
+              Rechazar todas
+            </button>
+            <button type="button" class="cc-btn" data-cc-accept>
+              Aceptar todas
+            </button>
+            <button type="submit" class="cc-btn cc-save" data-cc-save>
+              Guardar mi elección
+            </button>
+          </div>
+          <p class="cc-more">
+            Más información en la <a href={policy}>política de cookies</a>.
+          </p>
+        </form>
+      </dialog>
+    </>
+  )
+}
+
+<style>
+  .cc-banner {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    z-index: 50;
+    max-width: 960px;
+    margin-inline: auto;
+    padding: 20px 24px;
+    border-radius: var(--r-card);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.35);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .cc-title,
+  .cc-dialog-title {
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .cc-text p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .cc-text a,
+  .cc-more a {
+    color: var(--ink);
+  }
+
+  .cc-actions {
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  /* Aceptar y Rechazar comparten estilo y tamaño: ninguno se destaca sobre el otro (guía de la AEPD). */
+  .cc-btn {
+    min-height: 44px;
+    min-width: 112px;
+    padding: 0 20px;
+    border: 1px solid var(--ink);
+    border-radius: var(--r-pill);
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .cc-link {
+    min-height: 44px;
+    padding: 0 8px;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font-size: 14.5px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .cc-dialog {
+    width: min(560px, calc(100vw - 32px));
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .cc-dialog::backdrop {
+    background: rgb(0 0 0 / 0.45);
+  }
+
+  .cc-form {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .cc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    cursor: pointer;
+  }
+
+  .cc-row p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .cc-row-title {
+    font-weight: 600;
+  }
+
+  .cc-row input {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    accent-color: var(--accent);
+  }
+
+  .cc-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .cc-save {
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .cc-more {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 760px) {
+    .cc-banner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .cc-actions {
+      justify-content: stretch;
+    }
+
+    .cc-actions .cc-btn {
+      flex: 1;
+    }
+  }
+</style>
+
+<script>
+  import type { ConsentCategory, ConsentTool } from '../data/consent';
+
+  interface Config {
+    key: string;
+    version: number;
+    maxAgeDays: number;
+    categories: ConsentCategory[];
+    tools: ConsentTool[];
+  }
+
+  interface Stored {
+    v: number;
+    at: number;
+    choices: Partial<Record<ConsentCategory, boolean>>;
+  }
+
+  const raw = document.getElementById('nv-consent-config');
+
+  if (raw?.textContent) {
+    const cfg = JSON.parse(raw.textContent) as Config;
+    const banner = document.querySelector<HTMLElement>('[data-cc-banner]');
+    const dialog = document.querySelector<HTMLDialogElement>('[data-cc-dialog]');
+    const boxes = Array.from(document.querySelectorAll<HTMLInputElement>('[data-cc-category]'));
+    const loaded = new Set<string>();
+
+    // El propio registro de la elección es técnico (recuerda tu decisión), así que no requiere consentimiento.
+    const read = (): Stored | null => {
+      try {
+        const s = JSON.parse(localStorage.getItem(cfg.key) ?? 'null') as Stored | null;
+        if (!s || s.v !== cfg.version) return null;
+        if (Date.now() - s.at > cfg.maxAgeDays * 864e5) return null;
+        return s;
+      } catch {
+        return null;
+      }
+    };
+
+    const write = (choices: Stored['choices']) => {
+      try {
+        localStorage.setItem(cfg.key, JSON.stringify({ v: cfg.version, at: Date.now(), choices }));
+      } catch {
+        // Sin almacenamiento: la elección vale para esta visita.
+      }
+    };
+
+    const load = (choices: Stored['choices']) => {
+      for (const t of cfg.tools) {
+        if (!choices[t.category] || loaded.has(t.id)) continue;
+        loaded.add(t.id);
+        if (t.inline) {
+          const s = document.createElement('script');
+          s.textContent = t.inline;
+          document.head.append(s);
+        }
+        if (t.src) {
+          const s = document.createElement('script');
+          s.src = t.src;
+          s.async = true;
+          document.head.append(s);
+        }
+      }
+    };
+
+    // Al retirar el consentimiento se borran sus cookies y se recarga para descargar los scripts ya cargados.
+    const revoke = (choices: Stored['choices']) => {
+      const off = cfg.tools.filter((t) => !choices[t.category] && loaded.has(t.id));
+      if (off.length === 0) return false;
+      const domains = ['', location.hostname, `.${location.hostname.replace(/^www\./, '')}`];
+      for (const c of document.cookie.split(';')) {
+        const name = c.split('=')[0].trim();
+        if (!off.some((t) => t.cookies.some((p) => name === p || name.startsWith(p)))) continue;
+        for (const d of domains) {
+          document.cookie = `${name}=; Max-Age=0; path=/${d ? `; domain=${d}` : ''}`;
+        }
+      }
+      return true;
+    };
+
+    const decide = (choices: Stored['choices']) => {
+      write(choices);
+      if (banner) banner.hidden = true;
+      if (dialog?.open) dialog.close();
+      if (revoke(choices)) location.reload();
+      else load(choices);
+    };
+
+    const all = (value: boolean) => Object.fromEntries(cfg.categories.map((c) => [c, value])) as Stored['choices'];
+
+    const openSettings = () => {
+      const current = read()?.choices ?? {};
+      boxes.forEach((b) => (b.checked = Boolean(current[b.dataset.ccCategory as ConsentCategory])));
+      dialog?.showModal();
+    };
+
+    document.querySelectorAll('[data-cc-accept]').forEach((b) => b.addEventListener('click', () => decide(all(true))));
+    document.querySelectorAll('[data-cc-reject]').forEach((b) => b.addEventListener('click', () => decide(all(false))));
+    document.querySelector('[data-cc-settings]')?.addEventListener('click', openSettings);
+    document.querySelectorAll('[data-cc-open]').forEach((b) => b.addEventListener('click', openSettings));
+    document.querySelector('[data-cc-form]')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      decide(Object.fromEntries(boxes.map((b) => [b.dataset.ccCategory, b.checked])) as Stored['choices']);
+    });
+
+    const stored = read();
+    if (stored) load(stored.choices);
+    else if (banner) banner.hidden = false;
+  }
+</script>
