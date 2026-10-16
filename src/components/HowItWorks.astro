@@ -1,468 +1,153 @@
 ---
-import { Icon } from 'astro-icon/components';
-import { NV_ROWS } from '../data/demo';
-
 const steps = [
   {
-    label: 'Responde',
-    title: 'Contesta al momento, a cualquier hora.',
-    text: 'Con tu información: precios, vacunas, horarios y servicios. No da diagnósticos: lo que no sabe, te lo pasa a ti.',
+    when: 'Sin coste',
+    title: 'Te preparo una propuesta',
+    text: 'Una portada con tu logo, tus colores y huecos para tus fotos. Te la enseño en cinco minutos, sin compromiso.',
   },
   {
-    label: 'Pregunta',
-    title: 'Hace las preguntas de tu recepción.',
-    text: 'Qué animal es, qué edad tiene y por qué viene. Así llega a la consulta con todo apuntado.',
+    when: 'En 48 horas',
+    title: 'Te envío el presupuesto',
+    text: 'Si te gusta, me cuentas qué necesitas y te lo mando por escrito: qué incluye, qué no y cuánto cuesta.',
   },
   {
-    label: 'Reserva',
-    title: 'Cita en tus huecos libres.',
-    text: 'Ofrece solo las horas que tienes disponibles y envía un recordatorio el día antes para que nadie falte.',
+    when: '2–3 semanas',
+    title: 'Diseño y publico tu web',
+    text: 'Me pasas fotos, logo y acceso a tu dominio. Antes de tocar nada compruebo que tu correo siga funcionando.',
   },
   {
-    label: 'Te avisa',
-    title: 'Y tú lo ves todo en tu panel.',
-    text: 'Las urgencias te llegan al móvil al instante. El resto queda en tu panel, y cada mes sabes cuántas citas te ha traído la web.',
+    when: 'Cada mes',
+    title: 'La mantengo al día',
+    text: 'Copias de seguridad, cambios de horarios, precios o fotos y revisión de las páginas legales. Me escribes y lo cambio yo.',
   },
 ];
 ---
 
-<section id="como-funciona" class="band">
+<section id="como-trabajo" class="band">
   <div class="wrap inner">
-    <div class="intro">
-      <div class="eyebrow">Cómo funciona</div>
-      <h2 class="display h2">Mientras pasas consulta, esto pasa en tu web.</h2>
-    </div>
-
-    <div class="layout">
-      <ol class="steps">
-        {
-          steps.map((s, i) => (
-            <li class:list={['step', { 'is-active': i === 0 }]} data-step={i + 1}>
-              <div class="step-label">{s.label}</div>
-              <h3 class="display step-title">{s.title}</h3>
-              <p>{s.text}</p>
-            </li>
-          ))
-        }
-      </ol>
-
-      <div class="story-phone" aria-hidden="true">
-        <div class="sticky">
-          <div class="phone">
-            <div class="screen">
-              <div class="head">
-                <div class="avatar">VA</div>
-                <div class="name">Veterinaria Arce</div>
-              </div>
-
-              <div class="pane" data-screen="1">
-                <div class="b user">¿Cada cuánto hay que desparasitar a un gato?</div>
-                <div class="b bot">
-                  En la clínica recomendamos [PAUTA DE LA CLÍNICA]. Si quieres, te reservo una revisión y te lo dejamos al día.
-                </div>
-                <div class="hint">Respondido en 2 segundos</div>
-              </div>
-
-              <div class="pane" data-screen="2" hidden>
-                <div class="b bot">¿Qué animal es?</div>
-                <div class="chips">
-                  <span class="chip">Perro</span>
-                  <span class="chip on">Gato</span>
-                  <span class="chip">Otro</span>
-                </div>
-                <div class="b bot">¿Qué edad tiene y por qué quieres traerlo?</div>
-                <div class="b user">Nala, 2 años. Revisión y desparasitación.</div>
-              </div>
-
-              <div class="pane" data-screen="3" hidden>
-                <div class="slots">
-                  <div class="slots-title">Revisión de Nala</div>
-                  <div class="slot on"><span>Miércoles, 10:15</span><Icon name="ph:check-bold" size={16} /></div>
-                  <div class="slot">Miércoles, 18:30</div>
-                  <div class="slot">Jueves, 9:00</div>
-                </div>
-                <div class="b bot">Reservado. Te mandaremos un recordatorio el día antes.</div>
-              </div>
-
-              <div class="pane top" data-screen="4" hidden>
-                <div class="alert">
-                  <div class="alert-icon"><Icon name="ph:warning-circle-bold" size={16} /></div>
-                  <div class="alert-text">
-                    <div class="strong">Urgencia avisada</div>
-                    <div class="muted">Perro que ha comido uvas. Se ha pedido al dueño que llame ya.</div>
-                  </div>
-                </div>
-                <div class="panel-head">
-                  <div class="strong">Tu panel</div>
-                  <div class="tiny muted">Datos de ejemplo</div>
-                </div>
-                <div class="panel">
-                  {
-                    NV_ROWS.map((r) => (
-                      <div class="row">
-                        <div class="row-main">
-                          <span class="row-name">{r.n}</span>
-                          <span class="small muted">{r.d}</span>
-                        </div>
-                        <span class="small muted">{r.t}</span>
-                      </div>
-                    ))
-                  }
-                  <div class="row-foot small muted">Este mes: 52 consultas, 17 citas</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <h2 class="display h2 title">De la propuesta a tu web publicada.</h2>
+    <ol class="steps">
+      {
+        steps.map((s, i) => (
+          <li class="step">
+            <span class="num" aria-hidden="true">
+              {i + 1}
+            </span>
+            <div class="display when">{s.when}</div>
+            <h3 class="step-title">{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="note">Una web nueva desde cero tarda de 2 a 4 semanas. Los plazos cuentan desde que tengo tus fotos y tu logo.</p>
   </div>
 </section>
 
 <style>
   .inner {
-    padding-top: 104px;
-    padding-bottom: 40px;
-  }
-
-  .intro {
+    padding-block: 104px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    max-width: 700px;
+    gap: 56px;
   }
 
-  .layout {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 64px;
-    margin-top: 24px;
+  .title {
+    max-width: 720px;
   }
 
   .steps {
+    position: relative;
     margin: 0;
     padding: 0;
     list-style: none;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  /* La línea que une los pasos pasa por el centro de los números. */
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 16px;
+    right: 16px;
+    height: 1px;
+    background: var(--line);
   }
 
   .step {
-    min-height: 78vh;
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 16px;
+    gap: 10px;
   }
 
-  .step-label {
-    font-family: var(--font-display);
-    font-stretch: 112%;
-    font-size: 15px;
-    font-weight: 700;
+  .num {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--accent-text);
-    transition: color 0.5s;
+  }
+
+  .when {
+    font-size: clamp(30px, 3vw, 40px);
+    line-height: 1;
+    letter-spacing: -0.03em;
   }
 
   .step-title {
-    font-size: clamp(28px, 3vw, 40px);
-    letter-spacing: -0.03em;
-    line-height: 1.08;
-    transition: color 0.5s;
+    margin: 6px 0 0;
+    font-size: 18px;
+    font-weight: 600;
   }
 
   .step p {
     margin: 0;
-    max-width: 460px;
-    font-size: 18px;
+    font-size: 15.5px;
     line-height: 1.6;
     color: var(--muted);
   }
 
-  /*
-    El paso activo resalta y el resto se atenúa cambiando a gris (no con opacidad),
-    para que todo el texto mantenga contraste AA.
-  */
-  :global(.js) .step:not(.is-active) .step-label,
-  :global(.js) .step:not(.is-active) .step-title {
+  .note {
+    margin: 0;
+    font-size: 14px;
     color: var(--muted);
   }
 
-  .story-phone {
-    position: relative;
-  }
-
-  .sticky {
-    position: sticky;
-    top: 104px;
-    display: flex;
-    justify-content: center;
-    padding-bottom: 64px;
-  }
-
-  .phone {
-    width: 300px;
-    border-radius: 44px;
-    background: var(--phone);
-    padding: 10px;
-    box-shadow: 0 30px 60px -32px var(--accent-shadow);
-  }
-
-  .screen {
-    height: 560px;
-    border-radius: 35px;
-    background: var(--chat);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    font-size: 13.5px;
-    line-height: 1.4;
-  }
-
-  .head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 18px 16px 12px;
-    border-bottom: 1px solid var(--line);
-    background: var(--surface);
-  }
-
-  .avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 14px;
-  }
-
-  .name,
-  .strong {
-    font-weight: 600;
-  }
-
-  .name {
-    font-size: 14px;
-  }
-
-  .pane {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 10px;
-    padding: 16px;
-    animation: nv-in 0.45s var(--ease-out);
-  }
-
-  .pane.top {
-    justify-content: flex-start;
-    gap: 12px;
-  }
-
-  .b {
-    padding: 9px 12px;
-  }
-
-  .b.user {
-    align-self: flex-end;
-    max-width: 82%;
-    border-radius: 16px 16px 4px 16px;
-    background: var(--accent);
-    color: #fff;
-  }
-
-  .b.bot {
-    align-self: flex-start;
-    max-width: 86%;
-    border-radius: 16px 16px 16px 4px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-  }
-
-  .hint {
-    align-self: flex-start;
-    font-size: 11px;
-    color: var(--muted);
-    padding-left: 4px;
-  }
-
-  .chips {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .chip {
-    padding: 7px 12px;
-    border-radius: var(--r-pill);
-    border: 1px solid var(--line);
-    background: var(--surface);
-    font-size: 13px;
-  }
-
-  .chip.on {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: #fff;
-    font-weight: 500;
-  }
-
-  .slots {
-    padding: 14px;
-    border-radius: 18px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .slots-title {
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .slot {
-    padding: 11px 12px;
-    border-radius: 12px;
-    border: 1px solid var(--line);
-  }
-
-  .slot.on {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-color: var(--accent);
-    background: var(--accent);
-    color: #fff;
-    font-weight: 500;
-  }
-
-  .alert {
-    padding: 14px;
-    border-radius: 16px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    display: flex;
-    gap: 10px;
-  }
-
-  .alert-icon {
-    flex-shrink: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #c2410c;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .alert-text {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    font-size: 13px;
-  }
-
-  .panel-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 4px 4px 0;
-    font-size: 13px;
-  }
-
-  .tiny {
-    font-size: 11px;
-  }
-
-  .small {
-    font-size: 12px;
-  }
-
-  .panel {
-    border-radius: 16px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .row {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 12px 14px;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .row-main {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .row-name {
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  .row-foot {
-    padding: 12px 14px;
-  }
-
-  @media (max-width: 860px) {
-    .layout {
+  @media (max-width: 960px) {
+    .steps {
       grid-template-columns: 1fr;
-      gap: 0;
+      gap: 36px;
     }
 
-    .story-phone {
-      display: none;
+    .steps::before {
+      top: 16px;
+      bottom: 16px;
+      left: 15px;
+      right: auto;
+      width: 1px;
+      height: auto;
     }
 
     .step {
-      min-height: auto;
-      padding: 28px 0;
+      padding-left: 56px;
     }
 
-    :global(.js) .step:not(.is-active) .step-label {
-      color: var(--accent-text);
-    }
-
-    :global(.js) .step:not(.is-active) .step-title {
-      color: var(--ink);
+    .num {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin: 0;
     }
   }
 </style>
-
-<script>
-  const steps = Array.from(document.querySelectorAll<HTMLElement>('[data-step]'));
-  const screens = Array.from(document.querySelectorAll<HTMLElement>('[data-screen]'));
-
-  if (steps.length && screens.length && 'IntersectionObserver' in window) {
-    const setActive = (n: number) => {
-      steps.forEach((s) => s.classList.toggle('is-active', Number(s.dataset.step) === n));
-      screens.forEach((s) => (s.hidden = Number(s.dataset.screen) !== n));
-    };
-
-    // Solo cuenta el paso que cruza la franja central de la pantalla.
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.step) || 1);
-        });
-      },
-      { rootMargin: '-45% 0px -45% 0px' },
-    );
-    steps.forEach((s) => io.observe(s));
-  }
-</script>

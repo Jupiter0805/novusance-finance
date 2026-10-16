@@ -134,7 +134,7 @@ if (form && success && failure && failureText && submit && submitLabel && widget
 
   const setSending = (sending: boolean) => {
     submit.disabled = sending;
-    submitLabel.textContent = sending ? 'Enviando…' : 'Pide tu demo';
+    submitLabel.textContent = sending ? 'Enviando…' : 'Pide tu propuesta';
     form.setAttribute('aria-busy', String(sending));
   };
 

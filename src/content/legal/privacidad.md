@@ -1,14 +1,14 @@
 ---
 title: "Política de privacidad"
 description: "Qué datos personales trata Novusance, para qué, durante cuánto tiempo y cómo ejercer tus derechos."
-updated: "[FECHA DE PUBLICACIÓN]"
+updated: "16 de octubre de 2026"
 ---
 
 En Novusance tratamos tus datos con el cuidado que prometemos a nuestros clientes: solo los necesarios, guardados en la Unión Europea siempre que es posible y durante el tiempo justo. Esta política explica qué datos tratamos, para qué y qué derechos tienes, conforme al Reglamento (UE) 2016/679 (RGPD) y a la Ley Orgánica 3/2018 (LOPDGDD).
 
 ## 1. Responsable del tratamiento
 
-- Responsable: [NOMBRE Y APELLIDOS DEL TITULAR], que opera con el nombre comercial Novusance.
+- Responsable: Juan Ignacio Moreno Cordido, que opera con el nombre comercial Novusance.
 - NIF: [NIF]
 - Domicilio: [DOMICILIO PROFESIONAL O FISCAL]
 - Email de contacto para privacidad: hola@novusance.com
@@ -19,7 +19,7 @@ En Novusance tratamos tus datos con el cuidado que prometemos a nuestros cliente
 | --- | --- |
 | Formulario de contacto | Nombre, nombre de la clínica o negocio, email, teléfono (opcional) y el mensaje que escribas |
 | Comunicaciones por email o WhatsApp | Los datos de contacto y el contenido de los mensajes que nos envíes |
-| Clientes | Datos de contacto y facturación (nombre o razón social, NIF, dirección, email, teléfono, datos de pago) |
+| Clientes | Datos de contacto y facturación (nombre o razón social, NIF, dirección, email, teléfono y datos bancarios para los cobros) |
 | Navegación | Datos técnicos mínimos, como la dirección IP y el tipo de navegador, que los servidores registran por seguridad |
 
 No pedimos datos especialmente protegidos. Te pedimos que no los incluyas en el formulario.
@@ -28,7 +28,7 @@ No pedimos datos especialmente protegidos. Te pedimos que no los incluyas en el 
 
 | Finalidad | Base jurídica |
 | --- | --- |
-| Responder a tu solicitud y preparar la demostración que nos pidas | Tu consentimiento (art. 6.1.a RGPD) y la aplicación de medidas precontractuales a petición tuya (art. 6.1.b) |
+| Responder a tu solicitud y preparar la propuesta que nos pidas | Tu consentimiento (art. 6.1.a RGPD) y la aplicación de medidas precontractuales a petición tuya (art. 6.1.b) |
 | Prestar los servicios contratados, darte soporte y gestionar los cobros | Ejecución del contrato (art. 6.1.b) |
 | Emitir facturas y cumplir obligaciones fiscales y contables | Obligación legal (art. 6.1.c) |
 | Proteger el sitio web frente a abusos y envíos automatizados | Interés legítimo en la seguridad del sitio (art. 6.1.f) |
@@ -49,18 +49,17 @@ Para prestar el servicio usamos proveedores que tratan datos por cuenta de Novus
 
 | Proveedor | Servicio | Ubicación y garantías |
 | --- | --- | --- |
-| Cloudflare, Inc. | Alojamiento web, seguridad y protección antispam (Turnstile) | [REVISAR: ubicación y garantía de transferencia, por ejemplo Marco de Privacidad de Datos UE-EE. UU. o cláusulas contractuales tipo] |
-| Resend | Envío de los emails del formulario de contacto | [REVISAR: ubicación y garantía de transferencia] |
-| [PROVEEDOR DE CORREO, por ejemplo Zoho] | Correo electrónico profesional | [REVISAR] |
-| Stripe | Gestión de cobros a clientes | [REVISAR] |
-| Supabase | Base de datos de los servicios contratados, alojada en la UE | [REVISAR: región de la UE contratada] |
-| [GESTORÍA, si se contrata] | Gestión fiscal y contable | España |
+| Cloudflare, Inc. | Alojamiento de esta web, seguridad y protección antispam (Turnstile) | EE. UU., con red de servidores en la UE. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
+| Resend | Envío de los emails del formulario de contacto | EE. UU. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
+| Vercel Inc. | Alojamiento de las propuestas y de las webs de clientes | EE. UU. Adherido al Marco de Privacidad de Datos UE-EE. UU. |
+| [PROVEEDOR DE CORREO] | Correo electrónico profesional (hola@novusance.com) | [UBICACIÓN Y GARANTÍAS] |
+| Gestoría o asesoría fiscal, cuando se contrate | Gestión fiscal y contable | España |
 
 Cuando un proveedor está fuera del Espacio Económico Europeo, la transferencia se ampara en las garantías indicadas en la tabla.
 
 ## 6. Datos que tratamos por cuenta de nuestros clientes
 
-Cuando una clínica contrata Novusance, los datos de sus propios clientes (por ejemplo, quien escribe al asistente o reserva una cita) son responsabilidad de la clínica. Novusance actúa como **encargado del tratamiento** y trata esos datos solo siguiendo sus instrucciones, según el contrato de encargo firmado con cada clínica (art. 28 RGPD). Si eres cliente de una clínica y quieres ejercer tus derechos sobre esos datos, dirígete a la clínica; si nos escribes a nosotros, le trasladaremos tu solicitud.
+Cuando una clínica contrata Novusance, los datos de sus propios clientes (por ejemplo, quien rellena un formulario en la web de la clínica) son responsabilidad de la clínica. Si para mantener la web Novusance tiene acceso a esos datos, actúa como **encargado del tratamiento** y los trata solo siguiendo sus instrucciones, según el contrato de encargo firmado con la clínica (art. 28 RGPD). Si eres cliente de una clínica y quieres ejercer tus derechos sobre esos datos, dirígete a la clínica; si nos escribes a nosotros, le trasladaremos tu solicitud.
 
 ## 7. Tus derechos
 

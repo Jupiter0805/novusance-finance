@@ -1,16 +1,20 @@
 ---
 import { Icon } from 'astro-icon/components';
 import Logo from './Logo.astro';
+import { PUBLISHED, type Country } from '../data/countries';
 
 interface Props {
-  /** En la portada los enlaces son anclas; en el resto de páginas apuntan a /#ancla. */
+  /** En la portada los enlaces son anclas; en el resto de páginas apuntan a la portada del país. */
   home?: boolean;
+  country: Country;
 }
 
-const { home = false } = Astro.props;
-const base = home ? '' : '/';
+const { home = false, country } = Astro.props;
+const switcher = PUBLISHED.some((c) => c.code === country.code) ? PUBLISHED : [...PUBLISHED, country];
+const base = home ? '' : country.path;
 const links = [
-  { href: `${base}#como-funciona`, label: 'Cómo funciona' },
+  { href: `${base}#como-trabajo`, label: 'Cómo trabajo' },
+  { href: `${base}#servicios`, label: 'Servicios' },
   { href: `${base}#trabajos`, label: 'Trabajos' },
   { href: `${base}#precios`, label: 'Precios' },
   { href: `${base}#preguntas`, label: 'Preguntas' },
@@ -19,7 +23,7 @@ const links = [
 
 <header class="site-header" data-header>
   <div class="wrap header-inner">
-    <a href={home ? '#inicio' : '/'} class="brand" aria-label="Novusance, inicio">
+    <a href={home ? '#inicio' : country.path} class="brand" aria-label="Novusance, inicio">
       <Logo size={30} />
       <span class="wordmark" aria-hidden="true">novusance</span>
     </a>
@@ -37,7 +41,24 @@ const links = [
     </nav>
 
     <div class="actions">
-      <a href={`${base}#contacto`} class="btn btn-ink">Pide tu demo</a>
+      {
+        switcher.length > 1 && (
+          <nav aria-label="País" class="countries">
+            {switcher.map((c) => (
+              <a
+                href={c.path}
+                hreflang={c.lang}
+                aria-current={c.code === country.code ? 'page' : undefined}
+                title={c.name}
+              >
+                {c.code.toUpperCase()}
+                <span class="sr-only"> ({c.name})</span>
+              </a>
+            ))}
+          </nav>
+        )
+      }
+      <a href={`${base}#contacto`} class="btn btn-ink">Pide tu propuesta</a>
       <button
         type="button"
         class="menu-toggle"
@@ -90,7 +111,7 @@ const links = [
 
   .nav ul {
     display: flex;
-    gap: 32px;
+    gap: 28px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -111,6 +132,30 @@ const links = [
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+
+  .countries {
+    display: flex;
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .countries a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0 10px;
+    border-radius: var(--r-pill);
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .countries a[aria-current='page'] {
+    background: var(--soft);
+    color: var(--ink);
   }
 
   .menu-toggle {
@@ -207,6 +252,10 @@ const links = [
     .actions .btn {
       padding: 0 14px;
       font-size: 14px;
+    }
+
+    .countries a {
+      padding: 0 7px;
     }
   }
 </style>

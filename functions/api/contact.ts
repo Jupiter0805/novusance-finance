@@ -5,18 +5,23 @@
  * No guarda los datos en ninguna base de datos y no escribe datos personales en los logs.
  *
  * - Con `Accept: application/json` (envío con fetch) responde { ok: true } o { ok: false, error }.
- * - Sin JS (envío normal del formulario) redirige a /?enviado=1#contacto o /?error=<código>#contacto.
+ * - Sin JS (envío normal del formulario) redirige a /<país>?enviado=1#contacto o /<país>?error=<código>#contacto.
+ * - El campo oculto "pais" (es | co) decide a quién llega el email: CONTACT_TO o, para Colombia, CONTACT_TO_CO.
  */
 import { readContact, validateContact, type ContactInput } from '../../src/lib/contact-validation';
 
 interface Env {
   RESEND_API_KEY: string;
   CONTACT_TO: string;
+  /** Destinatario(s) de las solicitudes de Colombia. Si no está, van a CONTACT_TO. */
+  CONTACT_TO_CO?: string;
   CONTACT_FROM: string;
   TURNSTILE_SECRET_KEY: string;
   /** Solo para pruebas en local: "1" valida todo pero no envía el email. Nunca en producción. */
   CONTACT_DRY_RUN?: string;
 }
+
+type Country = 'es' | 'co';
 
 type ErrorCode = 'validation' | 'turnstile' | 'bad_request' | 'too_large' | 'config' | 'send';
 
@@ -25,9 +30,11 @@ const MAX_BODY_BYTES = 32 * 1024;
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const wantsJson = (request.headers.get('Accept') ?? '').includes('application/json');
 
+  // Hasta leer el formulario no se sabe el país; mientras, las respuestas sin JS vuelven a España.
+  let country: Country = 'es';
   const fail = (status: number, error: ErrorCode, extra: Record<string, unknown> = {}) =>
-    wantsJson ? json(status, { ok: false, error, ...extra }) : redirect(request, `/?error=${error}#contacto`);
-  const done = () => (wantsJson ? json(200, { ok: true }) : redirect(request, '/?enviado=1#contacto'));
+    wantsJson ? json(status, { ok: false, error, ...extra }) : redirect(request, `/${country}?error=${error}#contacto`);
+  const done = () => (wantsJson ? json(200, { ok: true }) : redirect(request, `/${country}?enviado=1#contacto`));
 
   if (!env.RESEND_API_KEY || !env.CONTACT_TO || !env.CONTACT_FROM || !env.TURNSTILE_SECRET_KEY) {
     console.error('[contact] Faltan variables de entorno');
@@ -43,6 +50,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   } catch {
     return fail(400, 'bad_request');
   }
+
+  country = data.get('pais') === 'co' ? 'co' : 'es';
 
   // Campo trampa relleno: es un bot. Respondemos como si todo fuera bien y no enviamos nada.
   const honeypot = data.get('website');
@@ -63,7 +72,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return done();
   }
 
-  const sent = await sendEmail(env, input);
+  const sent = await sendEmail(env, input, country);
   if (!sent) return fail(502, 'send');
 
   return done();
@@ -86,8 +95,10 @@ async function verifyTurnstile(token: string, secret: string, ip: string | null)
   }
 }
 
-async function sendEmail(env: Env, c: ContactInput): Promise<boolean> {
+async function sendEmail(env: Env, c: ContactInput, country: Country): Promise<boolean> {
+  const to = country === 'co' && env.CONTACT_TO_CO ? env.CONTACT_TO_CO : env.CONTACT_TO;
   const rows: Array<[string, string]> = [
+    ['País', country === 'co' ? 'Colombia' : 'España'],
     ['Nombre', c.nombre],
     ['Clínica', c.clinica],
     ['Email', c.email],
@@ -97,7 +108,7 @@ async function sendEmail(env: Env, c: ContactInput): Promise<boolean> {
 
   const text = rows.map(([k, v]) => `${k}: ${v}`).join('\n\n');
   const html = `<div style="font-family:system-ui,sans-serif;font-size:15px;line-height:1.5;color:#111413">
-<h2 style="font-size:18px;margin:0 0 16px">Nueva solicitud de demo</h2>
+<h2 style="font-size:18px;margin:0 0 16px">Nueva solicitud de propuesta</h2>
 <table cellpadding="0" cellspacing="0" style="border-collapse:collapse">${rows
     .map(
       ([k, v]) =>
@@ -116,9 +127,9 @@ async function sendEmail(env: Env, c: ContactInput): Promise<boolean> {
       },
       body: JSON.stringify({
         from: env.CONTACT_FROM,
-        to: env.CONTACT_TO.split(',').map((s) => s.trim()).filter(Boolean),
+        to: to.split(',').map((s) => s.trim()).filter(Boolean),
         reply_to: c.email,
-        subject: `Solicitud de demo: ${oneLine(c.clinica)}`,
+        subject: `Solicitud de propuesta (${country.toUpperCase()}): ${oneLine(c.clinica)}`,
         text,
         html,
       }),

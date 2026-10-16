@@ -1,14 +1,14 @@
 ---
 title: "Aviso legal"
 description: "Datos del titular, condiciones de uso y responsabilidad del sitio web de Novusance."
-updated: "[FECHA DE PUBLICACIÓN]"
+updated: "16 de octubre de 2026"
 ---
 
 ## 1. Datos del titular
 
 En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI), se informa de los datos del titular de este sitio web:
 
-- Titular: [NOMBRE Y APELLIDOS DEL TITULAR], que opera con el nombre comercial Novusance.
+- Titular: Juan Ignacio Moreno Cordido, que opera con el nombre comercial Novusance.
 - NIF: [NIF]
 - Domicilio: [DOMICILIO PROFESIONAL O FISCAL]
 - Email: hola@novusance.com
@@ -16,7 +16,9 @@ En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios
 
 ## 2. Objeto
 
-Este sitio web informa sobre los servicios de Novusance: diseño de páginas web con asistente de inteligencia artificial, reserva de citas y panel de contactos para clínicas veterinarias y otros negocios. Permite además solicitar información o una demostración a través del formulario de contacto.
+Este sitio web informa sobre los servicios de Novusance en España: diseño, renovación, publicación y mantenimiento de páginas web para clínicas veterinarias. Permite además solicitar información o una propuesta a través del formulario de contacto.
+
+La versión de Colombia de este sitio (www.novusance.com/co) tiene su propio titular y sus propios textos legales.
 
 El acceso al sitio web es gratuito y atribuye la condición de usuario. Navegar por él implica aceptar este aviso legal. Si no estás de acuerdo con su contenido, te pedimos que no utilices el sitio.
 
@@ -37,9 +39,9 @@ Queda prohibida su reproducción, distribución, comunicación pública o transf
 
 Las marcas, nombres comerciales y capturas de webs de clientes que aparecen en el apartado de trabajos pertenecen a sus respectivos titulares y se muestran con su autorización como ejemplo de trabajos realizados.
 
-## 5. Ejemplos y demostraciones
+## 5. Ejemplos
 
-Las conversaciones, clínicas, nombres de personas, animales y datos que aparecen en las demostraciones del sitio web son ficticios y tienen un fin meramente ilustrativo. Los datos del panel de ejemplo no corresponden a ningún cliente real.
+Las clínicas, nombres, textos y datos que aparecen en los ejemplos de webs de este sitio son ficticios y tienen un fin meramente ilustrativo. No corresponden a ningún cliente real.
 
 ## 6. Responsabilidad
 

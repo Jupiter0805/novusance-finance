@@ -2,6 +2,13 @@
 import { Icon } from 'astro-icon/components';
 import Logo from './Logo.astro';
 import { LIMITS } from '../lib/contact-validation';
+import type { Country } from '../data/countries';
+
+const { country } = Astro.props as { country: Country };
+const email = country.email;
+const privacy = `${country.legalBase}/privacidad`;
+// Responsable del tratamiento de los datos del formulario: la persona que lleva Novusance en ese país.
+const controller = country.code === 'es' ? 'Juan Ignacio Moreno Cordido' : country.person.name;
 
 // Clave pública de Turnstile. En desarrollo, si no está definida, se usa la clave de pruebas que siempre pasa.
 const TEST_SITE_KEY = '1x00000000000000000000AA';
@@ -13,9 +20,10 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
   <div class="box">
     <div class="head">
       <div class="head-text">
-        <h2 class="display title">¿Te enseño cómo quedaría en tu clínica?</h2>
+        <h2 class="display title">¿Te enseño cómo quedaría tu web?</h2>
         <p class="intro">
-          Dime el nombre de tu clínica y te preparo una demo con tus servicios y horarios. Sin compromiso.
+          Dime el nombre de tu clínica y te preparo una propuesta de portada con tu logo y tus colores. Sin coste y sin
+          compromiso.
         </p>
       </div>
       <Logo size={132} gradient class="big-logo" />
@@ -31,7 +39,7 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
           <Icon name="ph:warning-circle" size={24} />
           <p>
             <span data-failure-text>No se ha podido enviar el formulario.</span>
-            Inténtalo de nuevo en unos minutos o escríbeme a <a href="mailto:hola@novusance.com">hola@novusance.com</a>.
+            Inténtalo de nuevo en unos minutos o escríbeme a <a href={`mailto:${email}`}>{email}</a>.
           </p>
         </div>
       </div>
@@ -42,7 +50,7 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
         method="post"
         data-contact-form
         data-sitekey={siteKey}
-        aria-label="Solicitud de demo"
+        aria-label="Solicitud de propuesta"
       >
         <div class="grid">
           <div class="field">
@@ -115,12 +123,14 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
           </div>
         </div>
 
+        <input type="hidden" name="pais" value={country.code} />
+
         <div class="turnstile" data-turnstile></div>
 
         <noscript>
           <p class="noscript">
             Para enviar el formulario hace falta JavaScript (lo uso para la protección antispam). Si lo prefieres,
-            escríbeme a <a href="mailto:hola@novusance.com">hola@novusance.com</a>.
+            escríbeme a <a href={`mailto:${email}`}>{email}</a>.
           </p>
         </noscript>
 
@@ -128,27 +138,27 @@ if (!siteKey) console.warn('[contacto] Falta PUBLIC_TURNSTILE_SITE_KEY: el formu
           <div class="consent">
             <div class="check">
               <input id="f-privacidad" name="privacidad" type="checkbox" required aria-describedby="e-privacidad" />
-              <label for="f-privacidad">He leído y acepto la <a href="/privacidad">política de privacidad</a>.</label>
+              <label for="f-privacidad">He leído y acepto la <a href={privacy}>política de privacidad</a>.</label>
             </div>
             <p class="error" id="e-privacidad" data-error-for="privacidad"></p>
           </div>
           <div class="send">
-            <p class="direct">o escríbeme a <a href="mailto:hola@novusance.com">hola@novusance.com</a></p>
+            <p class="direct">o escríbeme a <a href={`mailto:${email}`}>{email}</a></p>
             <button type="submit" class="btn btn-accent submit" data-submit>
-              <span data-submit-label>Pide tu demo</span>
+              <span data-submit-label>Pide tu propuesta</span>
               <Icon name="ph:arrow-right" size={18} />
             </button>
           </div>
         </div>
 
         <p class="rgpd">
-          <strong>Responsable:</strong> [NOMBRE COMPLETO DEL TITULAR].{' '}
-          <strong>Finalidad:</strong> responder a tu solicitud y preparar tu demo.{' '}
+          <strong>Responsable:</strong> {controller}.{' '}
+          <strong>Finalidad:</strong> responder a tu solicitud y preparar tu propuesta.{' '}
           <strong>Legitimación:</strong> tu consentimiento.{' '}
           <strong>Destinatarios:</strong> no se ceden datos a terceros, salvo obligación legal; los proveedores técnicos
           tratan los datos por cuenta del responsable.{' '}
-          <strong>Derechos:</strong> acceso, rectificación, supresión y otros, escribiendo a hola@novusance.com.{' '}
-          Más información en la <a href="/privacidad">política de privacidad</a>.
+          <strong>Derechos:</strong> acceso, rectificación, supresión y otros, escribiendo a {email}.{' '}
+          Más información en la <a href={privacy}>política de privacidad</a>.
         </p>
       </form>
     </div>

@@ -1,109 +1,132 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { NV_FEED, NV_SCEN } from '../data/demo';
+import type { Country } from '../data/countries';
 
-// Sin JS (o con movimiento reducido) se muestra la primera conversación completa.
-const first = NV_SCEN[0];
+const { country } = Astro.props as { country: Country };
+// Todo lo que aparece dentro de las webs de ejemplo es de una clínica ficticia.
+const clinic = 'Veterinaria Arce';
 ---
 
 <section id="inicio" class="wrap hero">
   <div class="hero-grid">
     <div class="hero-copy">
-      <h1 class="display hero-title">Tu clínica atiende 24/7. <span class="muted">Tú, a tus pacientes.</span></h1>
+      <h1 class="display hero-title">La web de tu clínica, <span class="muted">a la altura de tu clínica.</span></h1>
       <p class="lead">
-        Un asistente para tu web que responde dudas, reserva citas y te avisa de las urgencias mientras pasas consulta.
+        Diseño y mantengo webs para clínicas veterinarias: con tu logo y tus colores, pensadas para el {country.mobile} y al
+        día sin que tengas que tocar nada. Antes de pedirte nada, te enseño cómo quedaría la tuya.
       </p>
       <div class="btn-row">
-        <a href="#contacto" class="btn btn-lg btn-accent">Pide tu demo <Icon name="ph:arrow-right" size={18} /></a>
-        <a href="#como-funciona" class="btn btn-lg btn-outline">Ver cómo funciona</a>
-      </div>
-      <div class="picker">
-        <span id="picker-label" class="picker-label">Mira cómo respondería en cada caso:</span>
-        <div role="group" aria-labelledby="picker-label" class="segmented">
-          {
-            NV_SCEN.map((s, i) => (
-              <button type="button" class="seg" aria-pressed={i === 0 ? 'true' : 'false'} data-scen={i}>
-                {s.label}
-              </button>
-            ))
-          }
-        </div>
+        <a href="#contacto" class="btn btn-lg btn-accent">Pide tu propuesta <Icon name="ph:arrow-right" size={18} /></a>
+        <a href="#precios" class="btn btn-lg btn-outline">Ver precios</a>
       </div>
     </div>
 
-    <div class="hero-visual">
-      <div class="stage" data-stage>
-        <div class="feed-card">
-          <div class="feed-title">Mientras dormías</div>
-          {
-            NV_FEED.map((f) => (
-              <div class="feed-row">
-                <span class="muted tnum">{f.t}</span>
-                <span>{f.d}</span>
-              </div>
-            ))
-          }
-        </div>
+    <figure class="hero-visual">
+      <div class="stage" data-compare style="--pos: 42%">
+        <div class="browser">
+          <div class="bar" aria-hidden="true">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="url">www.tuclinica.vet</span>
+          </div>
 
-        <div class="phone-col">
-          <div class="phone">
-            <div class="screen">
-              <div class="chat-head">
-                <div class="avatar" aria-hidden="true">VA</div>
-                <div class="chat-meta">
-                  <div class="chat-name">Veterinaria Arce</div>
-                  <div class="chat-status">Responde al momento</div>
+          <div class="screen" aria-hidden="true">
+            <!-- Antes: una web de hace años, correcta pero anticuada. -->
+            <div class="site old">
+              <div class="old-banner">
+                <div class="old-name">Clínica Veterinaria Arce</div>
+                <div class="old-sub">Bienvenidos a nuestra página web</div>
+              </div>
+              <div class="old-body">
+                <ul class="old-nav">
+                  <li>Inicio</li>
+                  <li>Quiénes somos</li>
+                  <li>Servicios</li>
+                  <li>Galería</li>
+                  <li>Contacto</li>
+                </ul>
+                <div class="old-main">
+                  <div class="old-h">Bienvenidos</div>
+                  <p>
+                    En nuestra clínica ofrecemos servicios de medicina general, vacunación, cirugía y peluquería para su
+                    mascota. Contamos con un equipo de profesionales con amplia experiencia.
+                  </p>
+                  <p>Para más información no dude en llamarnos o visitarnos en nuestras instalaciones.</p>
+                  <div class="old-box">
+                    <b>Horario:</b> Lunes a viernes de 10:00 a 14:00 y de 17:00 a 20:00. Sábados de 10:00 a 13:00.
+                  </div>
                 </div>
               </div>
-              <div class="chat" aria-live="off" data-chat>
-                <div class="when" data-when>{first.when}</div>
-                {first.messages.map((m) => <div class:list={['msg', m.from]}>{m.text}</div>)}
+              <div class="old-foot">Tel. 900 000 000 · Última actualización: marzo de 2015</div>
+            </div>
+
+            <!-- Después: la misma clínica, renovada. -->
+            <div class="site new">
+              <div class="new-nav">
+                <span class="new-brand"><i></i>{clinic}</span>
+                <span class="new-links"><span>Servicios</span><span>Equipo</span><span>Contacto</span></span>
+                <span class="new-cta">Pedir cita</span>
               </div>
-              <div class="composer" aria-hidden="true">
-                <div class="composer-field">Escribe un mensaje</div>
-                <div class="send"><Icon name="ph:arrow-right-bold" size={16} /></div>
+              <div class="new-hero">
+                <div class="new-photo"><span>Foto de tu equipo</span></div>
+                <div class="new-copy">
+                  <div class="new-open"><i></i>Abierto hoy hasta las 20:00</div>
+                  <div class="new-h">Cuidamos de los tuyos como si fueran nuestros.</div>
+                  <div class="new-p">Medicina general, vacunas y cirugía en el centro de la ciudad.</div>
+                  <div class="new-btns"><span class="a">Pedir cita</span><span class="b">Llamar</span></div>
+                </div>
+              </div>
+              <div class="new-cards">
+                <span>Consulta general</span>
+                <span>Vacunación</span>
+                <span>Cirugía</span>
               </div>
             </div>
+
+            <span class="tag tag-old">Antes</span>
+            <span class="tag tag-new">Después</span>
+            <span class="handle"><i></i></span>
           </div>
-          <div class="stage-caption">
-            <p class="demo-note">Conversación de ejemplo con una clínica ficticia.</p>
-            <button type="button" class="pause" data-pause hidden>
-              <Icon name="ph:pause-fill" size={14} class="i-pause" />
-              <Icon name="ph:play-fill" size={14} class="i-play" />
-              <span data-pause-label>Pausar</span>
-            </button>
-          </div>
+
+          <input
+            class="range"
+            type="range"
+            min="0"
+            max="100"
+            value="42"
+            aria-label="Comparar la web antes y después de renovarla"
+            aria-valuetext="42 % antes, 58 % después"
+            data-range
+          />
         </div>
 
-        <div class="lead-card" data-lead>
-          <div class="lead-icon"><Icon name="ph:check-bold" size={16} /></div>
-          <div class="lead-text">
-            <div class="lead-title" data-lead-title>{first.leadTitle}</div>
-            <div class="muted" data-lead-1>{first.lead1}</div>
-            <div class="muted" data-lead-2>{first.lead2}</div>
+        <div class="phone" aria-hidden="true">
+          <div class="phone-screen">
+            <div class="m-nav"><span class="new-brand"><i></i>Arce</span><span class="m-burger"></span></div>
+            <div class="new-open"><i></i>Abierto hoy</div>
+            <div class="m-h">Cuidamos de los tuyos como si fueran nuestros.</div>
+            <div class="m-photo"></div>
+            <span class="m-btn">Pedir cita</span>
+            <span class="m-btn ghost">Llamar</span>
           </div>
         </div>
       </div>
-      <p class="hero-foot">La clínica está cerrada. Las citas, no.</p>
-    </div>
+      <figcaption class="caption">
+        Ejemplo con una clínica ficticia.<span class="js-only"> Arrastra para comparar.</span>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
 <style>
   .hero {
-    padding-top: 32px;
-    padding-bottom: 72px;
-  }
-
-  .hero-title {
-    font-size: clamp(42px, 4.6vw, 70px);
-    line-height: 1;
+    padding-top: 40px;
+    padding-bottom: 80px;
   }
 
   .hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
-    gap: 48px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
+    gap: 56px;
     align-items: center;
   }
 
@@ -114,9 +137,14 @@ const first = NV_SCEN[0];
     animation: nv-in 0.9s var(--ease-out);
   }
 
+  .hero-title {
+    font-size: clamp(40px, 4.4vw, 66px);
+    line-height: 1;
+  }
+
   .lead {
     margin: 0;
-    max-width: 500px;
+    max-width: 520px;
     font-size: 19px;
     line-height: 1.55;
     color: var(--muted);
@@ -128,556 +156,592 @@ const first = NV_SCEN[0];
     flex-wrap: wrap;
   }
 
-  .picker {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding-top: 22px;
-    border-top: 1px solid var(--line);
-  }
-
-  :global(html:not(.js)) .picker {
-    display: none;
-  }
-
-  .picker-label {
-    font-size: 14px;
-    color: var(--muted);
-  }
-
-  .segmented {
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-self: flex-start;
-    padding: 4px;
-    border-radius: var(--r-pill);
-    background: var(--soft);
-    border: 1px solid var(--line);
-  }
-
-  .seg {
-    min-height: 44px;
-    padding: 0 18px;
-    border: 0;
-    border-radius: var(--r-pill);
-    background: transparent;
-    color: var(--ink);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.25s;
-  }
-
-  .seg[aria-pressed='true'] {
-    background: var(--accent);
-    color: #fff;
-  }
-
   .hero-visual {
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
   }
 
   .stage {
     position: relative;
-    width: 100%;
-    padding: 24px 40px 18px 24px;
+    padding: 28px 22% 56px 28px;
     border-radius: var(--r-big);
     background: var(--accent-soft);
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
   }
 
-  .feed-card {
-    position: absolute;
-    top: 24px;
-    left: 24px;
-    z-index: 2;
-    width: 232px;
-    padding: 16px;
-    border-radius: 18px;
+  /* ── Navegador ─────────────────────────────────────────────────── */
+  .browser {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
     background: var(--surface);
     border: 1px solid var(--line);
-    box-shadow: 0 18px 40px -26px color-mix(in srgb, var(--accent) 50%, #000);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    animation: nv-in 1.1s var(--ease-out);
+    box-shadow: 0 30px 60px -36px var(--accent-shadow);
   }
 
-  .feed-title {
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .feed-row {
-    display: grid;
-    grid-template-columns: 42px 1fr;
-    gap: 8px;
-    font-size: 12.5px;
-    line-height: 1.4;
-  }
-
-  .tnum {
-    font-variant-numeric: tabular-nums;
-  }
-
-  .phone-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .phone {
-    width: 300px;
-    max-width: 100%;
-    border-radius: 44px;
-    background: var(--phone);
-    padding: 10px;
-    box-shadow: 0 30px 60px -32px var(--accent-shadow);
-  }
-
-  .screen {
-    /*
-      El móvil completo (con el aviso de demo) cabe en la primera pantalla:
-      en pantallas bajas se acorta la ventana del chat en vez de cortarse el móvil.
-    */
-    height: clamp(440px, calc(100svh - 250px), 572px);
-    border-radius: 35px;
-    background: var(--surface);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .chat-head {
+  .bar {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 18px 16px 12px;
+    gap: 12px;
+    height: 34px;
+    padding: 0 12px;
+    background: var(--soft);
     border-bottom: 1px solid var(--line);
   }
 
-  .avatar {
-    flex-shrink: 0;
-    width: 36px;
-    height: 36px;
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dots i {
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 14px;
+    background: var(--line);
   }
 
-  .chat-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .chat-name {
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  .chat-status {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .chat {
+  .url {
     flex-grow: 1;
-    min-height: 0;
+    max-width: 260px;
+    margin-inline: auto;
+    padding: 3px 12px;
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    font-size: 11.5px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* Todo lo de dentro se dibuja en unidades del contenedor, así la web de ejemplo escala entera. */
+  .screen {
+    position: relative;
+    aspect-ratio: 16 / 10.4;
+    container-type: inline-size;
     overflow: hidden;
+    user-select: none;
+  }
+
+  .site {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    gap: 8px;
-    padding: 14px;
-    background: var(--chat);
-    /* Lo que sube por arriba se desvanece, como en un chat real, en vez de cortarse en seco. */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 28px);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 28px);
   }
 
-  .when {
-    align-self: center;
-    font-size: 11px;
-    color: var(--muted);
-    padding: 3px 10px;
-    border-radius: var(--r-pill);
-    background: var(--soft);
+  /* ── Antes ─────────────────────────────────────────────────────── */
+  .old {
+    background: #e8e4d8;
+    color: #333;
+    font-family: Georgia, 'Times New Roman', serif;
   }
 
-  .chat :global(.msg) {
-    flex-shrink: 0;
-    padding: 9px 12px;
-    font-size: 13.5px;
-    line-height: 1.4;
-  }
-
-  .chat :global(.msg.is-new) {
-    animation: nv-in 0.35s ease-out;
-  }
-
-  .chat :global(.msg.user) {
-    align-self: flex-end;
-    max-width: 82%;
-    border-radius: 16px 16px 4px 16px;
-    background: var(--accent);
+  .old-banner {
+    padding: 2.4cqw 3cqw;
+    background: linear-gradient(#5b7fa8, #3d5f8a);
     color: #fff;
+    text-align: center;
+    border-bottom: 0.5cqw solid #c9b98a;
   }
 
-  .chat :global(.msg.bot) {
-    align-self: flex-start;
-    max-width: 86%;
-    border-radius: 16px 16px 16px 4px;
-    background: var(--surface);
-    border: 1px solid var(--line);
+  .old-name {
+    font-size: 3.7cqw;
+    font-weight: bold;
   }
 
-  .chat :global(.typing) {
-    flex-shrink: 0;
-    align-self: flex-start;
-    display: flex;
-    gap: 4px;
-    padding: 12px 14px;
-    border-radius: 16px 16px 16px 4px;
-    background: var(--surface);
-    border: 1px solid var(--line);
+  .old-sub {
+    margin-top: 0.4cqw;
+    font-size: 1.9cqw;
+    font-style: italic;
+    opacity: 0.9;
   }
 
-  .chat :global(.typing i) {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--muted);
-    animation: nv-dot 1.2s infinite;
-  }
-
-  .chat :global(.typing i:nth-child(2)) {
-    animation-delay: 0.2s;
-  }
-
-  .chat :global(.typing i:nth-child(3)) {
-    animation-delay: 0.4s;
-  }
-
-  .composer {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 12px 16px;
-    border-top: 1px solid var(--line);
-  }
-
-  .composer-field {
+  .old-body {
     flex-grow: 1;
-    padding: 10px 14px;
-    border-radius: var(--r-pill);
-    background: var(--chat);
-    font-size: 13px;
-    color: var(--muted);
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    gap: 2.4cqw;
+    padding: 2.4cqw 3cqw;
   }
 
-  .send {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .stage-caption {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .demo-note {
+  .old-nav {
     margin: 0;
-    font-size: 12px;
-    color: var(--muted);
+    padding: 1.2cqw;
+    list-style: none;
+    background: #f6f3ea;
+    border: 0.15cqw solid #bfb8a4;
+    font-family: Verdana, sans-serif;
+    font-size: 1.5cqw;
+    line-height: 2.1;
   }
 
-  .pause {
+  .old-nav li {
+    color: #1f4f9a;
+    text-decoration: underline;
+  }
+
+  .old-main {
+    font-size: 1.65cqw;
+    line-height: 1.45;
+  }
+
+  .old-main p {
+    margin: 0 0 1.2cqw;
+  }
+
+  .old-h {
+    margin-bottom: 1cqw;
+    font-size: 2.6cqw;
+    color: #3d5f8a;
+  }
+
+  .old-box {
+    padding: 1.2cqw;
+    border: 0.15cqw dashed #9b9381;
+    background: #f6f3ea;
+    font-family: Verdana, sans-serif;
+    font-size: 1.4cqw;
+  }
+
+  .old-foot {
+    padding: 1.2cqw;
+    background: #3d5f8a;
+    color: #dfe7f1;
+    font-family: Verdana, sans-serif;
+    font-size: 1.3cqw;
+    text-align: center;
+  }
+
+  /* ── Después ───────────────────────────────────────────────────── */
+  .new {
+    --c: #2f6b5a;
+    --c-soft: #e3efe9;
+    background: #fbfaf7;
+    color: #17201c;
+    font-family: var(--font-body);
+    clip-path: inset(0 0 0 var(--pos));
+  }
+
+  .new-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2cqw;
+    padding: 2.2cqw 3.4cqw;
+    font-size: 1.6cqw;
+  }
+
+  .new-brand {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    min-height: 32px;
-    padding: 0 12px;
-    border: 1px solid var(--line);
-    border-radius: var(--r-pill);
-    background: var(--surface);
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
+    gap: 0.9cqw;
+    font-weight: 600;
+    font-size: 1.8cqw;
   }
 
-  .pause .i-play,
-  .pause[aria-pressed='true'] .i-pause {
+  .new-brand i {
+    width: 2.2cqw;
+    height: 2.2cqw;
+    border-radius: 50% 50% 50% 12%;
+    background: var(--c);
+  }
+
+  .new-links {
+    display: flex;
+    gap: 2.6cqw;
+    color: #5b6560;
+  }
+
+  .new-cta {
+    padding: 0.9cqw 2cqw;
+    border-radius: 99px;
+    background: var(--c);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .new-hero {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 0.8fr 1.1fr;
+    gap: 3.4cqw;
+    align-items: center;
+    padding: 0 3.4cqw;
+  }
+
+  .new-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8cqw;
+  }
+
+  .new-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8cqw;
+    align-self: flex-start;
+    padding: 0.6cqw 1.4cqw;
+    border-radius: 99px;
+    background: var(--c-soft);
+    color: var(--c);
+    font-size: 1.35cqw;
+    font-weight: 500;
+  }
+
+  .new-open i {
+    width: 1cqw;
+    height: 1cqw;
+    border-radius: 50%;
+    background: #2fa36b;
+  }
+
+  .new-h {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    max-width: 34cqw;
+    font-size: 3.5cqw;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+  }
+
+  .new-p {
+    max-width: 34cqw;
+    font-size: 1.6cqw;
+    line-height: 1.45;
+    color: #5b6560;
+  }
+
+  .new-btns {
+    display: flex;
+    gap: 1.2cqw;
+    font-size: 1.6cqw;
+    font-weight: 500;
+  }
+
+  .new-btns span {
+    padding: 1.1cqw 2.4cqw;
+    border-radius: 99px;
+  }
+
+  .new-btns .a {
+    background: var(--c);
+    color: #fff;
+  }
+
+  .new-btns .b {
+    border: 0.15cqw solid #cdd5d0;
+  }
+
+  .new-photo {
+    position: relative;
+    height: 88%;
+    border-radius: 2.4cqw;
+    background:
+      radial-gradient(circle at 70% 30%, #c9e0d5 0 18%, transparent 19%),
+      linear-gradient(160deg, #9cc4b2, #4f8c76);
+    display: flex;
+    align-items: flex-end;
+    padding: 1.6cqw;
+  }
+
+  .new-photo span {
+    padding: 0.5cqw 1.2cqw;
+    border-radius: 99px;
+    background: rgb(255 255 255 / 0.85);
+    font-size: 1.3cqw;
+    color: #2f3a35;
+  }
+
+  .new-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6cqw;
+    padding: 2.4cqw 3.4cqw 3cqw;
+    font-size: 1.55cqw;
+    font-weight: 500;
+  }
+
+  .new-cards span {
+    padding: 1.6cqw;
+    border-radius: 1.6cqw;
+    background: #fff;
+    border: 0.15cqw solid #e2e6e3;
+  }
+
+  /* ── Comparador ────────────────────────────────────────────────── */
+  /* Las etiquetas acompañan al divisor, a cada lado, para no tapar las esquinas de las webs. */
+  .tag {
+    position: absolute;
+    bottom: 2.4cqw;
+    padding: 0.5cqw 1.4cqw;
+    border-radius: 99px;
+    background: rgb(17 20 19 / 0.78);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 1.5cqw;
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  .tag-old {
+    right: calc(100% - var(--pos) + 1.6cqw);
+  }
+
+  .tag-new {
+    left: calc(var(--pos) + 1.6cqw);
+  }
+
+  .handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    width: 2px;
+    margin-left: -1px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.12);
+    pointer-events: none;
+  }
+
+  .handle i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.45);
+  }
+
+  .handle i::before,
+  .handle i::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    margin-top: -5px;
+    border: 5px solid transparent;
+  }
+
+  .handle i::before {
+    left: 6px;
+    border-right-color: var(--accent);
+  }
+
+  .handle i::after {
+    right: 6px;
+    border-left-color: var(--accent);
+  }
+
+  /* El control real es un deslizador invisible encima de la pantalla: teclado y lectores de pantalla incluidos. */
+  .range {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 34px;
+    bottom: 0;
+    width: 100%;
+    height: calc(100% - 34px);
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+  }
+
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 48px;
+    height: 100%;
+  }
+
+  .range::-moz-range-thumb {
+    width: 48px;
+    height: 100%;
+    border: 0;
+  }
+
+  .browser:has(.range:focus-visible) {
+    outline: 2px solid var(--accent-text);
+    outline-offset: 3px;
+  }
+
+  :global(html:not(.js)) .range,
+  :global(html:not(.js)) .js-only {
     display: none;
   }
 
-  .pause[aria-pressed='true'] .i-play {
-    display: block;
-  }
-
-  .lead-card {
+  /* ── Móvil ─────────────────────────────────────────────────────── */
+  .phone {
     position: absolute;
-    left: 24px;
-    bottom: 40px;
-    z-index: 2;
-    width: 236px;
-    padding: 14px;
-    border-radius: 16px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    box-shadow: 0 18px 40px -22px color-mix(in srgb, var(--accent) 50%, #000);
-    display: flex;
-    gap: 10px;
+    right: 4%;
+    bottom: 24px;
+    width: 23%;
+    max-width: 168px;
+    padding: 6px;
+    border-radius: 26px;
+    background: var(--phone);
+    box-shadow: 0 30px 50px -24px var(--accent-shadow);
+    container-type: inline-size;
   }
 
-  .lead-card.is-new {
-    animation: nv-in 0.4s ease-out;
-  }
-
-  .lead-icon {
-    flex-shrink: 0;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .lead-text {
+  .phone-screen {
+    aspect-ratio: 9 / 18.5;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fbfaf7;
+    color: #17201c;
+    padding: 9cqw 8cqw;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 6cqw;
+    --c: #2f6b5a;
+    --c-soft: #e3efe9;
+  }
+
+  .phone .new-brand {
+    font-size: 7cqw;
+    gap: 3cqw;
+  }
+
+  .phone .new-brand i {
+    width: 7cqw;
+    height: 7cqw;
+  }
+
+  .m-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .m-burger {
+    width: 9cqw;
+    height: 6cqw;
+    border-top: 1.4cqw solid #17201c;
+    border-bottom: 1.4cqw solid #17201c;
+  }
+
+  .phone .new-open {
+    font-size: 5.6cqw;
+    padding: 2cqw 5cqw;
+    gap: 2.5cqw;
+  }
+
+  .phone .new-open i {
+    width: 3.5cqw;
+    height: 3.5cqw;
+  }
+
+  .m-h {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: 11cqw;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .m-photo {
+    flex-grow: 1;
+    min-height: 0;
+    border-radius: 8cqw;
+    background:
+      radial-gradient(circle at 70% 30%, #c9e0d5 0 18%, transparent 19%),
+      linear-gradient(160deg, #9cc4b2, #4f8c76);
+  }
+
+  .m-btn {
+    padding: 4.5cqw;
+    border-radius: 99px;
+    background: var(--c);
+    color: #fff;
+    font-size: 6cqw;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .m-btn.ghost {
+    margin-top: -2cqw;
+    background: none;
+    color: #17201c;
+    border: 0.6cqw solid #cdd5d0;
+  }
+
+  .caption {
     font-size: 13px;
-    line-height: 1.35;
-  }
-
-  .lead-title {
-    font-weight: 600;
-  }
-
-  .hero-foot {
-    margin: 0;
-    font-size: 14px;
     color: var(--muted);
   }
 
-  /* Con la columna estrecha, la tarjeta "Mientras dormías" taparía el chat. */
-  @media (max-width: 1180px) {
-    .feed-card {
-      display: none;
-    }
-  }
-
-  /*
-    Anchos medios: no cabe la tarjeta al lado del móvil, así que la notificación
-    aparece arriba y centrada sobre él, como un aviso push.
-  */
-  @media (min-width: 861px) and (max-width: 1180px) {
-    .stage {
-      justify-content: center;
-      padding-right: 24px;
-    }
-
-    .lead-card {
-      top: 12px;
-      bottom: auto;
-      left: 0;
-      right: 0;
-      width: 268px;
-      margin-inline: auto;
-    }
-  }
-
-  @media (max-width: 860px) {
+  @media (max-width: 960px) {
     .hero-grid {
       grid-template-columns: 1fr;
+      gap: 44px;
     }
+  }
 
-    .hero-copy {
-      max-width: none;
-    }
-
+  @media (max-width: 560px) {
     .stage {
-      justify-content: center;
-      min-height: auto;
-      padding: 32px 16px 136px;
+      padding: 16px 26% 40px 16px;
     }
 
-    .feed-card {
-      display: none;
-    }
-
-    .lead-card {
-      left: 0;
-      right: 0;
-      bottom: 24px;
-      margin-inline: auto;
+    .phone {
+      right: 12px;
+      bottom: 16px;
+      width: 28%;
     }
   }
 </style>
 
 <script>
-  import { NV_SCEN } from '../data/demo';
+  const stage = document.querySelector<HTMLElement>('[data-compare]');
+  const range = document.querySelector<HTMLInputElement>('[data-range]');
 
-  const TICK = 1600;
-  const stage = document.querySelector<HTMLElement>('[data-stage]');
-  const chat = document.querySelector<HTMLElement>('[data-chat]');
-  const when = document.querySelector<HTMLElement>('[data-when]');
-  const lead = document.querySelector<HTMLElement>('[data-lead]');
-  const leadTitle = document.querySelector<HTMLElement>('[data-lead-title]');
-  const lead1 = document.querySelector<HTMLElement>('[data-lead-1]');
-  const lead2 = document.querySelector<HTMLElement>('[data-lead-2]');
-  const pauseBtn = document.querySelector<HTMLButtonElement>('[data-pause]');
-  const pauseLabel = document.querySelector<HTMLElement>('[data-pause-label]');
-  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-scen]'));
-
-  if (stage && chat && when && lead && leadTitle && lead1 && lead2 && pauseBtn && pauseLabel) {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    let scen = 0;
-    let step = 1;
-    let shownScen = -1;
-    let shownCount = 0;
-    let shownLead = false;
-    let timer: number | undefined;
-    let inView = true;
-    let userPaused = false;
-
-    const typing = document.createElement('div');
-    typing.className = 'typing';
-    typing.innerHTML = '<i></i><i></i><i></i><span class="sr-only">El asistente está escribiendo</span>';
-
-    const bubble = (from: string, text: string, animate: boolean) => {
-      const el = document.createElement('div');
-      el.className = `msg ${from}${animate ? ' is-new' : ''}`;
-      el.textContent = text;
-      return el;
+  if (stage && range) {
+    const set = (v: number) => {
+      stage.style.setProperty('--pos', `${v}%`);
+      range.value = String(v);
+      const r = Math.round(v);
+      range.setAttribute(
+        'aria-valuetext',
+        r <= 5 ? 'Se ve la web renovada' : r >= 95 ? 'Se ve la web antigua' : `${r} % antes, ${100 - r} % después`,
+      );
     };
 
-    const render = (animate: boolean) => {
-      const c = NV_SCEN[scen];
-      const len = c.messages.length;
-      const count = Math.min(step, len);
-
-      if (shownScen !== scen || count < shownCount) {
-        chat.querySelectorAll('.msg, .typing').forEach((el) => el.remove());
-        when.textContent = c.when;
-        leadTitle.textContent = c.leadTitle;
-        lead1.textContent = c.lead1;
-        lead2.textContent = c.lead2;
-        shownScen = scen;
-        shownCount = 0;
-      }
-
-      typing.remove();
-      for (let k = shownCount; k < count; k++) {
-        chat.append(bubble(c.messages[k].from, c.messages[k].text, animate));
-      }
-      shownCount = count;
-
-      const next = c.messages[count];
-      if (next && next.from === 'bot') chat.append(typing);
-
-      const showLead = step > len;
-      lead.hidden = !showLead;
-      lead.classList.toggle('is-new', animate && showLead && !shownLead);
-      shownLead = showLead;
-
-      buttons.forEach((b, k) => b.setAttribute('aria-pressed', String(k === scen)));
-    };
-
-    const tick = () => {
-      const len = NV_SCEN[scen].messages.length;
-      if (step >= len + 4) {
-        scen = (scen + 1) % NV_SCEN.length;
-        step = 1;
-        // Avance automático: no se anuncia en lectores de pantalla.
-        chat.setAttribute('aria-live', 'off');
-      } else {
-        step += 1;
-      }
-      render(true);
-    };
-
-    const shouldRun = () => !reduce.matches && !userPaused && inView && !document.hidden;
-
-    const sync = () => {
-      if (shouldRun()) {
-        if (timer === undefined) timer = window.setInterval(tick, TICK);
-      } else if (timer !== undefined) {
-        window.clearInterval(timer);
-        timer = undefined;
-      }
-    };
-
-    const start = (n: number) => {
-      scen = n;
-      // Con movimiento reducido se muestra la conversación completa al instante.
-      step = reduce.matches ? 99 : 1;
-      if (timer !== undefined) {
-        window.clearInterval(timer);
-        timer = undefined;
-      }
-      render(!reduce.matches);
-      sync();
-    };
-
-    buttons.forEach((b) =>
-      b.addEventListener('click', () => {
-        chat.setAttribute('aria-live', 'polite');
-        start(Number(b.dataset.scen));
-      }),
-    );
-
-    pauseBtn.addEventListener('click', () => {
-      userPaused = !userPaused;
-      pauseBtn.setAttribute('aria-pressed', String(userPaused));
-      pauseLabel.textContent = userPaused ? 'Reanudar' : 'Pausar';
-      sync();
+    let touched = false;
+    range.addEventListener('input', () => {
+      touched = true;
+      set(Number(range.value));
     });
 
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(([entry]) => {
-        inView = entry.isIntersecting;
-        sync();
-      }).observe(stage);
+    // Un único gesto al aparecer, para que se entienda que se puede arrastrar. Se salta con movimiento reducido.
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        const from = 42;
+        const to = 64;
+        const start = performance.now();
+        const dur = 1600;
+        const step = (now: number) => {
+          if (touched) return;
+          const t = Math.min((now - start) / dur, 1);
+          // Ida y vuelta suave.
+          const k = Math.sin(t * Math.PI);
+          set(from + (to - from) * k);
+          if (t < 1) requestAnimationFrame(step);
+          else set(from);
+        };
+        setTimeout(() => requestAnimationFrame(step), 500);
+      }, { threshold: 0.6 });
+      io.observe(stage);
     }
-
-    document.addEventListener('visibilitychange', sync);
-
-    const applyMotionPref = () => {
-      pauseBtn.hidden = reduce.matches;
-      pauseBtn.setAttribute('aria-pressed', String(userPaused));
-      start(scen);
-    };
-    reduce.addEventListener('change', applyMotionPref);
-
-    // Con movimiento reducido ya está pintada la conversación completa desde el servidor.
-    shownScen = 0;
-    shownCount = NV_SCEN[0].messages.length;
-    shownLead = true;
-    applyMotionPref();
   }
 </script>

@@ -1,22 +1,29 @@
+---
+import type { Country } from '../data/countries';
+
+const { country } = Astro.props as { country: Country };
+const m = country.mobile;
+---
+
 <section class="problem">
   <div class="wrap inner">
-    <h2 class="display title">Cada llamada sin contestar es un cliente que llama a otra clínica.</h2>
+    <h2 class="display title">Antes de llamarte, tus clientes ya han visto tu web.</h2>
     <div class="grid">
       <div class="big">
         <div class="display clock" aria-hidden="true">23:47</div>
         <p>
-          <span class="sr-only">A las 23:47. </span>Un dueño preocupado escribe y la clínica ya ha cerrado. Con Novusance,
-          a esa hora ya tiene respuesta.
+          <span class="sr-only">A las 23:47. </span>Su perro no está bien. Busca «veterinario cerca» en el {m} y abre tres
+          webs en un minuto.
         </p>
       </div>
       <dl class="moments">
         <div class="moment">
-          <dt class="display">11:30</dt>
-          <dd>Estás en quirófano. Suena el teléfono y nadie puede cogerlo.</dd>
+          <dt class="display">23:48</dt>
+          <dd>Mira cuál se ve bien en el {m}, cuál dice el horario y cuál tiene el teléfono a mano.</dd>
         </div>
         <div class="moment">
-          <dt class="display">17:10</dt>
-          <dd>Sala de espera llena. Tres mensajes sin leer, todos preguntando lo mismo.</dd>
+          <dt class="display">23:49</dt>
+          <dd>Guarda la que le transmite confianza. Mañana a primera hora, llama a esa.</dd>
         </div>
       </dl>
     </div>

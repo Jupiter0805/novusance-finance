@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import LegalPage from '../../components/LegalPage.astro';
+import { COUNTRIES } from '../../data/countries';
+
+// Páginas legales de Colombia (titular: Carlos). Se publican en /co/aviso-legal, /co/privacidad...
+export async function getStaticPaths() {
+  const pages = await getCollection('legalCo');
+  return pages.map((page) => ({ params: { legal: page.id }, props: { page } }));
+}
+
+const { page } = Astro.props;
+---
+
+<LegalPage page={page} country={COUNTRIES.co} />

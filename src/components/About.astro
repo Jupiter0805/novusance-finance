@@ -1,25 +1,28 @@
 ---
 import { Image } from 'astro:assets';
 import { optionalImage } from '../lib/optional-image';
+import type { Country } from '../data/countries';
 
-const photo = optionalImage('Juanignacio');
+const { country } = Astro.props as { country: Country };
+const { person } = country;
+const photo = optionalImage(person.photo);
 ---
 
 <section class="about">
   <div class="inner">
     <div class="person">
       <div class="photo">
-        {photo ? <Image src={photo} alt="Juan Ignacio Moreno" width={76} height={76} densities={[1, 2, 3]} /> : <span>[Tu foto]</span>}
+        {photo ? <Image src={photo} alt={person.name} width={76} height={76} densities={[1, 2, 3]} /> : <span aria-hidden="true" class="initials">{person.initials}</span>}
       </div>
       <div class="who">
-        <div class="name">Juan Ignacio Moreno</div>
-        <div class="muted">Desarrollador en Madrid</div>
+        <div class="name">{person.name}</div>
+        <div class="muted">{person.role}</div>
       </div>
     </div>
     <h2 class="display title">Cuando escribes, te contesto yo.</h2>
     <p class="text">
-      No hay centralita ni tickets. Conozco tu web porque la he hecho yo, y tu dominio y tus datos son tuyos: si un día te
-      vas, te los llevas.
+      No hay agencia ni centralita. Trabajo solo con clínicas veterinarias, conozco tu web porque la he hecho yo, y tu
+      dominio está siempre a tu nombre: si un día te vas, te lo llevas.
     </p>
   </div>
 </section>
@@ -58,6 +61,13 @@ const photo = optionalImage('Juanignacio');
     font-size: 11px;
     color: var(--muted);
     text-align: center;
+  }
+
+  .initials {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-text);
   }
 
   .photo img {

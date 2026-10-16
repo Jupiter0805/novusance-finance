@@ -1,18 +1,23 @@
 ---
 import Logo from './Logo.astro';
+import type { Country } from '../data/countries';
 
+const { country } = Astro.props as { country: Country };
 const year = new Date().getFullYear();
+const b = country.legalBase;
 const links = [
-  { href: '/aviso-legal', label: 'Aviso legal' },
-  { href: '/privacidad', label: 'Privacidad' },
-  { href: '/cookies', label: 'Cookies' },
-  { href: '/condiciones', label: 'Condiciones' },
+  { href: `${b}/aviso-legal`, label: 'Aviso legal' },
+  { href: `${b}/privacidad`, label: 'Privacidad' },
+  { href: `${b}/cookies`, label: 'Cookies' },
+  { href: `${b}/condiciones`, label: 'Condiciones' },
 ];
 ---
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <span class="copy"><Logo size={18} />© {year} Novusance</span>
+    <span class="copy"
+      ><Logo size={18} />© {year} Novusance · <a href={`mailto:${country.email}`}>{country.email}</a></span
+    >
     <nav aria-label="Legal">
       <ul>
         {
@@ -47,6 +52,10 @@ const links = [
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+
+  .copy a {
+    min-height: 0;
   }
 
   ul {

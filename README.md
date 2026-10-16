@@ -1,6 +1,12 @@
 # novusance.com
 
-Web de Novusance: webs con asistente IA para clínicas veterinarias en Madrid.
+Web de Novusance: diseño, renovación y mantenimiento de webs para clínicas veterinarias en España y Colombia.
+
+- Una portada por país: `/es` (Jupiter) y `/co` (Carlos). La raíz `/` redirige a `/es` (`public/_redirects`).
+- Todo lo que cambia entre países (precios, moneda, persona, email) está en `src/data/countries.ts`.
+- Un país con `published: false` se genera como **borrador**: aviso visible, `noindex`, fuera del sitemap y sin
+  enlace en el selector de país. Para publicar Colombia: completa sus datos y textos legales (`src/content/legal-co/`),
+  pon `published: true` y quita `'/co'` de `DRAFT_PATHS` en `astro.config.mjs`.
 
 - **Astro** (salida estática) + una **Cloudflare Pages Function** para el formulario (`functions/api/contact.ts`).
 - Sin frameworks de UI. Fuentes autoalojadas (Fontsource), iconos Phosphor (`astro-icon`), sin cookies propias.
@@ -16,12 +22,13 @@ public/                      Archivos servidos tal cual
   _headers, _redirects, robots.txt                   Configuración de Cloudflare Pages
 scripts/generate-assets.mjs  Genera favicons y la imagen Open Graph a partir del logo
 src/
-  components/                Secciones de la portada, cabecera, pie, logo
-  content/legal/*.md         Textos legales (una página por archivo)
-  data/demo.ts               Conversaciones y datos de la clínica ficticia de demo
+  components/                Secciones de la portada, cabecera, pie, logo, plantilla legal
+  content/legal/*.md         Textos legales de España (/aviso-legal, /privacidad...)
+  content/legal-co/*.md      Textos legales de Colombia (/co/aviso-legal...), en borrador
+  data/countries.ts          Precios, moneda, persona y email de cada país
   data/logo.ts               Logo en vectorial (trazado de Novusance-Logo.png)
   lib/contact-validation.ts  Reglas del formulario, compartidas por navegador y servidor
-  pages/                     index, [legal] (aviso-legal, privacidad, cookies, condiciones), 404
+  pages/                     [country] (/es, /co), [legal] (España), co/[legal] (Colombia), 404
   scripts/contact-form.ts    Lógica del formulario en el navegador
   styles/global.css          Tokens de diseño (claro/oscuro) y estilos base
 ```
@@ -75,6 +82,7 @@ interactivo. La secreta `1x0000000000000000000000000000000AA` acepta cualquier t
 | `TURNSTILE_SECRET_KEY` | Function (secreto) | Verificar el token de Turnstile en el servidor |
 | `RESEND_API_KEY` | Function (secreto) | Enviar el email con la API de Resend |
 | `CONTACT_TO` | Function | Destinatario(s) de las solicitudes, separados por comas |
+| `CONTACT_TO_CO` | Function | Destinatario(s) de las solicitudes enviadas desde `/co`. Si falta, van a `CONTACT_TO` |
 | `CONTACT_FROM` | Function | Remitente, p. ej. `Novusance <web@novusance.com>` (dominio verificado en Resend) |
 | `CONTACT_DRY_RUN` | Solo local | `1` = no envía el email. **Nunca en producción** |
 
@@ -86,8 +94,8 @@ Ver `.env.example`.
 - Antispam: Turnstile (modo gestionado, `interaction-only`: invisible salvo que Cloudflare necesite comprobar algo)
   y un campo trampa oculto. El script de Turnstile solo se carga cuando el visitante se acerca al formulario.
 - Envío con `fetch` sin recargar. La Function responde `{ ok: true }` o `{ ok: false, error }`.
-- Sin JavaScript, el formulario hace un POST normal y la Function redirige a `/?enviado=1#contacto`
-  (o `/?error=<código>#contacto`). **Limitación:** Turnstile necesita JavaScript, así que un envío sin JS no pasa la
+- Sin JavaScript, el formulario hace un POST normal y la Function redirige a `/<país>?enviado=1#contacto`
+  (o `/<país>?error=<código>#contacto`). **Limitación:** Turnstile necesita JavaScript, así que un envío sin JS no pasa la
   verificación antispam. Por eso el formulario muestra, solo sin JS, un aviso con el email como alternativa.
 - No se guardan los datos en ninguna base de datos. Los logs no incluyen datos personales.
 
@@ -98,7 +106,8 @@ manteniendo el nombre (vale .png, .jpg o .webp). Si falta alguna, se muestra un 
 
 - `public/mcprimehome_landing.png`: va a todo el ancho; mejor en panorámica (unos 2:1).
 - `public/sirrux_landing.png` y `public/Ova_landing.png`: se recortan a 16:9 desde arriba.
-- `public/Juanignacio.png`: foto de "Sobre mí", cuadrada.
+- `public/Juanignacio.png`: foto de "Sobre mí" en España, cuadrada.
+- `public/Carlos.png`: foto de "Sobre mí" en Colombia, cuadrada. Si falta, se muestran sus iniciales.
 
 ## Analítica
 

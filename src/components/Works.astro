@@ -15,7 +15,7 @@ const works = [
     href: 'https://www.sirrux.net',
     domain: 'sirrux.net',
     name: 'SIRRUX',
-    text: 'Espacio de análisis para inversores donde cada dato muestra su fuente.',
+    text: 'Proyecto propio: espacio de análisis para inversores donde cada dato muestra su fuente.',
     img: optionalImage('sirrux_landing'),
   },
   {
@@ -31,6 +31,7 @@ const works = [
 <section id="trabajos" class="band">
   <div class="wrap inner">
     <h2 class="display h2">Webs que ya están funcionando.</h2>
+    <p class="sub">Aún no hay clínicas en esta lista: si la tuya es de las primeras, puede ser la que estrene esta sección.</p>
     <div class="grid">
       {
         works.map((w, i) => (
@@ -80,6 +81,14 @@ const works = [
     display: flex;
     flex-direction: column;
     gap: 44px;
+  }
+
+  .sub {
+    margin: -28px 0 0;
+    max-width: 640px;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--muted);
   }
 
   .grid {

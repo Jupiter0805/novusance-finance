@@ -2,7 +2,7 @@ import type { ImageMetadata } from 'astro';
 
 // Imágenes opcionales de public/: si el archivo existe se optimiza con <Image>; si no, se muestra un marcador.
 const files = import.meta.glob<{ default: ImageMetadata }>(
-  '/public/{mcprimehome_landing,sirrux_landing,Ova_landing,Juanignacio}.{webp,png,jpg,jpeg}',
+  '/public/{mcprimehome_landing,sirrux_landing,Ova_landing,Juanignacio,Carlos}.{webp,png,jpg,jpeg}',
   { eager: true },
 );
 

@@ -1,0 +1,164 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<section id="servicios" class="wrap services">
+  <h2 class="display h2 title">Tres formas de ponerte al día.</h2>
+  <div class="grid">
+    <article class="card main">
+      <div class="stack">
+        <h3 class="display">Renovación de tu web</h3>
+        <p>
+          Para clínicas con años de historia y una web que ya no está a su altura. Conservo lo que funciona y lo pongo en
+          orden.
+        </p>
+      </div>
+      <ul class="includes">
+        <li><Icon name="ph:check-bold" size={16} />Diseño nuevo con tu logo y tus colores</li>
+        <li><Icon name="ph:check-bold" size={16} />Tu contenido actual, reorganizado y revisado</li>
+        <li><Icon name="ph:check-bold" size={16} />Adaptada al móvil y a cualquier pantalla</li>
+        <li><Icon name="ph:check-bold" size={16} />Aviso legal y política de privacidad al día</li>
+      </ul>
+    </article>
+    <article class="card soft">
+      <h3 class="display">Web nueva</h3>
+      <p>Si acabas de abrir: estructura, textos base y tu dominio conectado para parecer profesional desde el primer día.</p>
+    </article>
+    <article class="card plain">
+      <h3 class="display">Mantenimiento</h3>
+      <p>Alojamiento, copias de seguridad y los cambios pequeños del día a día. Tú me escribes y yo lo cambio.</p>
+    </article>
+  </div>
+  <p class="soon">
+    <span class="soon-tag">En desarrollo</span>
+    Un asistente para tu web que responde dudas y recoge peticiones de cita fuera de horario.
+  </p>
+</section>
+
+<style>
+  .services {
+    padding-block: 104px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+  }
+
+  .title {
+    max-width: 760px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-rows: auto auto;
+    gap: 20px;
+  }
+
+  .card {
+    padding: 32px;
+    border-radius: var(--r-card);
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card h3 {
+    font-size: 26px;
+    letter-spacing: -0.02em;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .soft {
+    background: var(--soft);
+  }
+
+  .plain {
+    background: var(--surface);
+  }
+
+  .main {
+    grid-row: span 2;
+    padding: 40px;
+    border: 0;
+    background: var(--accent);
+    color: #fff;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .main h3 {
+    font-size: clamp(32px, 3.2vw, 42px);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .main p {
+    max-width: 480px;
+    font-size: 17px;
+    color: rgb(255 255 255 / 0.92);
+  }
+
+  .includes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 16px;
+  }
+
+  .includes li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .includes :global(svg) {
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+
+  .soon {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .soon-tag {
+    padding: 4px 12px;
+    border-radius: var(--r-pill);
+    border: 1px dashed var(--field);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  @media (max-width: 860px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+
+    .main {
+      grid-row: auto;
+      padding: 32px;
+    }
+  }
+</style>

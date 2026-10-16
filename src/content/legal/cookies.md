@@ -1,7 +1,7 @@
 ---
 title: "Política de cookies"
 description: "Qué cookies y tecnologías de almacenamiento usa la web de Novusance y cómo gestionarlas."
-updated: "[FECHA DE PUBLICACIÓN]"
+updated: "16 de octubre de 2026"
 ---
 
 ## 1. Qué son las cookies

@@ -1,1 +1,3 @@
+# La portada vive en una versión por país. La raíz lleva a España (302: si más adelante se decide por país, no queda cacheado).
+/ /es 302
 /sitemap.xml /sitemap-index.xml 301

@@ -8,6 +8,7 @@ import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-
 import hostLatin from '@fontsource/host-grotesk/files/host-grotesk-latin-400-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { COUNTRIES, PUBLISHED, type Country } from '../data/countries';
 
 interface Props {
   title: string;
@@ -15,9 +16,13 @@ interface Props {
   /** Portada: anclas directas en la cabecera y datos estructurados. */
   home?: boolean;
   noindex?: boolean;
+  /** País de la página. Por defecto España (páginas legales, 404). */
+  country?: Country;
 }
 
-const { title, description, home = false, noindex = false } = Astro.props;
+const { title, description, home = false, country = COUNTRIES.es } = Astro.props;
+// Un país en borrador nunca se indexa.
+const noindex = Astro.props.noindex || !country.published;
 const site = Astro.site ?? new URL('https://www.novusance.com');
 const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), site).href;
 const ogImage = new URL('/og.png', site).href;
@@ -27,16 +32,19 @@ const jsonLd = {
   '@type': 'ProfessionalService',
   name: 'Novusance',
   url: site.href,
-  email: 'hola@novusance.com',
   logo: new URL('/Novusance-Logo.png', site).href,
   image: ogImage,
   description,
-  areaServed: { '@type': 'City', name: 'Madrid' },
+  email: country.email,
+  areaServed: { '@type': 'Country', name: country.areaServed },
 };
+
+// Versiones de la portada en cada país publicado, para que los buscadores sirvan la que toca.
+const alternates = home && country.published ? PUBLISHED.map((c) => ({ lang: c.lang, href: new URL(c.path, site).href })) : [];
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={country.lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -44,6 +52,8 @@ const jsonLd = {
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+    {alternates.length > 0 && <link rel="alternate" hreflang="x-default" href={new URL('/es', site).href} />}
 
     <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={hostLatin} as="font" type="font/woff2" crossorigin />
@@ -55,7 +65,7 @@ const jsonLd = {
     <meta name="theme-color" content="#0E1110" media="(prefers-color-scheme: dark)" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale" content={country.ogLocale} />
     <meta property="og:site_name" content="Novusance" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -63,7 +73,7 @@ const jsonLd = {
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Novusance: Tu clínica atiende 24/7. Tú, a tus pacientes." />
+    <meta property="og:image:alt" content="Novusance: la web de tu clínica, a la altura de tu clínica." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -80,16 +90,32 @@ const jsonLd = {
   </head>
   <body>
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
-    <Header home={home} />
+    {
+      !country.published && (
+        <div class="draft" role="note">
+          Borrador de {country.name}: no indexado ni enlazado. Faltan datos por confirmar antes de publicarlo.
+        </div>
+      )
+    }
+    <Header home={home} country={country} />
     <main id="contenido" tabindex="-1">
       <slot />
     </main>
-    <Footer />
+    <Footer country={country} />
   </body>
 </html>
 
 <style>
   main:focus {
     outline: none;
+  }
+
+  .draft {
+    padding: 10px var(--gutter);
+    background: #fde68a;
+    color: #3d2c00;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
   }
 </style>

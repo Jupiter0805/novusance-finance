@@ -1,79 +1,70 @@
 ---
-const plans = [
-  {
-    name: 'Base',
-    price: '25 €',
-    tagline: 'Para no perder más citas.',
-    features: [
-      'Web con tu dominio',
-      'Asistente con tus servicios y precios',
-      'Reserva de citas',
-      'Aviso de urgencias',
-      'Panel con tus contactos',
-      'Hosting y 1 cambio al mes',
-    ],
-    featured: false,
-  },
-  {
-    name: 'Pro',
-    price: '49 €',
-    tagline: 'Para que nadie se olvide de volver.',
-    features: [
-      'Todo lo de Base',
-      'Recordatorios de citas y vacunas',
-      'Informe mensual de resultados',
-      'Respuestas a tus reseñas de Google',
-      '3 cambios al mes',
-    ],
-    featured: true,
-  },
-  {
-    name: 'Plus',
-    price: '89 €',
-    tagline: 'Para estar en todos los canales.',
-    features: ['Todo lo de Pro', 'Asistente también en WhatsApp', '4 publicaciones al mes para redes'],
-    featured: false,
-  },
-];
+import { Icon } from 'astro-icon/components';
+import { FEE_INCLUDES, NOT_INCLUDED, type Country } from '../data/countries';
+
+const { country } = Astro.props as { country: Country };
 ---
 
 <section id="precios" class="wrap pricing">
   <div class="intro">
-    <div class="eyebrow">Precios</div>
-    <h2 class="display h2">Un alta de 300 €. Después, una cuota sin permanencia.</h2>
+    <h2 class="display h2">Un pago para ponerla en marcha. Una cuota para tenerla al día.</h2>
+    <p class="sub">
+      Cada clínica es distinta, así que el precio final va en tu presupuesto por escrito. Estos son los puntos de partida.
+    </p>
   </div>
+
   <div class="grid">
     {
-      plans.map((p) => (
-        <article class:list={['plan', { featured: p.featured }]} aria-labelledby={`plan-${p.name}`}>
+      country.plans.map((p) => (
+        <article class:list={['plan', { featured: p.featured }]} aria-labelledby={`plan-${p.id}`}>
           <div class="top">
-            <div class="name-row">
-              <h3 class="name" id={`plan-${p.name}`}>
-                {p.name}
-              </h3>
-              {p.featured && <span class="badge">Recomendado</span>}
-            </div>
-            <div class="price">
-              <span class="display amount">{p.price}</span>
-              <span class="per">al mes</span>
-            </div>
-            <p class="tagline">{p.tagline}</p>
+            <h3 class="name" id={`plan-${p.id}`}>
+              {p.name}
+            </h3>
+            <p class="for">{p.forWho}</p>
+          </div>
+          <div class="price">
+            <span class="from">desde</span>
+            <span class="display amount">{p.setupFrom}</span>
+            <span class="fee">
+              + <strong>{p.fee}</strong> al mes de mantenimiento
+            </span>
           </div>
           <ul class="features">
             {p.features.map((f) => (
-              <li>{f}</li>
+              <li>
+                <Icon name="ph:check-bold" size={15} />
+                {f}
+              </li>
             ))}
           </ul>
           <a href="#contacto" class:list={['btn', 'plan-btn', p.featured ? 'btn-accent' : 'btn-plain']}>
-            Pide tu demo<span class="sr-only"> (plan {p.name})</span>
+            Pide tu propuesta<span class="sr-only"> ({p.name})</span>
           </a>
         </article>
       ))
     }
+
+    <aside class="fee-box" aria-labelledby="cuota-incluye">
+      <h3 class="name" id="cuota-incluye">La cuota incluye</h3>
+      <ul class="features">
+        {
+          FEE_INCLUDES.map((f) => (
+            <li>
+              <Icon name="ph:check-bold" size={15} />
+              {f}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="aside-note">Se presupuesta aparte: {NOT_INCLUDED.charAt(0).toLowerCase() + NOT_INCLUDED.slice(1)}</p>
+    </aside>
   </div>
-  <p class="note">
-    Precios sin IVA. ¿Prefieres pagar una sola vez? Web en propiedad por 900 €, sin asistente ni soporte incluidos.
-  </p>
+
+  <ul class="notes">
+    <li>{country.taxNote} {country.terms}</li>
+    <li>{country.noFee}</li>
+  </ul>
 </section>
 
 <style>
@@ -87,25 +78,36 @@ const plans = [
   .intro {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    max-width: 700px;
+    gap: 16px;
+    max-width: 760px;
+  }
+
+  .sub {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--muted);
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.85fr);
     gap: 16px;
     align-items: stretch;
   }
 
-  .plan {
+  .plan,
+  .fee-box {
     padding: 32px;
     border-radius: var(--r-card);
-    background: var(--surface);
-    border: 1px solid var(--line);
     display: flex;
     flex-direction: column;
     gap: 24px;
+  }
+
+  .plan {
+    background: var(--surface);
+    border: 1px solid var(--line);
   }
 
   .featured {
@@ -114,17 +116,14 @@ const plans = [
     color: var(--bg);
   }
 
+  .fee-box {
+    background: var(--accent-soft);
+  }
+
   .top {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-  }
-
-  .name-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
+    gap: 4px;
   }
 
   .name {
@@ -133,42 +132,39 @@ const plans = [
     font-weight: 600;
   }
 
-  .badge {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: var(--r-pill);
-    background: var(--accent);
-    color: #fff;
-  }
-
-  .price {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-  }
-
-  .amount {
-    font-size: 52px;
-    letter-spacing: -0.03em;
-  }
-
-  .per,
-  .tagline {
+  .for,
+  .from,
+  .fee {
+    margin: 0;
     font-size: 15px;
     color: var(--muted);
   }
 
-  .tagline {
-    margin: 0;
+  .price {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
-  .featured .per {
-    color: color-mix(in srgb, var(--bg) 70%, var(--ink));
+  .amount {
+    font-size: clamp(44px, 4.4vw, 56px);
+    line-height: 1;
+    letter-spacing: -0.03em;
   }
 
-  .featured .tagline {
-    color: color-mix(in srgb, var(--bg) 80%, var(--ink));
+  .fee strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .featured .for,
+  .featured .from,
+  .featured .fee {
+    color: color-mix(in srgb, var(--bg) 72%, var(--ink));
+  }
+
+  .featured .fee strong {
+    color: var(--bg);
   }
 
   .features {
@@ -180,6 +176,23 @@ const plans = [
     gap: 10px;
     font-size: 15px;
     flex-grow: 1;
+  }
+
+  .features li {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  .features :global(svg) {
+    flex-shrink: 0;
+    position: relative;
+    top: 2px;
+    color: var(--accent-text);
+  }
+
+  .featured .features :global(svg) {
+    color: color-mix(in srgb, var(--accent) 55%, #fff);
   }
 
   .plan-btn {
@@ -195,10 +208,38 @@ const plans = [
     outline-color: var(--bg);
   }
 
-  .note {
+  .aside-note {
     margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .notes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     font-size: 14px;
     line-height: 1.6;
     color: var(--muted);
+  }
+
+  @media (max-width: 1080px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .fee-box {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
