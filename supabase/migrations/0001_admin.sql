@@ -149,6 +149,15 @@ grant usage on schema public to authenticated;
 grant select on public.admins to authenticated;
 grant select, update on public.settings to authenticated;
 grant select, insert, update, delete on public.clients, public.movements to authenticated;
+-- Por si el proyecto los concede por defecto: TRUNCATE se salta RLS y los demás no hacen falta.
+revoke truncate, references, trigger on public.admins, public.settings, public.clients, public.movements from authenticated;
+-- Función que crea Supabase con «Enable automatic RLS»: no debe poder llamarse por la API.
+do $$
+begin
+  if to_regprocedure('public.rls_auto_enable()') is not null then
+    revoke execute on function public.rls_auto_enable() from public, anon, authenticated;
+  end if;
+end $$;
 
 -- ── Documentos (facturas y tickets) ──────────────────────────────────
 insert into storage.buckets (id, name, public)
