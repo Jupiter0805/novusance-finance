@@ -11,6 +11,7 @@ Web de Novusance: diseño, renovación y mantenimiento de webs para clínicas ve
 
 ```
 vercel.json                  Redirección de / a /es, URLs limpias y cabeceras de seguridad
+supabase/migrations/         Base de datos y permisos del panel /admin
 public/                      Archivos servidos tal cual
   Novusance-Logo.png         Logo original (no renombrar)
   favicon.svg / .ico, apple-touch-icon.png, og.png   Generados con `npm run assets`
@@ -23,9 +24,10 @@ src/
   data/countries.ts          Precios, moneda, persona y email de cada país
   data/consent.ts            Herramientas con cookies no esenciales (hoy, ninguna)
   data/logo.ts               Logo en vectorial (trazado de Novusance-Logo.png)
+  admin/                     Panel /admin (Preact): vistas, acceso a Supabase y cálculos con sus pruebas
   lib/contact-handler.ts     Lógica del formulario: valida, verifica Turnstile y envía el email con Resend
   lib/contact-validation.ts  Reglas del formulario, compartidas por navegador y servidor
-  pages/                     [country] (/es, /co), [legal] (España), co/[legal] (Colombia), api/contact, 404
+  pages/                     [country] (/es, /co), [legal] (España), co/[legal] (Colombia), admin, api/contact, 404
   scripts/contact-form.ts    Lógica del formulario en el navegador
   styles/global.css          Tokens de diseño (claro/oscuro) y estilos base
 ```
@@ -54,6 +56,49 @@ banner. El gestor de consentimiento ya está montado y se activa solo:
 Para medir visitas sin cookies (y sin banner), la opción es Vercel Web Analytics: `vercel({ webAnalytics: { enabled: true } })`
 en `astro.config.mjs` y activarlo en el panel de Vercel.
 
+## Panel de administración (`/admin`)
+
+Panel privado para Jupiter y Carlos: movimientos (ingresos y gastos con su factura), clientes y cuotas, fondo Sirrux y
+resumen de impuestos con exportación CSV y ZIP de facturas. Es una app en Preact (`src/admin/`) que habla directamente con
+Supabase desde el navegador. La clave `anon` es pública por diseño: lo que protege los datos son las políticas RLS de
+`supabase/migrations/0001_admin.sql`, que solo dejan pasar a los usuarios de la tabla `admins`. `/admin` no se indexa.
+
+### Puesta en marcha (una vez)
+
+1. **Crear el proyecto** en Supabase, región `eu-west` (Irlanda o Fráncfort).
+2. **Base de datos:** SQL Editor → pega `supabase/migrations/0001_admin.sql` entero → Run. Crea las tablas, las políticas y
+   el bucket privado `documentos`. Se puede volver a ejecutar sin problema.
+3. **Cerrar el registro:** Authentication → Sign In / Providers → desactiva «Allow new users to sign up». Solo entra quien
+   invitéis.
+4. **URLs de vuelta:** Authentication → URL Configuration → Site URL `https://www.novusance.com/admin` y añade
+   `https://www.novusance.com/admin` en Redirect URLs (para invitaciones y recuperar contraseña).
+5. **Usuarios:** Authentication → Users → «Invite user» con el email de cada uno. Al abrir el enlace, el panel pide elegir
+   contraseña. Después, en el SQL Editor:
+
+   ```sql
+   insert into public.admins (user_id, name, country)
+   select id, 'Jupiter', 'es' from auth.users where email = 'EMAIL_DE_JUPITER'
+   union all
+   select id, 'Carlos', 'co' from auth.users where email = 'EMAIL_DE_CARLOS';
+   ```
+
+6. **Vercel:** añade `PUBLIC_SUPABASE_URL` y `PUBLIC_SUPABASE_ANON_KEY` (Supabase → Project Settings → API) y vuelve a
+   desplegar. La clave `service_role` **nunca** va en Vercel ni en el código.
+
+### Cómo se calcula
+
+Todo está en `src/admin/calc.ts`, con pruebas en `calc.test.ts` (`npm run test:admin`).
+
+- **Fondo Sirrux:** cada mes y país, el porcentaje de Ajustes (30 % por defecto) del beneficio = ingresos − gastos
+  marcados como «gasto directo de un cliente». Los meses con pérdidas no aportan. Los gastos marcados como «Pagado con el
+  fondo Sirrux» restan del saldo. No se convierte de moneda.
+- **España, modelo 303:** IVA de ingresos − IVA de gastos deducibles del trimestre.
+- **España, modelo 130:** 20 % del rendimiento acumulado del año (ingresos − gastos deducibles) − retenciones − pagos de
+  trimestres anteriores; nunca negativo.
+- **Colombia:** resumen mensual y anual; las declaraciones las decide su contador.
+
+Son cifras orientativas para preparar pagos y pasar a la gestoría; no sustituyen su revisión.
+
 ## Desarrollo
 
 Requiere Node 22 o superior.
@@ -63,6 +108,7 @@ npm install
 npm run dev          # http://localhost:4321, formulario incluido
 npm run build
 npm run check        # comprobación de tipos
+npm run test:admin   # pruebas de los cálculos del panel
 ```
 
 Para probar el formulario en local, crea `.env` (está en `.gitignore`) a partir de `.env.example` con las claves de
@@ -93,6 +139,8 @@ En Vercel > Project > Settings > Environment Variables (Production y Preview).
 | `CONTACT_TO_CO` | Destinatario(s) de las solicitudes enviadas desde `/co`. Si falta, van a `CONTACT_TO` |
 | `CONTACT_FROM` | Remitente, p. ej. `Novusance <web@novusance.com>` (dominio verificado en Resend) |
 | `CONTACT_DRY_RUN` | Solo en local: `1` = no envía el email. **Nunca en producción** |
+| `PUBLIC_SUPABASE_URL` | URL del proyecto de Supabase del panel `/admin` |
+| `PUBLIC_SUPABASE_ANON_KEY` | Clave `anon` (pública) de Supabase. Nunca la `service_role` |
 
 En Cloudflare > Turnstile, el widget debe incluir `novusance.com` y `www.novusance.com` como hostnames (Turnstile es
 solo el antispam; la web está en Vercel).

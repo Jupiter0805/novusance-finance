@@ -3,6 +3,7 @@ import { defineConfig, envField } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 import vercel from '@astrojs/vercel';
+import preact from '@astrojs/preact';
 
 // Países en borrador (published: false en src/data/countries.ts): añade aquí su ruta para dejarlos fuera del sitemap.
 /** @type {string[]} */
@@ -24,6 +25,9 @@ export default defineConfig({
   env: {
     schema: {
       PUBLIC_TURNSTILE_SITE_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
+      // Panel /admin. La clave anon es pública por diseño: la seguridad está en las políticas RLS de Supabase.
+      PUBLIC_SUPABASE_URL: envField.string({ context: 'client', access: 'public', optional: true }),
+      PUBLIC_SUPABASE_ANON_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
       TURNSTILE_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       CONTACT_TO: envField.string({ context: 'server', access: 'secret', optional: true }),
@@ -32,5 +36,5 @@ export default defineConfig({
       CONTACT_DRY_RUN: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
-  integrations: [icon(), sitemap({ filter: (page) => !page.includes('/404') && !isDraft(page) })],
+  integrations: [icon(), preact(), sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/admin') && !isDraft(page) })],
 });

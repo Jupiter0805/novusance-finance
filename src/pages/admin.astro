@@ -1,0 +1,25 @@
+---
+// Panel privado de Jupiter y Carlos. Página estática: la app corre en el navegador y habla con Supabase.
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/host-grotesk/400.css';
+import '@fontsource/host-grotesk/500.css';
+import '@fontsource/host-grotesk/600.css';
+import '../styles/global.css';
+import '../admin/admin.css';
+import App from '../admin/App';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Panel · Novusance</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="admin">
+    <App client:only="preact" />
+    <noscript><p class="loading">El panel necesita JavaScript.</p></noscript>
+  </body>
+</html>
