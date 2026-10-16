@@ -104,6 +104,7 @@ export default function App() {
           setNeedsPassword(false);
           history.replaceState(null, '', '/admin#/resumen');
         }}
+        onCancel={arrivedToSetPassword ? undefined : () => setNeedsPassword(false)}
       />
     );
   if (!session) return <Login />;
@@ -149,6 +150,9 @@ export default function App() {
             ))}
           </div>
           <span class="me">{data?.me?.name ?? session.user.email}</span>
+          <button type="button" class="link-btn" onClick={() => setNeedsPassword(true)}>
+            Cambiar contraseña
+          </button>
           <button type="button" class="link-btn" onClick={logout}>
             Salir
           </button>

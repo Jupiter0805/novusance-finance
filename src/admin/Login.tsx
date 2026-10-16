@@ -80,7 +80,7 @@ export function Login() {
 }
 
 /** Tras abrir un enlace de invitación o de recuperación: elegir contraseña. */
-export function SetPassword({ onDone }: { onDone: () => void }) {
+export function SetPassword({ onDone, onCancel }: { onDone: () => void; onCancel?: () => void }) {
   const [password, setPassword] = useState('');
   const [repeat, setRepeat] = useState('');
   const [busy, setBusy] = useState(false);
@@ -129,6 +129,11 @@ export function SetPassword({ onDone }: { onDone: () => void }) {
         <button type="submit" class="btn primary" disabled={busy}>
           {busy ? 'Guardando…' : 'Guardar contraseña'}
         </button>
+        {onCancel && (
+          <button type="button" class="link-btn" onClick={onCancel}>
+            Cancelar
+          </button>
+        )}
       </form>
     </div>
   );
