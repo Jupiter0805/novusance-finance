@@ -140,6 +140,15 @@ drop trigger if exists movements_touch on public.movements;
 create trigger movements_touch before update on public.movements
   for each row execute function public.touch_updated_at();
 
+-- ── Permisos de la API ───────────────────────────────────────────────
+-- El proyecto se crea sin exponer tablas automáticamente: aquí se da acceso explícito y mínimo.
+-- Los anónimos no tienen ningún permiso; los usuarios con sesión, solo lo que usa el panel (y RLS filtra a los admins).
+revoke all on public.admins, public.settings, public.clients, public.movements from anon;
+grant usage on schema public to authenticated;
+grant select on public.admins to authenticated;
+grant select, update on public.settings to authenticated;
+grant select, insert, update, delete on public.clients, public.movements to authenticated;
+
 -- ── Documentos (facturas y tickets) ──────────────────────────────────
 insert into storage.buckets (id, name, public)
 values ('documentos', 'documentos', false)
