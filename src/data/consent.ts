@@ -31,7 +31,7 @@ export const CATEGORIES: Record<ConsentCategory, { label: string; text: string }
   },
   marketing: {
     label: 'Publicidad',
-    text: 'Para medir campañas de publicidad y mostrarte anuncios relacionados.',
+    text: 'Para medir anuncios y mostrarte otros relacionados.',
   },
 };
 

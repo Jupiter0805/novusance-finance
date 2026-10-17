@@ -1,8 +1,10 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { FEE_INCLUDES, NOT_INCLUDED, type Country } from '../data/countries';
+import { FEE_INCLUDES, LAUNCH_OFFER, NOT_INCLUDED, type Country } from '../data/countries';
 
 const { country } = Astro.props as { country: Country };
+const launch = LAUNCH_OFFER.enabled && LAUNCH_OFFER.spots > 0;
+const spotsText = LAUNCH_OFFER.spots === 1 ? 'Queda 1 plaza.' : `Quedan ${LAUNCH_OFFER.spots} plazas.`;
 ---
 
 <section id="precios" class="wrap pricing">
@@ -12,6 +14,19 @@ const { country } = Astro.props as { country: Country };
       Cada clínica es distinta, así que el precio final va en tu presupuesto por escrito. Estos son los puntos de partida.
     </p>
   </div>
+
+  {
+    launch && (
+      <aside class="launch-banner" aria-labelledby="oferta-lanzamiento">
+        <Icon name="ph:seal-percent" size={28} class="launch-icon" />
+        <p>
+          <strong id="oferta-lanzamiento">Oferta de lanzamiento:</strong> precio especial para las {LAUNCH_OFFER.total}{' '}
+          primeras clínicas, a cambio de una reseña y permiso para mostrar su web como ejemplo.{' '}
+          <span class="launch-spots">{spotsText}</span>
+        </p>
+      </aside>
+    )
+  }
 
   <div class="grid">
     {
@@ -30,6 +45,14 @@ const { country } = Astro.props as { country: Country };
               + <strong>{p.fee}</strong> al mes de mantenimiento
             </span>
           </div>
+          {launch && (
+            <div class="launch-price">
+              <span class="launch-tag">Oferta de lanzamiento</span>
+              <span class="launch-amount">
+                <strong>{p.launchSetup}</strong> + <strong>{p.launchFee}</strong>/mes
+              </span>
+            </div>
+          )}
           <ul class="features">
             {p.features.map((f) => (
               <li>
@@ -87,6 +110,70 @@ const { country } = Astro.props as { country: Country };
     font-size: 18px;
     line-height: 1.55;
     color: var(--muted);
+  }
+
+  /* ── Oferta de lanzamiento: separada de la tarifa normal ────────── */
+  .launch-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: -20px;
+    padding: 18px 22px;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    border-radius: var(--r-card);
+    background: var(--accent-soft);
+  }
+
+  .launch-banner p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .launch-banner :global(.launch-icon) {
+    flex-shrink: 0;
+    color: var(--accent-text);
+  }
+
+  .launch-spots {
+    font-weight: 600;
+    color: var(--accent-text);
+    white-space: nowrap;
+  }
+
+  .launch-price {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: -8px;
+    padding: 12px 14px;
+    border: 1px dashed color-mix(in srgb, var(--accent) 55%, transparent);
+    border-radius: 14px;
+    background: var(--accent-soft);
+  }
+
+  .launch-tag {
+    align-self: flex-start;
+    padding: 2px 10px;
+    border-radius: var(--r-pill);
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .launch-amount {
+    font-size: 16px;
+  }
+
+  .launch-amount strong {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .featured .launch-price {
+    border-color: color-mix(in srgb, var(--accent) 70%, var(--bg));
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
   }
 
   .grid {
@@ -240,6 +327,11 @@ const { country } = Astro.props as { country: Country };
   @media (max-width: 700px) {
     .grid {
       grid-template-columns: 1fr;
+    }
+
+    .launch-banner {
+      align-items: flex-start;
+      padding: 16px;
     }
   }
 </style>

@@ -10,7 +10,7 @@ Carlos Alberto Leamus, que opera con el nombre comercial Novusance en Colombia. 
 
 ## 2. Servicios
 
-Renovación de webs, webs nuevas y mantenimiento mensual (alojamiento, dominio conectado, copias de seguridad, cambios pequeños y revisión de las páginas legales). No incluye fotografía profesional, artículos de blog, tienda online ni campañas de publicidad, que se presupuestan aparte.
+Renovación de webs, webs nuevas y mantenimiento mensual (alojamiento, dominio conectado, copias de seguridad, cambios pequeños y revisión de las páginas legales). No incluye fotografía profesional ni artículos de blog, que se presupuestan aparte.
 
 ## 3. Propuesta y presupuesto
 

@@ -18,7 +18,7 @@ Novusance ofrece:
 - **Web nueva:** lo mismo partiendo de cero, con estructura, textos base y conexión del dominio.
 - **Mantenimiento mensual:** alojamiento, dominio conectado, copias de seguridad, cambios pequeños (horarios, precios, fotos) y revisión de las páginas legales.
 
-No están incluidos, y se presupuestan aparte: fotografía profesional, artículos de blog, tienda online y campañas de publicidad.
+No están incluidos, y se presupuestan aparte: fotografía profesional y artículos de blog.
 
 El contenido concreto de cada trabajo es el que figura en el presupuesto.
 
