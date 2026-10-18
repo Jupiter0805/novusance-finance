@@ -7,6 +7,7 @@ const { country } = Astro.props as { country: Country };
 const year = new Date().getFullYear();
 const b = country.legalBase;
 const links = [
+  { href: '/guias', label: 'Guías' },
   { href: `${b}/aviso-legal`, label: 'Aviso legal' },
   { href: `${b}/privacidad`, label: 'Privacidad' },
   { href: `${b}/cookies`, label: 'Cookies' },

@@ -1,0 +1,160 @@
+---
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SECTORS, byDate, formatDate, readingTime, type Sector } from '../../data/guias';
+
+const guias = (await getCollection('guias', (g) => !g.data.draft)).sort(byDate);
+const sectors = (Object.keys(SECTORS) as Sector[])
+  .map((key) => ({ key, ...SECTORS[key], items: guias.filter((g) => g.data.sector === key) }))
+  .filter((s) => s.items.length > 0);
+---
+
+<BaseLayout
+  title="Guías para la web de tu negocio · Novusance"
+  description="Guías prácticas para dueños de clínicas y negocios locales: qué debe tener tu web, cómo te encuentran tus clientes en Google y qué errores evitar."
+>
+  <section class="wrap intro">
+    <p class="eyebrow">Guías</p>
+    <h1 class="display title">Lo que necesitas saber sobre la web de tu negocio</h1>
+    <p class="lead muted">
+      Explicado sin tecnicismos, para quien dirige una clínica o un negocio local y quiere que su web le traiga
+      clientes.
+    </p>
+  </section>
+
+  {
+    sectors.map((s) => (
+      <section class="wrap sector" aria-labelledby={`sector-${s.key}`}>
+        <header class="sector-head">
+          <h2 id={`sector-${s.key}`} class="display sector-title">
+            {s.label}
+          </h2>
+          <p class="muted">{s.intro}</p>
+        </header>
+        <ul class="cards">
+          {s.items.map((g) => (
+            <li>
+              <a class="card" href={`/guias/${g.id}`}>
+                <span class="meta">
+                  {formatDate(g.data.published)} · {readingTime(g.body)} min de lectura
+                </span>
+                <span class="card-title">{g.data.title}</span>
+                <span class="card-desc muted">{g.data.description}</span>
+                <span class="more">
+                  Leer guía <Icon name="ph:arrow-right" size={16} />
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-block: 72px 24px;
+  }
+
+  .intro > * {
+    max-width: 62ch;
+  }
+
+  .eyebrow {
+    margin: 0 0 14px;
+  }
+
+  .title {
+    max-width: 18ch;
+    font-size: clamp(38px, 5.4vw, 68px);
+    line-height: 1.02;
+  }
+
+  .lead {
+    margin: 20px 0 0;
+    font-size: 19px;
+    line-height: 1.55;
+  }
+
+  .sector {
+    padding-block: 40px 104px;
+  }
+
+  .sector-head {
+    margin-bottom: 24px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+
+  .sector-title {
+    font-size: clamp(24px, 2.6vw, 32px);
+    line-height: 1.1;
+  }
+
+  .sector-head p {
+    margin: 8px 0 0;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    background: var(--surface);
+    color: var(--ink);
+    text-decoration: none;
+    transition:
+      border-color 0.2s,
+      transform 0.3s var(--ease-out);
+  }
+
+  .card:hover {
+    opacity: 1;
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .meta {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .card-desc {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent-text);
+  }
+</style>

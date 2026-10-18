@@ -19,9 +19,11 @@ interface Props {
   noindex?: boolean;
   /** País de la página. Por defecto España (páginas legales, 404). */
   country?: Country;
+  /** og:type. "article" en las guías. */
+  type?: 'website' | 'article';
 }
 
-const { title, description, home = false, country = COUNTRIES.es } = Astro.props;
+const { title, description, home = false, country = COUNTRIES.es, type = 'website' } = Astro.props;
 // Un país en borrador nunca se indexa.
 const noindex = Astro.props.noindex || !country.published;
 const site = Astro.site ?? new URL('https://www.novusance.com');
@@ -65,7 +67,7 @@ const alternates = home && country.published ? PUBLISHED.map((c) => ({ lang: c.l
     <meta name="theme-color" content="#F4F5F2" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0E1110" media="(prefers-color-scheme: dark)" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     <meta property="og:locale" content={country.ogLocale} />
     <meta property="og:site_name" content="Novusance" />
     <meta property="og:title" content={title} />
@@ -81,6 +83,8 @@ const alternates = home && country.published ? PUBLISHED.map((c) => ({ lang: c.l
     <meta name="twitter:image" content={ogImage} />
 
     {home && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+    <slot name="head" />
 
     <!-- Analítica: desactivada. Si se activa, usar Vercel Web Analytics (sin cookies); ver README. -->
   </head>
