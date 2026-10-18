@@ -14,7 +14,8 @@ export async function getStaticPaths() {
 }
 
 const { guia, related } = Astro.props as { guia: Guia; related: Guia[] };
-const { Content } = await render(guia);
+const { Content, headings } = await render(guia);
+const toc = headings.filter((h) => h.depth === 2);
 const { title, description, sector, published, updated } = guia.data;
 const sectorLabel = SECTORS[sector].label;
 
@@ -52,7 +53,8 @@ const jsonLd = [
 <BaseLayout title={`${title} · Novusance`} description={description} type="article">
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-  <article class="wrap guia">
+  <div class="wrap layout">
+  <article class="guia">
     <nav class="crumbs" aria-label="Ruta">
       <a href="/guias">Guías</a>
       <Icon name="ph:caret-right" size={14} aria-hidden="true" />
@@ -114,15 +116,100 @@ const jsonLd = [
 
     <a class="back" href="/guias"><Icon name="ph:arrow-left" size={16} /> Todas las guías</a>
   </article>
+
+  {
+    toc.length > 1 && (
+      <aside class="side" aria-labelledby="side-title">
+        <div class="side-inner">
+          <h2 id="side-title" class="eyebrow">
+            En esta guía
+          </h2>
+          <ol>
+            {toc.map((h) => (
+              <li>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ol>
+          <a href={`${PUBLISHED[0].path}#contacto`} class="btn btn-ink side-btn">
+            Pide tu propuesta
+          </a>
+        </div>
+      </aside>
+    )
+  }
+  </div>
 </BaseLayout>
 
 <style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 70ch) 260px;
+    justify-content: space-between;
+    gap: 64px;
+  }
+
   .guia {
+    min-width: 0;
     padding-block: 40px 104px;
   }
 
-  .guia > * {
-    max-width: 70ch;
+  /* Índice lateral fijo, solo en pantallas anchas. */
+  .side {
+    padding-top: 40px;
+  }
+
+  .side-inner {
+    position: sticky;
+    top: 108px;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-card);
+    background: var(--surface);
+  }
+
+  .side h2 {
+    margin: 0 0 12px;
+  }
+
+  .side ol {
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .side li a {
+    display: block;
+    padding: 7px 0;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .side li a:hover,
+  .side li a.is-active {
+    color: var(--ink);
+    opacity: 1;
+  }
+
+  .side-btn {
+    width: 100%;
+  }
+
+  @media (max-width: 1100px) {
+    .layout {
+      display: block;
+    }
+
+    .guia {
+      max-width: 70ch;
+      margin-inline: auto;
+    }
+
+    .side {
+      display: none;
+    }
   }
 
   .crumbs {
@@ -296,3 +383,29 @@ const jsonLd = [
     }
   }
 </style>
+
+<script>
+  // Resalta en el índice lateral la sección que se está leyendo: la última cuyo título ya ha pasado bajo la cabecera.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.side li a')];
+  const heads = links
+    .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
+    .filter((h): h is HTMLElement => h !== null);
+  if (links.length) {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      let current = -1;
+      heads.forEach((h, i) => {
+        if (h.getBoundingClientRect().top < 140) current = i;
+      });
+      links.forEach((a, i) => a.classList.toggle('is-active', i === current));
+    };
+    addEventListener('scroll', () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }, { passive: true });
+    update();
+  }
+</script>
