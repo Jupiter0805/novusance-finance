@@ -18,7 +18,8 @@ export default defineConfig({
   site: 'https://www.novusance.com',
   // Todo se pre-renderiza salvo /api/contact, que corre como función de Vercel.
   output: 'static',
-  adapter: vercel(),
+  // Vercel Web Analytics: visitas sin cookies ni banner (activarlo también en el panel de Vercel → Analytics).
+  adapter: vercel({ webAnalytics: { enabled: true } }),
   // URLs sin barra final: /es, /aviso-legal.
   trailingSlash: 'never',
   // Variables del formulario (src/pages/api/contact.ts). En local van en .env; en producción, en Vercel.

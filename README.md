@@ -52,8 +52,8 @@ La web pública no usa cookies ni almacenamiento del navegador, así que no mues
 3. Añade sus cookies a la tabla de `src/content/legal/cookies.md` y `src/content/legal-co/cookies.md`.
 4. Si cambias herramientas o finalidades más adelante, sube `CONSENT_VERSION` para volver a preguntar.
 
-Para medir visitas sin cookies (y sin banner), la opción es Vercel Web Analytics: `vercel({ webAnalytics: { enabled: true } })`
-en `astro.config.mjs` y activarlo en el panel de Vercel.
+Las visitas se miden sin cookies (y sin banner) con Vercel Web Analytics, activado con `vercel({ webAnalytics: { enabled: true } })`
+en `astro.config.mjs`; en el panel de Vercel tiene que estar activado en Analytics.
 
 ## Panel de administración (`/admin`)
 
