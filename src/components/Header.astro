@@ -6,13 +6,18 @@ import { PUBLISHED, type Country } from '../data/countries';
 interface Props {
   /** En la portada los enlaces son anclas; en el resto de páginas apuntan a la portada del país. */
   home?: boolean;
+  /** Página de sector: tiene las mismas secciones que la portada, así que los enlaces son anclas. */
+  landing?: boolean;
+  /** Ruta de esta página dentro del país, para que el selector lleve a la misma página del otro país. */
+  localized?: string;
   country: Country;
 }
 
-const { home = false, country } = Astro.props;
+const { home = false, landing = false, localized = '', country } = Astro.props;
 const switcher = PUBLISHED.some((c) => c.code === country.code) ? PUBLISHED : [...PUBLISHED, country];
-const base = home ? '' : country.path;
+const base = home || landing ? '' : country.path;
 const links = [
+  { href: home ? '#sectores' : `${country.path}#sectores`, label: 'Sectores' },
   { href: `${base}#como-trabajo`, label: 'Cómo trabajo' },
   { href: `${base}#servicios`, label: 'Servicios' },
   { href: `${base}#trabajos`, label: 'Trabajos' },
@@ -43,7 +48,7 @@ const links = [
             <li class="nav-countries">
               <span class="nav-countries-label">País</span>
               {switcher.map((c) => (
-                <a href={c.path} hreflang={c.lang} aria-current={c.code === country.code ? 'page' : undefined}>
+                <a href={`${c.path}${localized}`} hreflang={c.lang} aria-current={c.code === country.code ? 'page' : undefined}>
                   {c.name}
                 </a>
               ))}
@@ -59,7 +64,7 @@ const links = [
           <nav aria-label="País" class="countries">
             {switcher.map((c) => (
               <a
-                href={c.path}
+                href={`${c.path}${localized}`}
                 hreflang={c.lang}
                 aria-current={c.code === country.code ? 'page' : undefined}
                 title={c.name}
@@ -196,7 +201,8 @@ const links = [
     display: block;
   }
 
-  @media (max-width: 860px) {
+  /* Menú desplegable por debajo de 1080 px: con 7 enlaces, el selector de país y el botón no caben en una fila. */
+  @media (max-width: 1080px) {
     :global(.js) .menu-toggle {
       display: inline-flex;
     }
@@ -342,7 +348,7 @@ const links = [
       }
     });
 
-    window.matchMedia('(min-width: 861px)').addEventListener('change', (e) => {
+    window.matchMedia('(min-width: 1081px)').addEventListener('change', (e) => {
       if (e.matches) setOpen(false);
     });
   }

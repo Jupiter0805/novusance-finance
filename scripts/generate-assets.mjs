@@ -98,10 +98,10 @@ const tree = h(
         h('div', { fontFamily: 'Archivo', fontWeight: 700, fontSize: 40, letterSpacing: '-0.03em' }, 'novusance'),
       ]),
       h('div', { display: 'flex', flexDirection: 'column', fontFamily: 'Archivo', fontWeight: 700, fontSize: 66, lineHeight: 1.04, letterSpacing: '-0.035em' }, [
-        h('div', {}, 'La web de tu clínica,'),
-        h('div', { color: COLORS.muted }, 'a la altura de tu clínica.'),
+        h('div', {}, 'La web de tu negocio,'),
+        h('div', { color: COLORS.muted }, 'a la altura de tu trabajo.'),
       ]),
-      h('div', { fontSize: 25, color: COLORS.muted }, 'Webs para clínicas veterinarias en España y Colombia'),
+      h('div', { fontSize: 25, color: COLORS.muted }, 'Webs para negocios con cita en España y Colombia'),
     ]),
     h('div', { display: 'flex', alignItems: 'center', justifyContent: 'center', width: 300, borderRadius: 32, background: COLORS.soft }, [
       img(bigLogo, 200),

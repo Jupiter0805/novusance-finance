@@ -16,7 +16,7 @@ Esta política se adopta en cumplimiento de la Ley Estatutaria 1581 de 2012 y su
 
 | Origen | Datos | Finalidad |
 | --- | --- | --- |
-| Formulario de contacto | Nombre, nombre de la clínica, correo, teléfono (opcional) y mensaje | Responder la solicitud y preparar la propuesta |
+| Formulario de contacto | Nombre, nombre del negocio, correo, teléfono (opcional) y mensaje | Responder la solicitud y preparar la propuesta |
 | Clientes | Datos de contacto y facturación | Prestar el servicio, facturar y cumplir obligaciones legales |
 | Navegación | Datos técnicos mínimos (dirección IP, navegador) | Seguridad del sitio y protección antispam |
 

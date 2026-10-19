@@ -1,6 +1,6 @@
 ---
 title: "Condiciones del servicio"
-description: "Condiciones de contratación de los servicios de Novusance para clínicas veterinarias en Colombia."
+description: "Condiciones de contratación de los servicios de Novusance en Colombia."
 updated: "16 de octubre de 2026"
 ---
 

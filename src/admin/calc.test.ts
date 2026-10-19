@@ -47,6 +47,7 @@ const cl = (p: Partial<Client>): Client => ({
   id: String(++n),
   country: 'es',
   name: 'C',
+  sector: null,
   city: null,
   contact_name: null,
   email: null,

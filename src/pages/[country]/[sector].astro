@@ -1,0 +1,16 @@
+---
+// Portada de cada sector en cada país: /es/clinicas-veterinarias, /co/fisioterapeutas-y-osteopatas...
+import Landing from '../../components/Landing.astro';
+import { COUNTRY_LIST, type Country } from '../../data/countries';
+import { SECTORS, type Sector } from '../../data/sectors';
+
+export function getStaticPaths() {
+  return COUNTRY_LIST.flatMap((country) =>
+    SECTORS.map((sector) => ({ params: { country: country.code, sector: sector.slug }, props: { country, sector } })),
+  );
+}
+
+const { country, sector } = Astro.props as { country: Country; sector: Sector };
+---
+
+<Landing country={country} sector={sector} />

@@ -3,8 +3,10 @@ import { Icon } from 'astro-icon/components';
 import Logo from './Logo.astro';
 import { LIMITS } from '../lib/contact-validation';
 import type { Country } from '../data/countries';
+import { GENERAL, type Sector } from '../data/sectors';
 
-const { country } = Astro.props as { country: Country };
+const { country, sector } = Astro.props as { country: Country; sector?: Sector };
+const noun = sector?.noun ?? GENERAL.noun;
 const email = country.email;
 const privacy = `${country.legalBase}/privacidad`;
 // Responsable del tratamiento de los datos del formulario: la persona que lleva Novusance en ese país.
@@ -17,7 +19,7 @@ const controller = country.code === 'es' ? 'Juan Ignacio Moreno Cordido' : count
       <div class="head-text">
         <h2 class="display title">¿Te enseño cómo quedaría tu web?</h2>
         <p class="intro">
-          Dime el nombre de tu clínica y te preparo una propuesta de portada con tu logo y tus colores. Sin coste y sin
+          Dime el nombre de tu {noun} y te preparo una propuesta de portada con tu logo y tus colores. Sin coste y sin
           compromiso.
         </p>
       </div>
@@ -62,7 +64,7 @@ const controller = country.code === 'es' ? 'Juan Ignacio Moreno Cordido' : count
           </div>
 
           <div class="field">
-            <label for="f-clinica">Nombre de la clínica</label>
+            <label for="f-clinica">Nombre del negocio</label>
             <input
               id="f-clinica"
               name="clinica"
@@ -118,6 +120,7 @@ const controller = country.code === 'es' ? 'Juan Ignacio Moreno Cordido' : count
         </div>
 
         <input type="hidden" name="pais" value={country.code} />
+        {sector && <input type="hidden" name="sector" value={sector.slug} />}
         <!-- Antispam: el script pone aquí la hora de apertura; el servidor descarta envíos de menos de 3 segundos. -->
         <input type="hidden" name="t" value="" data-started-at />
 

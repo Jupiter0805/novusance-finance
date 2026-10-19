@@ -1,15 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import Guarantees from '../components/Guarantees.astro';
-import Problem from '../components/Problem.astro';
-import HowItWorks from '../components/HowItWorks.astro';
-import Services from '../components/Services.astro';
-import Works from '../components/Works.astro';
-import Pricing from '../components/Pricing.astro';
-import About from '../components/About.astro';
-import Faq from '../components/Faq.astro';
-import Contact from '../components/Contact.astro';
+// Portada general de cada país: /es y /co.
+import Landing from '../components/Landing.astro';
 import { COUNTRY_LIST, type Country } from '../data/countries';
 
 export function getStaticPaths() {
@@ -17,23 +8,6 @@ export function getStaticPaths() {
 }
 
 const { country } = Astro.props as { country: Country };
-const where = country.code === 'es' ? 'en España' : 'en Colombia';
 ---
 
-<BaseLayout
-  home
-  country={country}
-  title={`Novusance · Webs para clínicas veterinarias ${where}`}
-  description={`Webs para clínicas veterinarias: diseño a tu medida, pensado para el ${country.mobile} y con mantenimiento incluido. Antes de pedirte nada, te enseño cómo quedaría la tuya.`}
->
-  <Hero country={country} />
-  <Guarantees />
-  <Problem country={country} />
-  <HowItWorks />
-  <Services />
-  <Works />
-  <Pricing country={country} />
-  <About country={country} />
-  <Faq country={country} />
-  <Contact country={country} />
-</BaseLayout>
+<Landing country={country} />

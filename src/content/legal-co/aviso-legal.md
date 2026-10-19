@@ -14,7 +14,7 @@ La versión de España de este sitio (www.novusance.com/es) tiene su propio titu
 
 ## 2. Objeto
 
-Esta página informa sobre los servicios de Novusance en Colombia: diseño, renovación, publicación y mantenimiento de páginas web para clínicas veterinarias, y permite solicitar una propuesta a través del formulario de contacto.
+Esta página informa sobre los servicios de Novusance en Colombia: diseño, renovación, publicación y mantenimiento de páginas web para pequeños negocios con cita (clínicas, consultas, centros, peluquerías caninas, academias y autoescuelas), y permite solicitar una propuesta a través del formulario de contacto.
 
 ## 3. Condiciones de uso
 
@@ -26,7 +26,7 @@ Los textos, diseños, logotipos y código de este sitio son de Novusance o de te
 
 ## 5. Ejemplos
 
-Las clínicas, nombres y datos que aparecen en los ejemplos de webs son ficticios.
+Los negocios, nombres y datos que aparecen en los ejemplos de webs son ficticios.
 
 ## 6. Responsabilidad
 

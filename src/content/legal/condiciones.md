@@ -1,10 +1,10 @@
 ---
 title: "Condiciones del servicio"
-description: "Condiciones de contratación de los servicios de Novusance para clínicas veterinarias en España."
+description: "Condiciones de contratación de los servicios de Novusance en España."
 updated: "16 de octubre de 2026"
 ---
 
-Estas condiciones regulan la contratación de los servicios de Novusance en España por parte de clínicas veterinarias, profesionales y empresas (en adelante, "el cliente"). Junto con el presupuesto aceptado, forman el acuerdo entre las partes. Si hay contradicción, prevalece lo indicado en el presupuesto o en el contrato firmado.
+Estas condiciones regulan la contratación de los servicios de Novusance en España por parte de profesionales y empresas (en adelante, "el cliente"). Junto con el presupuesto aceptado, forman el acuerdo entre las partes. Si hay contradicción, prevalece lo indicado en el presupuesto o en el contrato firmado.
 
 ## 1. Quién presta el servicio
 
@@ -14,7 +14,7 @@ Juan Ignacio Moreno Cordido, con NIF [NIF] y domicilio en [DOMICILIO], que opera
 
 Novusance ofrece:
 
-- **Renovación de web:** diseño nuevo con el logo y los colores de la clínica, su contenido actual reorganizado, adaptación al móvil, textos revisados y páginas legales.
+- **Renovación de web:** diseño nuevo con el logo y los colores del cliente, su contenido actual reorganizado, adaptación al móvil, textos revisados y páginas legales.
 - **Web nueva:** lo mismo partiendo de cero, con estructura, textos base y conexión del dominio.
 - **Mantenimiento mensual:** alojamiento, dominio conectado, copias de seguridad, cambios pequeños (horarios, precios, fotos) y revisión de las páginas legales.
 
@@ -24,7 +24,7 @@ El contenido concreto de cada trabajo es el que figura en el presupuesto.
 
 ## 3. Propuesta y presupuesto
 
-- La propuesta previa (una portada de ejemplo con el logo y los colores de la clínica) es gratuita y no obliga a nada.
+- La propuesta previa (una portada de ejemplo con el logo y los colores del cliente) es gratuita y no obliga a nada.
 - El presupuesto se envía siempre por escrito e indica lo que incluye y lo que no.
 - El contrato se perfecciona cuando el cliente acepta el presupuesto por escrito (vale un email) y abona el primer pago.
 
@@ -32,11 +32,11 @@ El contenido concreto de cada trabajo es el que figura en el presupuesto.
 
 Para empezar, el cliente facilita:
 
-- Fotos de la clínica y del equipo, y el logo en buena calidad.
-- La información de su clínica: servicios, horarios, datos de contacto y los textos que quiera conservar.
+- Fotos del local y del equipo, y el logo en buena calidad.
+- La información de su negocio: servicios, horarios, datos de contacto y los textos que quiera conservar.
 - Acceso al panel de su dominio, o la ayuda de su proveedor, para conectar la web.
 
-Antes de modificar la configuración del dominio, Novusance comprueba si el correo electrónico de la clínica depende de él, para no interrumpirlo.
+Antes de modificar la configuración del dominio, Novusance comprueba si el correo electrónico del cliente depende de él, para no interrumpirlo.
 
 ## 5. Plazos
 
@@ -78,7 +78,7 @@ Si un cobro no se puede realizar:
 
 El cliente se compromete a:
 
-- Facilitar información veraz y actualizada sobre su clínica.
+- Facilitar información veraz y actualizada sobre su negocio.
 - Disponer de los derechos necesarios sobre los textos, fotos, logotipos y demás materiales que entregue a Novusance.
 - Revisar la web antes de su publicación y comunicar cualquier cambio en su información.
 - Mantener activo y renovado su dominio.
@@ -90,7 +90,7 @@ Novusance prepara el aviso legal y la política de privacidad de la web del clie
 
 ## 11. Propiedad
 
-- El **dominio** y los **datos** de los clientes de la clínica son siempre del cliente.
+- El **dominio** y los **datos** de los clientes de su negocio son siempre del cliente.
 - Los textos, fotos y logotipos aportados por el cliente siguen siendo suyos.
 - El diseño, las plantillas y el código desarrollados por Novusance son de su propiedad. Mientras el servicio esté activo, el cliente tiene una licencia de uso sobre ellos. En la contratación sin cuota, el cliente recibe la web en propiedad una vez pagada por completo.
 - Salvo que el cliente indique lo contrario, Novusance podrá mostrar la web como ejemplo de su trabajo.
@@ -98,7 +98,7 @@ Novusance prepara el aviso legal y la política de privacidad de la web del clie
 ## 12. Soporte y disponibilidad
 
 - Canal de soporte: email o teléfono. Respuesta en un máximo de un día laborable.
-- Novusance procurará la máxima disponibilidad de la web, pero no puede garantizar que funcione sin interrupciones, ya que depende de proveedores de terceros (alojamiento, dominio, correo). Las tareas de mantenimiento se harán, siempre que sea posible, fuera del horario de la clínica.
+- Novusance procurará la máxima disponibilidad de la web, pero no puede garantizar que funcione sin interrupciones, ya que depende de proveedores de terceros (alojamiento, dominio, correo). Las tareas de mantenimiento se harán, siempre que sea posible, fuera del horario del cliente.
 
 ## 13. Responsabilidad
 

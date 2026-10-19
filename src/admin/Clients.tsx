@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks';
 import type { Scope } from './App';
 import { commitmentEnd, feeStatus, mrr, round2, totals, type FeeStatus } from './calc';
 import { deleteClient, errorText, saveClient, type AllData } from './data';
-import { COUNTRY_NAME, CURRENCY, scopeCountries, type Client, type Country } from './model';
+import { COUNTRY_NAME, CURRENCY, scopeCountries, type Client, type Country, SECTORS, sectorLabel } from './model';
 import { dateText, Empty, Field, Modal, Money, Notice, rowClick, today } from './ui';
 
 const STATUS: Record<FeeStatus, string> = {
@@ -38,13 +38,13 @@ export function Clients({ data, scope, reload }: { data: AllData; scope: Scope; 
       </div>
 
       {list.length === 0 ? (
-        <Empty>Aún no hay clientes. Añade la primera clínica cuando acepte el presupuesto.</Empty>
+        <Empty>Aún no hay clientes. Añade el primero cuando acepte el presupuesto.</Empty>
       ) : (
         <div class="table-wrap">
           <table class="table">
             <thead>
               <tr>
-                <th>Clínica</th>
+                <th>Negocio</th>
                 <th>Estado</th>
                 <th class="num">Cuota</th>
                 <th>Desde</th>
@@ -65,6 +65,7 @@ export function Clients({ data, scope, reload }: { data: AllData; scope: Scope; 
                       </button>
                       <div class="muted small">
                         {c.country.toUpperCase()}
+                        {c.sector && ` · ${sectorLabel(c.sector)}`}
                         {c.city && ` · ${c.city}`}
                         {c.contact_name && ` · ${c.contact_name}`}
                       </div>
@@ -138,6 +139,7 @@ export function ClientForm({
   const [feeEnd, setFeeEnd] = useState(c?.fee_end ?? '');
   const [minMonths, setMinMonths] = useState(String(c?.min_months ?? 12));
   const [notes, setNotes] = useState(c?.notes ?? '');
+  const [sector, setSector] = useState(c?.sector ?? p.sector ?? '');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
@@ -163,6 +165,7 @@ export function ClientForm({
           fee_start: feeStart || null,
           fee_end: feeEnd || null,
           min_months: Number(minMonths) || 0,
+          sector: sector || null,
           notes: notes.trim() || null,
         },
         c?.id,
@@ -202,8 +205,16 @@ export function ClientForm({
           ))}
         </div>
         <div class="grid2">
-          <Field label="Nombre de la clínica" wide>
+          <Field label="Nombre del negocio" wide>
             <input required maxLength={200} value={name} onInput={(e) => setName(e.currentTarget.value)} />
+          </Field>
+          <Field label="Sector" wide>
+            <select value={sector} onChange={(e) => setSector(e.currentTarget.value)}>
+              <option value="">Sin sector</option>
+              {SECTORS.map((s) => (
+                <option value={s.slug}>{s.label}</option>
+              ))}
+            </select>
           </Field>
           <Field label="Ciudad">
             <input maxLength={100} value={city} onInput={(e) => setCity(e.currentTarget.value)} />

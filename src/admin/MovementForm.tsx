@@ -201,7 +201,7 @@ export function MovementForm({
             <input
               required
               maxLength={200}
-              placeholder={kind === 'ingreso' ? 'Web de Clínica Zarpazoo' : 'Dominio de Clínica Zarpazoo (1 año)'}
+              placeholder={kind === 'ingreso' ? 'Web de Fisio Alameda' : 'Dominio de Fisio Alameda (1 año)'}
               value={concept}
               onInput={(e) => setConcept(e.currentTarget.value)}
             />

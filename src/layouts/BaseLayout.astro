@@ -21,9 +21,24 @@ interface Props {
   country?: Country;
   /** og:type. "article" en las guías. */
   type?: 'website' | 'article';
+  /** Página de un sector (/es/<sector>): misma estructura de secciones que la portada. */
+  landing?: boolean;
+  /**
+   * Ruta de esta página dentro de cada país ('' en la portada, '/<sector>' en un sector). Si se indica, se enlazan
+   * las versiones de los demás países (hreflang y selector de país).
+   */
+  localized?: string;
 }
 
-const { title, description, home = false, country = COUNTRIES.es, type = 'website' } = Astro.props;
+const {
+  title,
+  description,
+  home = false,
+  landing = false,
+  localized,
+  country = COUNTRIES.es,
+  type = 'website',
+} = Astro.props;
 // Un país en borrador nunca se indexa.
 const noindex = Astro.props.noindex || !country.published;
 const site = Astro.site ?? new URL('https://www.novusance.com');
@@ -42,8 +57,12 @@ const jsonLd = {
   areaServed: { '@type': 'Country', name: country.areaServed },
 };
 
-// Versiones de la portada en cada país publicado, para que los buscadores sirvan la que toca.
-const alternates = home && country.published ? PUBLISHED.map((c) => ({ lang: c.lang, href: new URL(c.path, site).href })) : [];
+// Versiones de esta página en cada país publicado, para que los buscadores sirvan la que toca.
+const alternates =
+  localized !== undefined && country.published
+    ? PUBLISHED.map((c) => ({ lang: c.lang, href: new URL(`${c.path}${localized}`, site).href }))
+    : [];
+const xDefault = localized !== undefined ? new URL(`/es${localized}`, site).href : '';
 ---
 
 <!doctype html>
@@ -56,7 +75,7 @@ const alternates = home && country.published ? PUBLISHED.map((c) => ({ lang: c.l
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
-    {alternates.length > 0 && <link rel="alternate" hreflang="x-default" href={new URL('/es', site).href} />}
+    {alternates.length > 0 && <link rel="alternate" hreflang="x-default" href={xDefault} />}
 
     <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={hostLatin} as="font" type="font/woff2" crossorigin />
@@ -76,7 +95,7 @@ const alternates = home && country.published ? PUBLISHED.map((c) => ({ lang: c.l
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Novusance: la web de tu clínica, a la altura de tu clínica." />
+    <meta property="og:image:alt" content="Novusance: la web de tu negocio, a la altura de tu trabajo." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -97,7 +116,7 @@ const alternates = home && country.published ? PUBLISHED.map((c) => ({ lang: c.l
         </div>
       )
     }
-    <Header home={home} country={country} />
+    <Header home={home} landing={landing} localized={localized ?? ''} country={country} />
     <main id="contenido" tabindex="-1">
       <slot />
     </main>

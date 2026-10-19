@@ -17,7 +17,7 @@ En Novusance tratamos tus datos con el cuidado que prometemos a nuestros cliente
 
 | Origen | Datos |
 | --- | --- |
-| Formulario de contacto | Nombre, nombre de la clínica o negocio, email, teléfono (opcional) y el mensaje que escribas |
+| Formulario de contacto | Nombre, nombre del negocio, email, teléfono (opcional) y el mensaje que escribas |
 | Comunicaciones por email o WhatsApp | Los datos de contacto y el contenido de los mensajes que nos envíes |
 | Clientes | Datos de contacto y facturación (nombre o razón social, NIF, dirección, email, teléfono y datos bancarios para los cobros) |
 | Navegación | Datos técnicos mínimos, como la dirección IP y el tipo de navegador, que los servidores registran por seguridad |
@@ -59,7 +59,7 @@ Cuando un proveedor está fuera del Espacio Económico Europeo, la transferencia
 
 ## 6. Datos que tratamos por cuenta de nuestros clientes
 
-Cuando una clínica contrata Novusance, los datos de sus propios clientes (por ejemplo, quien rellena un formulario en la web de la clínica) son responsabilidad de la clínica. Si para mantener la web Novusance tiene acceso a esos datos, actúa como **encargado del tratamiento** y los trata solo siguiendo sus instrucciones, según el contrato de encargo firmado con la clínica (art. 28 RGPD). Si eres cliente de una clínica y quieres ejercer tus derechos sobre esos datos, dirígete a la clínica; si nos escribes a nosotros, le trasladaremos tu solicitud.
+Cuando un negocio contrata Novusance, los datos de sus propios clientes (por ejemplo, quien rellena un formulario en la web del negocio) son responsabilidad del negocio. Si para mantener la web Novusance tiene acceso a esos datos, actúa como **encargado del tratamiento** y los trata solo siguiendo sus instrucciones, según el contrato de encargo firmado con el negocio (art. 28 RGPD). Si eres cliente de uno de esos negocios y quieres ejercer tus derechos sobre esos datos, dirígete a él; si nos escribes a nosotros, le trasladaremos tu solicitud.
 
 ## 7. Tus derechos
 

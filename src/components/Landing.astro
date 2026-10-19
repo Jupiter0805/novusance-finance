@@ -1,0 +1,51 @@
+---
+// Portada de un país: general (sin sector) o de un sector concreto. Mismas secciones en los dos casos.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from './Hero.astro';
+import Guarantees from './Guarantees.astro';
+import Problem from './Problem.astro';
+import HowItWorks from './HowItWorks.astro';
+import Services from './Services.astro';
+import Sectors from './Sectors.astro';
+import Works from './Works.astro';
+import Pricing from './Pricing.astro';
+import About from './About.astro';
+import Faq from './Faq.astro';
+import Contact from './Contact.astro';
+import type { Country } from '../data/countries';
+import type { Sector } from '../data/sectors';
+
+interface Props {
+  country: Country;
+  sector?: Sector;
+}
+
+const { country, sector } = Astro.props;
+const where = country.code === 'es' ? 'en España' : 'en Colombia';
+const audience = sector ? sector.label.toLowerCase() : 'negocios con cita';
+const title = `Novusance · Webs para ${audience} ${where}`;
+const description = sector
+  ? `Webs para ${audience}: diseño a tu medida, pensado para el ${country.mobile} y con mantenimiento incluido. Antes de pedirte nada, te enseño cómo quedaría la web de tu ${sector.noun}.`
+  : `Webs para pequeños negocios que viven de sus citas: clínicas, consultas, centros y academias. Diseño a tu medida, pensado para el ${country.mobile} y con mantenimiento incluido.`;
+---
+
+<BaseLayout
+  home={!sector}
+  landing={Boolean(sector)}
+  localized={sector ? `/${sector.slug}` : ''}
+  country={country}
+  title={title}
+  description={description}
+>
+  <Hero country={country} sector={sector} />
+  <Guarantees />
+  <Problem country={country} sector={sector} />
+  <HowItWorks />
+  <Services />
+  {!sector && <Sectors country={country} />}
+  <Works />
+  <Pricing country={country} />
+  <About country={country} />
+  <Faq country={country} />
+  <Contact country={country} sector={sector} />
+</BaseLayout>

@@ -18,6 +18,7 @@ const { Content, headings } = await render(guia);
 const toc = headings.filter((h) => h.depth === 2);
 const { title, description, sector, published, updated } = guia.data;
 const sectorLabel = SECTORS[sector].label;
+const sectorNoun = SECTORS[sector].noun;
 
 const site = Astro.site ?? new URL('https://www.novusance.com');
 const url = new URL(`/guias/${guia.id}`, site).href;
@@ -82,14 +83,14 @@ const jsonLd = [
     </div>
 
     <aside class="cta" aria-labelledby="cta-title">
-      <h2 id="cta-title" class="display cta-title">¿Quieres ver cómo quedaría la web de tu clínica?</h2>
+      <h2 id="cta-title" class="display cta-title">¿Quieres ver cómo quedaría la web de tu {sectorNoun}?</h2>
       <p class="muted">
         Te preparo la portada con tu logo y tus colores, sin compromiso. Si te convence, seguimos; si no, no pasa nada.
       </p>
       <div class="cta-actions">
         {
           PUBLISHED.map((c, i) => (
-            <a href={`${c.path}#contacto`} class={`btn btn-lg ${i === 0 ? 'btn-ink' : 'btn-outline'}`}>
+            <a href={`${c.path}/${sector}#contacto`} class={`btn btn-lg ${i === 0 ? 'btn-ink' : 'btn-outline'}`}>
               Pedir propuesta · {c.name}
             </a>
           ))

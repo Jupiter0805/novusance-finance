@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { SECTOR_SLUGS } from './data/sectors';
 
 const schema = z.object({
   title: z.string(),
@@ -20,13 +21,14 @@ const legalCo = defineCollection({
   schema,
 });
 
-// Guías (/guias): artículos para dueños de negocios locales, agrupados por sector (ver src/data/guias.ts).
+// Guías (/guias): artículos para dueños de negocios locales, agrupados por sector (ver src/data/sectors.ts).
 const guias = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/guias' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    sector: z.enum(['veterinarias']),
+    /** Slug de un sector de src/data/sectors.ts. */
+    sector: z.enum(SECTOR_SLUGS as [string, ...string[]]),
     /** Fechas en formato AAAA-MM-DD. */
     published: z.string(),
     updated: z.string().optional(),

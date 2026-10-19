@@ -1,18 +1,27 @@
 ---
 import { Icon } from 'astro-icon/components';
 import type { Country } from '../data/countries';
+import { GENERAL, type Sector } from '../data/sectors';
 
-const { country } = Astro.props as { country: Country };
-// Todo lo que aparece dentro de las webs de ejemplo es de una clínica ficticia.
-const clinic = 'Veterinaria Arce';
+interface Props {
+  country: Country;
+  /** Sin sector: portada general. */
+  sector?: Sector;
+}
+
+const { country, sector } = Astro.props;
+const noun = sector?.noun ?? GENERAL.noun;
+// Todo lo que aparece dentro de las webs de ejemplo es de un negocio ficticio.
+const ex = sector?.example ?? GENERAL.example;
+const audience = sector ? sector.label.toLowerCase() : 'pequeños negocios que viven de sus citas';
 ---
 
 <section id="inicio" class="wrap hero">
   <div class="hero-grid">
     <div class="hero-copy">
-      <h1 class="display hero-title">La web de tu clínica, <span class="muted">a la altura de tu clínica.</span></h1>
+      <h1 class="display hero-title">La web de tu {noun}, <span class="muted">a la altura de tu trabajo.</span></h1>
       <p class="lead">
-        Diseño y mantengo webs para clínicas veterinarias: con tu logo y tus colores, pensadas para el {country.mobile} y al
+        Diseño y mantengo webs para {audience}: con tu logo y tus colores, pensadas para el {country.mobile} y al
         día sin que tengas que tocar nada. Antes de pedirte nada, te enseño cómo quedaría la tuya.
       </p>
       <div class="btn-row">
@@ -26,14 +35,14 @@ const clinic = 'Veterinaria Arce';
         <div class="browser">
           <div class="bar" aria-hidden="true">
             <span class="dots"><i></i><i></i><i></i></span>
-            <span class="url">www.tuclinica.vet</span>
+            <span class="url">{ex.url}</span>
           </div>
 
           <div class="screen" aria-hidden="true">
             <!-- Antes: una web de hace años, correcta pero anticuada. -->
             <div class="site old">
               <div class="old-banner">
-                <div class="old-name">Clínica Veterinaria Arce</div>
+                <div class="old-name">{ex.oldName}</div>
                 <div class="old-sub">Bienvenidos a nuestra página web</div>
               </div>
               <div class="old-body">
@@ -46,10 +55,7 @@ const clinic = 'Veterinaria Arce';
                 </ul>
                 <div class="old-main">
                   <div class="old-h">Bienvenidos</div>
-                  <p>
-                    En nuestra clínica ofrecemos servicios de medicina general, vacunación, cirugía y peluquería para su
-                    mascota. Contamos con un equipo de profesionales con amplia experiencia.
-                  </p>
+                  <p>{ex.oldText}</p>
                   <p>Para más información no dude en llamarnos o visitarnos en nuestras instalaciones.</p>
                   <div class="old-box">
                     <b>Horario:</b> Lunes a viernes de 10:00 a 14:00 y de 17:00 a 20:00. Sábados de 10:00 a 13:00.
@@ -59,26 +65,24 @@ const clinic = 'Veterinaria Arce';
               <div class="old-foot">Tel. 900 000 000 · Última actualización: marzo de 2015</div>
             </div>
 
-            <!-- Después: la misma clínica, renovada. -->
+            <!-- Después: el mismo negocio, renovado. -->
             <div class="site new">
               <div class="new-nav">
-                <span class="new-brand"><i></i>{clinic}</span>
+                <span class="new-brand"><i></i>{ex.brand}</span>
                 <span class="new-links"><span>Servicios</span><span>Equipo</span><span>Contacto</span></span>
-                <span class="new-cta">Pedir cita</span>
+                <span class="new-cta">{ex.cta}</span>
               </div>
               <div class="new-hero">
                 <div class="new-photo"><span>Foto de tu equipo</span></div>
                 <div class="new-copy">
                   <div class="new-open"><i></i>Abierto hoy hasta las 20:00</div>
-                  <div class="new-h">Cuidamos de los tuyos como si fueran nuestros.</div>
-                  <div class="new-p">Medicina general, vacunas y cirugía en el centro de la ciudad.</div>
-                  <div class="new-btns"><span class="a">Pedir cita</span><span class="b">Llamar</span></div>
+                  <div class="new-h">{ex.headline}</div>
+                  <div class="new-p">{ex.text}</div>
+                  <div class="new-btns"><span class="a">{ex.cta}</span><span class="b">Llamar</span></div>
                 </div>
               </div>
               <div class="new-cards">
-                <span>Consulta general</span>
-                <span>Vacunación</span>
-                <span>Cirugía</span>
+                {ex.services.map((x) => <span>{x}</span>)}
               </div>
             </div>
 
@@ -101,17 +105,17 @@ const clinic = 'Veterinaria Arce';
 
         <div class="phone" aria-hidden="true">
           <div class="phone-screen">
-            <div class="m-nav"><span class="new-brand"><i></i>Arce</span><span class="m-burger"></span></div>
+            <div class="m-nav"><span class="new-brand"><i></i>{ex.short}</span><span class="m-burger"></span></div>
             <div class="new-open"><i></i>Abierto hoy</div>
-            <div class="m-h">Cuidamos de los tuyos como si fueran nuestros.</div>
+            <div class="m-h">{ex.headline}</div>
             <div class="m-photo"></div>
-            <span class="m-btn">Pedir cita</span>
+            <span class="m-btn">{ex.cta}</span>
             <span class="m-btn ghost">Llamar</span>
           </div>
         </div>
       </div>
       <figcaption class="caption">
-        Ejemplo con una clínica ficticia.<span class="js-only"> Arrastra para comparar.</span>
+        Ejemplo con un negocio ficticio.<span class="js-only"> Arrastra para comparar.</span>
       </figcaption>
     </figure>
   </div>

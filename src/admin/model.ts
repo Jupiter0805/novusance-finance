@@ -1,4 +1,7 @@
-// Tipos y catálogos del panel. Deben coincidir con supabase/migrations/0001_admin.sql.
+// Tipos y catálogos del panel. Deben coincidir con supabase/migrations/.
+import { SECTORS as SECTOR_LIST } from '../data/sectors';
+
+export { SECTORS, sectorBySlug } from '../data/sectors';
 
 export type Country = 'es' | 'co';
 export type Currency = 'EUR' | 'COP';
@@ -21,6 +24,8 @@ export interface Client {
   id: string;
   country: Country;
   name: string;
+  /** Slug de src/data/sectors.ts, o null. */
+  sector: string | null;
   city: string | null;
   contact_name: string | null;
   email: string | null;
@@ -110,6 +115,8 @@ export const MESSAGE_STATUS: Record<MessageStatus, string> = {
 export interface Message {
   id: string;
   country: Country;
+  /** Sector de la página desde la que escribió (slug), o null si fue desde la portada general. */
+  sector: string | null;
   name: string;
   clinic: string;
   email: string;
@@ -121,3 +128,11 @@ export interface Message {
   handled_by: string | null;
   created_at: string;
 }
+
+const SECTOR_LABELS: Record<string, string> = Object.fromEntries(SECTOR_LIST.map((s) => [s.slug, s.label]));
+
+/** Nombre del sector para mostrar, o '' si no tiene. */
+export const sectorLabel = (slug: string | null | undefined) => {
+  if (!slug) return '';
+  return SECTOR_LABELS[slug] ?? slug;
+};

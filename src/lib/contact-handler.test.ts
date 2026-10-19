@@ -46,6 +46,7 @@ test('solo Supabase: guarda el mensaje con la clave secreta y sin email', async 
   assert.equal(s.headers.apikey, 'sb_secret_x');
   assert.deepEqual(s.body, {
     country: 'co',
+    sector: null,
     name: 'Ana',
     clinic: 'Huellitas',
     email: 'a@h.co',
@@ -80,6 +81,27 @@ test('sin JavaScript (sin hora de apertura) se acepta y vuelve a la página del 
   assert.equal(r.status, 303);
   assert.equal(r.headers.get('location'), 'https://www.novusance.com/co?enviado=1#contacto');
   assert.equal(calls.length, 1);
+});
+
+test('sector: se guarda si es de la lista, se ignora si no, y sin JS vuelve a la página del sector', async () => {
+  calls.length = 0;
+  await handleContact(form({ sector: 'peluquerias-caninas' }), store);
+  await handleContact(form({ sector: 'inventado' }), store);
+  const bodies = calls.filter((c) => c.url.includes('/rest/v1/messages')).map((c) => c.body.sector);
+  assert.deepEqual(bodies, ['peluquerias-caninas', null]);
+
+  const f = new FormData();
+  for (const [k, v] of Object.entries({ pais: 'es', sector: 'clinicas-dentales', nombre: 'A', clinica: 'B', email: 'a@b.es', privacidad: 'on' }))
+    f.append(k, v);
+  const r = await handleContact(new Request('https://www.novusance.com/api/contact', { method: 'POST', body: f }), store);
+  assert.equal(r.headers.get('location'), 'https://www.novusance.com/es/clinicas-dentales?enviado=1#contacto');
+});
+
+test('email: incluye el sector', async () => {
+  calls.length = 0;
+  await handleContact(form({ sector: 'centros-de-estetica' }), { ...store, ...mail });
+  const m = calls.find((c) => c.url.includes('resend'))!;
+  assert.match(m.body.text, /Sector: Centros de estética/);
 });
 
 test('si Supabase falla pero el email sale, el visitante ve éxito', async () => {

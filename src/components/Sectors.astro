@@ -1,0 +1,121 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { Country } from '../data/countries';
+import { SECTORS } from '../data/sectors';
+
+const { country } = Astro.props as { country: Country };
+---
+
+<section id="sectores" class="band">
+  <div class="wrap inner">
+    <div class="intro">
+      <h2 class="display h2">Para negocios que viven de sus citas.</h2>
+      <p class="sub">
+        Trabajo con estos sectores porque conozco lo que buscan sus clientes. Elige el tuyo y mira un ejemplo.
+      </p>
+    </div>
+    <ul class="list">
+      {
+        SECTORS.map((s) => (
+          <li>
+            <a class="row" href={`${country.path}/${s.slug}`}>
+              <span class="text">
+                <span class="name">{s.label}</span>
+                <span class="blurb">{s.blurb}</span>
+              </span>
+              <Icon name="ph:arrow-right" size={20} class="arrow" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .inner {
+    padding-block: 104px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 760px;
+  }
+
+  .sub {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 40px;
+    border-top: 1px solid var(--line);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .row:hover {
+    opacity: 1;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .name {
+    font-family: var(--font-display);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  .blurb {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .row :global(.arrow) {
+    flex-shrink: 0;
+    color: var(--accent-text);
+    transition: transform 0.2s;
+  }
+
+  .row:hover :global(.arrow) {
+    transform: translateX(4px);
+  }
+
+  .row:hover .name {
+    color: var(--accent-text);
+  }
+
+  @media (max-width: 760px) {
+    .list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

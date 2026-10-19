@@ -16,7 +16,7 @@ En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios
 
 ## 2. Objeto
 
-Este sitio web informa sobre los servicios de Novusance en España: diseño, renovación, publicación y mantenimiento de páginas web para clínicas veterinarias. Permite además solicitar información o una propuesta a través del formulario de contacto.
+Este sitio web informa sobre los servicios de Novusance en España: diseño, renovación, publicación y mantenimiento de páginas web para pequeños negocios con cita: clínicas, consultas, centros, peluquerías caninas, academias y autoescuelas. Permite además solicitar información o una propuesta a través del formulario de contacto.
 
 La versión de Colombia de este sitio (www.novusance.com/co) tiene su propio titular y sus propios textos legales.
 
@@ -41,7 +41,7 @@ Las marcas, nombres comerciales y capturas de webs de clientes que aparecen en e
 
 ## 5. Ejemplos
 
-Las clínicas, nombres, textos y datos que aparecen en los ejemplos de webs de este sitio son ficticios y tienen un fin meramente ilustrativo. No corresponden a ningún cliente real.
+Los negocios, nombres, textos y datos que aparecen en los ejemplos de webs de este sitio son ficticios y tienen un fin meramente ilustrativo. No corresponden a ningún cliente real.
 
 ## 6. Responsabilidad
 

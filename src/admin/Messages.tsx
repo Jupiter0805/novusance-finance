@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks';
 import type { Scope } from './App';
 import { ClientForm } from './Clients';
 import { deleteMessage, errorText, updateMessage, type AllData } from './data';
-import { COUNTRY_NAME, MESSAGE_STATUS, scopeCountries, type Message, type MessageStatus } from './model';
+import { COUNTRY_NAME, MESSAGE_STATUS, scopeCountries, sectorLabel, type Message, type MessageStatus } from './model';
 import { Empty, Field, Modal, Notice, rowClick } from './ui';
 
 const when = (iso: string) =>
@@ -78,7 +78,7 @@ export function Messages({
             <thead>
               <tr>
                 <th>Recibido</th>
-                <th>Clínica</th>
+                <th>Negocio</th>
                 <th class="hide-sm">Mensaje</th>
                 <th>Estado</th>
               </tr>
@@ -93,6 +93,7 @@ export function Messages({
                     </button>
                     <div class="muted small">
                       {m.country.toUpperCase()} · {m.name}
+                      {m.sector && ` · ${sectorLabel(m.sector)}`}
                     </div>
                   </td>
                   <td class="hide-sm muted">
@@ -176,7 +177,7 @@ function MessageDetail({
     return (
       <ClientForm
         client={null}
-        prefill={{ country: m.country, name: m.clinic, contact_name: m.name, email: m.email, phone: m.phone }}
+        prefill={{ country: m.country, sector: m.sector, name: m.clinic, contact_name: m.name, email: m.email, phone: m.phone }}
         defaultCountry={m.country}
         hasMovements={false}
         onClose={() => setCreating(false)}
@@ -194,6 +195,8 @@ function MessageDetail({
           <span>{m.name}</span>
           <span>País</span>
           <span>{COUNTRY_NAME[m.country]}</span>
+          <span>Sector</span>
+          <span>{sectorLabel(m.sector) || 'Portada general'}</span>
           <span>Recibido</span>
           <span>{when(m.created_at)}</span>
           {client && (

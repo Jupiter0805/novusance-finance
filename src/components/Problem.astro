@@ -1,8 +1,15 @@
 ---
 import type { Country } from '../data/countries';
+import { GENERAL, type Sector } from '../data/sectors';
 
-const { country } = Astro.props as { country: Country };
+interface Props {
+  country: Country;
+  sector?: Sector;
+}
+
+const { country, sector } = Astro.props;
 const m = country.mobile;
+const search = sector?.search ?? GENERAL.search;
 ---
 
 <section class="problem">
@@ -12,7 +19,7 @@ const m = country.mobile;
       <div class="big">
         <div class="display clock" aria-hidden="true">23:47</div>
         <p>
-          <span class="sr-only">A las 23:47. </span>Su perro no está bien. Busca «veterinario cerca» en el {m} y abre tres
+          <span class="sr-only">A las 23:47. </span>{search} en el {m} y abre tres
           webs en un minuto.
         </p>
       </div>

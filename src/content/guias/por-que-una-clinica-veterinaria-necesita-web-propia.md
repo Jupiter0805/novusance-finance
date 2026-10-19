@@ -1,7 +1,7 @@
 ---
 title: Por qué una clínica veterinaria necesita su propia web (y no solo redes sociales)
 description: Las redes y el perfil de Google ayudan, pero no bastan. Qué busca un dueño de mascota antes de elegir clínica, qué resuelve una web propia y qué debe tener como mínimo.
-sector: veterinarias
+sector: clinicas-veterinarias
 published: '2026-10-18'
 ---
 

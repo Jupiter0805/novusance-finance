@@ -1,15 +1,12 @@
-// Sectores de /guias. Para abrir uno nuevo (fisioterapia, odontología...): añádelo aquí y al enum `sector`
-// de src/content.config.ts, y escribe sus artículos en src/content/guias/ con ese `sector`.
+// Los sectores de /guias son los de src/data/sectors.ts: cada guía lleva en `sector` el slug de uno de ellos.
 import type { CollectionEntry } from 'astro:content';
+import { SECTORS as SECTOR_LIST } from './sectors';
 
-export const SECTORS = {
-  veterinarias: {
-    label: 'Clínicas veterinarias',
-    intro: 'Qué buscan los dueños de mascotas antes de elegir clínica y cómo debe responder tu web.',
-  },
-} as const;
+export const SECTORS = Object.fromEntries(
+  SECTOR_LIST.map((s) => [s.slug, { label: s.label, intro: s.guidesIntro, noun: s.noun }]),
+) as Record<string, { label: string; intro: string; noun: string }>;
 
-export type Sector = keyof typeof SECTORS;
+export type Sector = string;
 export type Guia = CollectionEntry<'guias'>;
 
 const dateFmt = new Intl.DateTimeFormat('es', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });

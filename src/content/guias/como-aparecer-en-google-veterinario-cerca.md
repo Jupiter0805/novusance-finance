@@ -1,7 +1,7 @@
 ---
 title: Cómo hacer que tu clínica aparezca en Google cuando buscan «veterinario cerca»
 description: Qué tiene en cuenta Google para mostrar unas clínicas y no otras, cómo dejar bien tu perfil de empresa y qué papel juega tu web. Una guía práctica, paso a paso.
-sector: veterinarias
+sector: clinicas-veterinarias
 published: '2026-10-18'
 ---
 

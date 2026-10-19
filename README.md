@@ -1,6 +1,6 @@
 # novusance.com
 
-Web de Novusance: diseño, renovación y mantenimiento de webs para clínicas veterinarias en España y Colombia.
+Web de Novusance: diseño, renovación y mantenimiento de webs para pequeños negocios con cita en España y Colombia.
 
 - **Astro** + **Vercel** (`@astrojs/vercel`). Cada push a `main` se publica. Todo se pre-renderiza salvo el formulario,
   `src/pages/api/contact.ts`, que corre como función de Vercel.
@@ -22,15 +22,28 @@ src/
   content/legal/*.md         Textos legales de España (/aviso-legal, /privacidad, /cookies, /condiciones)
   content/legal-co/*.md      Textos legales de Colombia (/co/aviso-legal...)
   data/countries.ts          Precios, moneda, persona y email de cada país
+  data/sectors.ts            Sectores: textos de su página y web de ejemplo
   data/consent.ts            Herramientas con cookies no esenciales (hoy, ninguna)
   data/logo.ts               Logo en vectorial (trazado de Novusance-Logo.png)
   admin/                     Panel /admin (Preact): vistas, acceso a Supabase y cálculos con sus pruebas
   lib/contact-handler.ts     Lógica del formulario: valida, filtra bots, guarda en Supabase y avisa por email
   lib/contact-validation.ts  Reglas del formulario, compartidas por navegador y servidor
-  pages/                     [country] (/es, /co), [legal] (España), co/[legal] (Colombia), admin, api/contact, 404
+  pages/                     [country] (/es, /co), [country]/[sector], [legal] (España), co/[legal] (Colombia), guias, admin, api/contact, 404
   scripts/contact-form.ts    Lógica del formulario en el navegador
   styles/global.css          Tokens de diseño (claro/oscuro) y estilos base
 ```
+
+## Sectores
+
+Los sectores están en `src/data/sectors.ts`: clínicas veterinarias, fisioterapeutas y osteópatas, clínicas dentales,
+psicólogos y nutricionistas, peluquerías caninas, centros de estética, y academias y autoescuelas. Cada uno tiene su
+página en los dos países (`/es/<slug>` y `/co/<slug>`), con las mismas secciones y precios que la portada pero su propio
+titular, escena del problema, web de ejemplo del antes/después y metadatos. La portada (`/es`, `/co`) es general y los
+enlaza en la sección "Sectores".
+
+- El formulario de una página de sector envía su `sector`, que se guarda con el mensaje y se ve en el panel.
+- Las guías (`/guias`) llevan en `sector` el slug de uno de estos sectores.
+- Para añadir un sector, basta con añadirlo a `SECTORS`: rutas, sitemap, hreflang, formulario y panel salen solos.
 
 ## Países
 
@@ -65,7 +78,7 @@ Supabase desde el navegador. La clave `anon` es pública por diseño: lo que pro
 ### Puesta en marcha (una vez)
 
 1. **Crear el proyecto** en Supabase, región `eu-west` (Irlanda o Fráncfort).
-2. **Base de datos:** SQL Editor → pega `supabase/migrations/0001_admin.sql` y después `0002_messages.sql` → Run. Crea las tablas, las políticas y
+2. **Base de datos:** SQL Editor → pega por orden los archivos de `supabase/migrations/` (`0001`, `0002`, `0003`) → Run. Crea las tablas, las políticas y
    el bucket privado `documentos`. Se puede volver a ejecutar sin problema.
 3. **Cerrar el registro:** Authentication → Sign In / Providers → desactiva «Allow new users to sign up». Solo entra quien
    invitéis.

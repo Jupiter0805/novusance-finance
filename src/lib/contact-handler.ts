@@ -14,6 +14,7 @@
  * - El campo oculto "pais" (es | co) decide a quién llega el email: CONTACT_TO o, para Colombia, CONTACT_TO_CO.
  */
 import { readContact, validateContact, type ContactInput } from './contact-validation';
+import { sectorBySlug, type Sector } from '../data/sectors';
 
 export interface ContactEnv {
   /** Supabase: URL del proyecto y clave secreta (solo servidor) para guardar el mensaje. */
@@ -43,9 +44,11 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
 
   // Hasta leer el formulario no se sabe el país; mientras, las respuestas sin JS vuelven a España.
   let country: Country = 'es';
+  let sector: Sector | undefined;
+  const page = () => `/${country}${sector ? `/${sector.slug}` : ''}`;
   const fail = (status: number, error: ErrorCode, extra: Record<string, unknown> = {}) =>
-    wantsJson ? json(status, { ok: false, error, ...extra }) : redirect(request, `/${country}?error=${error}#contacto`);
-  const done = () => (wantsJson ? json(200, { ok: true }) : redirect(request, `/${country}?enviado=1#contacto`));
+    wantsJson ? json(status, { ok: false, error, ...extra }) : redirect(request, `${page()}?error=${error}#contacto`);
+  const done = () => (wantsJson ? json(200, { ok: true }) : redirect(request, `${page()}?enviado=1#contacto`));
 
   const canStore = Boolean(env.SUPABASE_URL && env.SUPABASE_SECRET_KEY);
   const canEmail = Boolean(env.RESEND_API_KEY && env.CONTACT_TO && env.CONTACT_FROM);
@@ -65,6 +68,9 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
   }
 
   country = data.get('pais') === 'co' ? 'co' : 'es';
+  // Solo se aceptan sectores de la lista; cualquier otro valor se ignora.
+  const rawSector = data.get('sector');
+  sector = typeof rawSector === 'string' ? sectorBySlug(rawSector) : undefined;
 
   // Campo trampa relleno: es un bot. Respondemos como si todo fuera bien y no enviamos nada.
   const honeypot = data.get('website');
@@ -83,15 +89,15 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
     return done();
   }
 
-  const stored = canStore ? await storeMessage(env, input, country) : false;
-  const emailed = canEmail ? await sendEmail(env, input, country, stored) : false;
+  const stored = canStore ? await storeMessage(env, input, country, sector) : false;
+  const emailed = canEmail ? await sendEmail(env, input, country, stored, sector) : false;
   if (!stored && !emailed) return fail(502, 'send');
 
   return done();
 }
 
 /** Guarda el mensaje en Supabase con la clave secreta (solo servidor; se salta RLS). */
-async function storeMessage(env: ContactEnv, c: ContactInput, country: Country): Promise<boolean> {
+async function storeMessage(env: ContactEnv, c: ContactInput, country: Country, sector?: Sector): Promise<boolean> {
   try {
     const res = await fetch(`${env.SUPABASE_URL!.replace(/\/$/, '')}/rest/v1/messages`, {
       method: 'POST',
@@ -103,6 +109,7 @@ async function storeMessage(env: ContactEnv, c: ContactInput, country: Country):
       },
       body: JSON.stringify({
         country,
+        sector: sector?.slug ?? null,
         name: c.nombre,
         clinic: c.clinica,
         email: c.email,
@@ -121,12 +128,19 @@ async function storeMessage(env: ContactEnv, c: ContactInput, country: Country):
   }
 }
 
-async function sendEmail(env: ContactEnv, c: ContactInput, country: Country, stored: boolean): Promise<boolean> {
+async function sendEmail(
+  env: ContactEnv,
+  c: ContactInput,
+  country: Country,
+  stored: boolean,
+  sector?: Sector,
+): Promise<boolean> {
   const to = country === 'co' && env.CONTACT_TO_CO ? env.CONTACT_TO_CO : env.CONTACT_TO;
   const rows: Array<[string, string]> = [
     ['País', country === 'co' ? 'Colombia' : 'España'],
+    ['Sector', sector?.label ?? '(portada general)'],
     ['Nombre', c.nombre],
-    ['Clínica', c.clinica],
+    ['Negocio', c.clinica],
     ['Email', c.email],
     ['Teléfono', c.telefono || '(no indicado)'],
     ['Mensaje', c.mensaje || '(sin mensaje)'],

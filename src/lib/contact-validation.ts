@@ -30,10 +30,10 @@ export function validateContact(input: ContactInput): FieldErrors {
   const errors: FieldErrors = {};
 
   if (!input.nombre) errors.nombre = 'Escribe tu nombre.';
-  if (!input.clinica) errors.clinica = 'Escribe el nombre de tu clínica.';
+  if (!input.clinica) errors.clinica = 'Escribe el nombre de tu negocio.';
 
   if (!input.email) errors.email = 'Escribe tu email.';
-  else if (!EMAIL_RE.test(input.email)) errors.email = 'Revisa el email; debe tener la forma nombre@clinica.es.';
+  else if (!EMAIL_RE.test(input.email)) errors.email = 'Revisa el email; debe tener la forma nombre@negocio.es.';
 
   if (input.telefono && !PHONE_RE.test(input.telefono)) {
     errors.telefono = 'Revisa el teléfono: usa solo números, espacios y el signo +.';
