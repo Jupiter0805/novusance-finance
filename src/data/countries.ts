@@ -9,9 +9,6 @@ export interface Plan {
   /** Precio "desde" de la puesta en marcha, ya formateado. */
   setupFrom: string;
   fee: string;
-  /** Precio de la oferta de lanzamiento (ver LAUNCH_OFFER), ya formateado. */
-  launchSetup: string;
-  launchFee: string;
   forWho: string;
   features: string[];
   featured: boolean;
@@ -80,10 +77,8 @@ export const COUNTRIES: Record<CountryCode, Country> = {
       {
         id: 'basica',
         name: 'Web básica',
-        setupFrom: '600 €',
+        setupFrom: '599 €',
         fee: '35 €',
-        launchSetup: '300 €',
-        launchFee: '30 €',
         forWho: 'Para clínicas nuevas o pequeñas.',
         features: commonFeatures.basic,
         featured: false,
@@ -91,10 +86,8 @@ export const COUNTRIES: Record<CountryCode, Country> = {
       {
         id: 'renovacion',
         name: 'Renovación completa',
-        setupFrom: '900 €',
-        fee: '45 €',
-        launchSetup: '450 €',
-        launchFee: '35 €',
+        setupFrom: '899 €',
+        fee: '35 €',
         forWho: 'Para clínicas con años de historia y mucho que contar.',
         features: commonFeatures.full,
         featured: true,
@@ -125,8 +118,6 @@ export const COUNTRIES: Record<CountryCode, Country> = {
         name: 'Web básica',
         setupFrom: '$1.200.000',
         fee: '$70.000',
-        launchSetup: '$800.000',
-        launchFee: '$60.000',
         forWho: 'Para clínicas nuevas o pequeñas.',
         features: commonFeatures.basic,
         featured: false,
@@ -136,8 +127,6 @@ export const COUNTRIES: Record<CountryCode, Country> = {
         name: 'Renovación completa',
         setupFrom: '$2.000.000',
         fee: '$100.000',
-        launchSetup: '$1.300.000',
-        launchFee: '$80.000',
         forWho: 'Para clínicas con años de historia y mucho que contar.',
         features: commonFeatures.full,
         featured: true,
@@ -162,16 +151,3 @@ export const FEE_INCLUDES = [
 
 /** Lo que se presupuesta aparte (igual en los dos países). */
 export const NOT_INCLUDED = 'Fotografía profesional y artículos de blog.';
-
-/**
- * Oferta de lanzamiento (España y Colombia). Los precios están en cada plan (launchSetup y launchFee).
- *   - enabled: false oculta el banner y los precios de oferta en las dos versiones.
- *   - spots: plazas que quedan; cámbialo a mano cuando entre una clínica. Con 0 se oculta sola.
- */
-export const LAUNCH_OFFER = {
-  enabled: true,
-  /** Clínicas que entran en la oferta en total (aparece en el texto del banner). */
-  total: 5,
-  /** Plazas que quedan libres. */
-  spots: 5,
-};
